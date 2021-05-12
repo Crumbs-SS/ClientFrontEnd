@@ -1,6 +1,6 @@
 const url = 'http://localhost:8080';
 const restaurantsRoute = url + '/restaurants';
-const menuitemsRoute = url + '/menuitems';
+// const menuitemsRoute = url + '/menuitems';
 
 class RestaurantService{
 
