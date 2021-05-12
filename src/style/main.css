@@ -4,6 +4,23 @@ html, body {
 
 a{
   text-decoration: none;
+  text-decoration-color: none;
+}
+
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: black;
+}
+
+a:active {
+  color: black;
 }
 
 *{
