@@ -1,9 +1,9 @@
 # React Frontend
 
 ## Jira-78: To do
-  - Create sidebar component
-  - Store search results in a store
-  - Re-direct to new page after searching
+  - Create sidebar component ✔
+  - Store search results in a store ✔
+  - Re-direct to new page after searching ✔
   - Create search page component
 
 ### Mock-up Landing Page
