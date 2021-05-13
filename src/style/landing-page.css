@@ -1,0 +1,71 @@
+
+#landing-page{
+  position: absolute;
+  width: 82%;
+  height: 100%;
+  right: 0;
+  z-index: 0;
+  background-image: url('../assets/FoodAndDrinkDesign.svg');
+  background-repeat: repeat;
+  background-size: contain;
+  background-color: rgb(180, 39, 45);
+}
+
+#title-holder{
+  margin-left: 50%;
+  margin-top: 23%;
+  transform: translateX(-50%);
+  display: inline-block;
+}
+
+#title-name{
+  font-size: 4em;
+  color: rgb(255, 255, 255);
+  font-family: 'Architects Daughter', cursive;
+}
+
+#search-bar{
+  width: 100%;
+  border-radius: 10em;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input-text{
+  margin: 0;
+  width:75%;
+  padding-left: 1em;
+  height:2em;
+  border-style: none;
+  border-radius: 10em;
+  font-size: 1.3em;
+  display: inline-block;
+  background: rgba(255, 255, 255, 1);
+  transition: width .5s;
+}
+
+.input-text:focus{
+  width: 90%;
+}
+
+#search-button{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: rgb(255, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: 2em;
+  text-align: center;
+
+  transition: background .3s;
+}
+
+#search-button i{
+  margin-left: .1em;
+}
+
+#search-button:hover{
+  background: rgb(100, 0, 0);
+  cursor: pointer;
+}
