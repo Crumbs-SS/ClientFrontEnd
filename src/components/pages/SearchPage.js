@@ -1,11 +1,14 @@
 import '../../style/search-page.css';
-
+import Header from '../Header';
 
 const SearchPage = () => {
     return(
-      <div className="search-page">
-        Search Results
-      </div>
+      <>
+        <Header />
+        <div className="search-page">
+        HELLO
+        </div>
+      </>
     )
 }
 

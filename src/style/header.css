@@ -1,0 +1,43 @@
+.inline-header{
+  height: 2px;
+  width: 100%;
+  background: rgba(0, 0, 0, .1);
+}
+
+.sidebar-opener{
+  margin-right: 4em;
+}
+
+.search-input{
+  border-radius: 5em;
+  border: none;
+  background: rgb(220, 220, 220);
+  padding-left: 1em;
+  height: 2em;
+  width: 15em;
+
+  transition: width .3s;
+}
+
+.search-input:focus{
+  width: 17em;
+}
+
+.shopping-icon{
+  width: 2.5em;
+  margin-left: 1.3em;
+  background: rgb(235, 54, 62);
+  border-radius: 1em;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+.vert-line{
+  height: 2em;
+  width: 2px;
+  margin: auto;
+  margin-left: 1.5em;
+  background: rgba(0, 0, 0, .1);
+}

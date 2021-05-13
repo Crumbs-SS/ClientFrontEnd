@@ -1,8 +1,12 @@
 html, body {
   margin: 0;
-  color: rgb(249, 246, 240)
+  background: rgb(249, 246, 240)
 }
-
+*{
+  outline: none;
+  outline-style: none;
+  font-family: 'Roboto Slab', serif;
+}
 a{
   text-decoration: none;
   text-decoration-color: none;
@@ -22,9 +26,4 @@ a:hover {
 
 a:active {
   color: black;
-}
-
-*{
-  outline: none;
-  font-family: 'Roboto Slab', serif;
 }
