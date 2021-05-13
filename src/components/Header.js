@@ -1,5 +1,5 @@
 import '../style/header.css';
-import { Navbar, Nav, Form, Button } from 'react-bootstrap';
+import { Navbar, Nav, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -34,6 +34,9 @@ const Header = () => {
             <Nav.Link href= "/">Home</Nav.Link>
             <Nav.Link href="/logout">Logout</Nav.Link>
             <div className="vert-line"></div>
+          </Nav>
+          <Nav className="title-namee">
+            SCRUMPTIOUS
           </Nav>
           <Form inline onSubmit={searchForContent}>
             <input
