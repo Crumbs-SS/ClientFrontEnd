@@ -1,21 +1,23 @@
 
-const SearchResult = props => {
-  const restaurant = props.result;
+const SearchResult = ({ result: {name, address}}) => {
+  const defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvxAJcSQRs2u2vkyS5GoKLm66Op0CqWt0rjg&usqp=CAU"
 
   return(
-    <div className='search-result'>
-      <div className='img-holder'>
-        <img
-          alt="restaurant"
-          src={"https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"}
-          className="restaurant-img"
-        />
+    <>
+      <div data-testid='search-result' className='search-result'>
+        <div className='img-holder'>
+          <img
+            alt="restaurant"
+            src={defaultImage}
+            className="restaurant-img"
+          />
+        </div>
+        <div className='rest-card-info'>
+          <h5> {name} </h5>
+          <p> {address}  </p>
+        </div>
       </div>
-      <div className='rest-card-info'>
-        <h5> {restaurant.name} </h5>
-        <p> {restaurant.address}  </p>
-      </div>
-    </div>
+    </>
   )
 }
 
