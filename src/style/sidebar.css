@@ -1,0 +1,51 @@
+#side-bar{
+  background: rgb(249, 246, 240);
+  position: fixed;
+  width: 18%;
+  z-index: 2em;
+  height: 100%;
+}
+
+.head{
+  height: 20%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  margin-left: 1em;
+}
+
+.head a{
+  margin-top: .5em;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.line{
+  height: 2px;
+  margin-top: .5em;
+  background: rgba(0, 0, 0, .1);
+}
+
+.inline{
+  height: 15px;
+  margin-top: 1em;
+  background: rgb(235, 235, 235);
+  box-shadow: inset 0 0 5px rgb(170, 170 ,170);
+}
+
+.body{
+  margin-top: 2em;
+  margin-left: 1em;
+  height: 20%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+.body a{
+  font-size: 1.1em;
+  transition: color .1s;
+}
+.body a:hover{
+  color: red;
+}

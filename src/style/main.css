@@ -1,0 +1,29 @@
+html, body {
+  margin: 0;
+  background: rgb(249, 246, 240)
+}
+*{
+  outline: none;
+  outline-style: none;
+  font-family: 'Roboto Slab', serif;
+}
+a{
+  text-decoration: none;
+  text-decoration-color: none;
+}
+
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: black;
+}
+
+a:active {
+  color: black;
+}
