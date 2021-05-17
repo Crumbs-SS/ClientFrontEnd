@@ -1,0 +1,25 @@
+#login-page{
+    margin: 4em;
+    margin-left: 6em;
+    margin-right: 6em;
+}
+
+.container{
+    display: flex; /* or inline-flex */
+    flex-direction: column;
+    float: none;
+    padding: 5px;
+}
+.container > *{
+    margin: 5px;
+    min-width: 200px;
+}
+  
+.content-context{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    justify-content: center;
+}
+
+  
