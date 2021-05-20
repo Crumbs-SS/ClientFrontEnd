@@ -1,5 +1,5 @@
 const url = 'http://localhost:8080';
-const loginRoute = url + '/crumbs/customer/authenticate';
+const loginRoute = url + '/authenticate';
 
 class LoginService {
   static loginPost(username, password, role){
