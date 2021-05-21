@@ -1,0 +1,8 @@
+.pagination-comp{
+  margin-top: 2em;
+  display: inline-block;
+}
+
+.pagination-comp li button{
+  color: rgb(0, 0, 0);
+}
