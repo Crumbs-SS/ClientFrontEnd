@@ -1,26 +1,16 @@
 import '../../style/landing-page.css';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import RestaurantService from '../../adapters/restaurantService';
 import SideBar from '../SideBar';
 
 const LandingPage = () => {
 
-  const dispatch = useDispatch();
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
 
-  const searchForContent = (e) => {
+  const searchForContent = (e=null) => {
     if(e) e.preventDefault();
     if(searchText){
-      RestaurantService.getRestaurants(searchText)
-      .then(response => response.json())
-      .then(searchResults => dispatch({
-        type: "SET_SEARCH_RESULTS",
-        searchResults
-      }));
-
       doRedirectUser(true);
     }
   }
@@ -41,6 +31,9 @@ const LandingPage = () => {
               <i className="fas fa-angle-right"></i>
             </div>
           </form>
+          <div id='all-restaurants' onClick={doRedirectUser}>
+            See All Restaurants
+          </div>
         </div>
       </div>
       { redirectUser ? <Redirect push to={`/search?query=${searchText}`}/> : null }

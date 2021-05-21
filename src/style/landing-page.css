@@ -15,7 +15,10 @@
   margin-left: 50%;
   margin-top: 23%;
   transform: translateX(-50%);
-  display: inline-block;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #title-name{
@@ -25,15 +28,14 @@
 }
 
 #search-bar{
-  width: 100%;
+  width: 60%;
   border-radius: 10em;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
 .input-text{
-  margin: 0;
   width:75%;
   padding-left: 1em;
   height:2em;
@@ -41,7 +43,6 @@
   border-radius: 10em;
   font-size: 1.3em;
   display: inline-block;
-  background: rgba(255, 255, 255, 1);
   transition: width .5s;
 }
 
@@ -50,14 +51,15 @@
 }
 
 #search-button{
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   background: rgb(255, 0, 0);
   color: rgb(255, 255, 255);
   font-size: 2em;
-  text-align: center;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background .3s;
 }
 
@@ -66,6 +68,24 @@
 }
 
 #search-button:hover{
+  background: rgb(100, 0, 0);
+  cursor: pointer;
+}
+
+#all-restaurants{
+  background: rgb(255, 0, 0);
+  color: rgb(255, 255, 255);
+  border-radius: 1em;
+  width: 12em;
+  font-size: 1.5em;
+  margin-top: .7em;
+  text-align: center;
+  padding: .2em 1em;
+
+  transition: background .3s;
+}
+
+#all-restaurants:hover{
   background: rgb(100, 0, 0);
   cursor: pointer;
 }

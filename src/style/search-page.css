@@ -77,3 +77,10 @@
 .rest-card-info p{
   font-size: .9em;
 }
+
+.mid-section{
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+  align-items: center;
+}
