@@ -12,6 +12,8 @@ const SearchPage = () => {
   const [ totalPages, setTotalPages ] = useState(null);
   const [ query, setQuery ] = useState(null);
   const [ currentPage, setCurrentPage ] = useState(0);
+  const [ sortOrder, setSortOrder ] = useState(null);
+  const [ selectedSort, setSelectedSort ] = useState(null);
 
   useEffect(() => {
     setQuery(getQuery());
@@ -30,23 +32,49 @@ const SearchPage = () => {
     return search.split('%20').join(' ')
   }
 
+  const sort = (text, timesClicked) => {
+    let name = text.toString().toLowerCase();
+    if(name==='$$$') name='priceRating';
+
+    console.log(timesClicked);
+    switch(timesClicked) {
+      case 0:
+        setSortOrder({
+          sortBy: name,
+          order: 'asc'
+        });
+        setSelectedSort(text);
+        break;
+      case 1:
+        setSortOrder({
+          sortBy: name,
+          order: 'desc'
+        });
+        setSelectedSort(text);
+        break;
+      default:
+        setSortOrder(null);
+        setSelectedSort(null);
+      }
+    }
+
   return(
     <>
       <Header setQuery={setQuery}/>
-      <div className="search-page">
-        <div className="filter-options">
-          <FilterOption text={"$$$"} />
-          <FilterOption text={"Rating"} />
-          <FilterOption text={"Location"} />
+      <div className='search-page'>
+        <div className='filter-options'>
+          <FilterOption sort={sort} text={'$$$'} selectedSort={selectedSort} />
+          <FilterOption sort={sort} text={'Rating'} selectedSort={selectedSort} />
+          <FilterOption sort={sort} text={'Name'} selectedSort={selectedSort} />
         </div>
 
-        <h5 id="result-text"> { query ? `Showing search results for "${query}"` : 'Showing: All Restaurants'} </h5>
+        <h5 id='result-text'> { query ? `Showing search results for "${query}"` : 'Showing: All Restaurants'} </h5>
         <div className='mid-section'>
           <div className='content-context'>
             {
               (searchResults && searchResults.length > 0) ?
                 searchResults.map(result => <SearchResult key={result.id} result={result}/>)
-                  : <h3 id="result-status"> No Results Found </h3>
+                  : <h3 id='result-status'> No Results Found </h3>
             }
           </div>
           <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
