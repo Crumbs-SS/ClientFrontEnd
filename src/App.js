@@ -3,7 +3,7 @@ import LandingPage from './components/pages/LandingPage';
 import SearchPage from './components/pages/SearchPage';
 import LoginPage from './components/pages/LoginPage';
 import {useDispatch, useSelector} from 'react-redux';
-import {useEffect} from 'react';
+//import {useEffect} from 'react';
 import {loadUser} from './actions/authActions'
 
 
@@ -11,9 +11,10 @@ const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(loadUser);
-    });
+    // hook in useEffect is a problem
+    //useEffect(() => {
+    dispatch(loadUser);
+    // });
 
     return (
         <div className="App">
