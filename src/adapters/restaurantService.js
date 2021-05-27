@@ -1,3 +1,4 @@
+import axios from 'axios';
 const url = 'http://localhost:8080';
 const restaurantsRoute = url + '/restaurants';
 const categoriesRoute = url + '/categories';
@@ -12,13 +13,13 @@ class RestaurantService{
       sortBy = sortOrder.sortBy;
       order = sortOrder.order;
     }
-    return fetch(restaurantsQueryRoute+
+    return axios.get(restaurantsQueryRoute+
       `?query=${query}&page=${page}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`
     );
   }
 
   static getCategories(){
-    return fetch(categoriesRoute);
+    return axios.get(categoriesRoute);
   }
 
 }
