@@ -7,12 +7,9 @@ const restaurantsQueryRoute = restaurantsRoute + '/search';
 class RestaurantService{
 
   static getRestaurants(query, page=0, sortOrder, filters){
-    let sortBy = '';
-    let order = '';
-    if(sortOrder){
-      sortBy = sortOrder.sortBy;
-      order = sortOrder.order;
-    }
+    const sortBy = sortOrder ? sortOrder.sortBy : '';
+    const order = sortOrder ? sortOrder.order : '';
+    
     return axios.get(restaurantsQueryRoute+
       `?query=${query}&page=${page}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`
     );
