@@ -1,7 +1,13 @@
 #login-page{
-    margin: 4em;
-    margin-left: 6em;
-    margin-right: 6em;
+    position: absolute;
+    width: 82%;
+    height: 100%;
+    right: 0;
+    z-index: 0;
+    background-image: url('../assets/FoodAndDrinkDesign.svg');
+    background-repeat: repeat;
+    background-size: contain;
+    background-color: rgb(180, 39, 45);
 }
 
 .container{

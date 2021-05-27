@@ -1,39 +1,97 @@
 import '../style/sidebar.css';
-import { NavLink, Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../actions/authActions'
+import {useState} from "react";
+import CustomerRegistrationForm from "./CustomerRegistrationForm";
+import DriverRegistrationForm from "./DriverRegistrationForm";
+import RegistrationModal from "./RegistrationModal";
+
 const SideBar = () => {
-  const selectColor = {color: "red"};
+    const selectColor = {color: "red"};
+    const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch();
 
-  return(
-    <div id="side-bar">
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalRole, setModalRole] = useState(null);
+    const [modalComp, setModalComp] = useState(null);
 
-      <div className="head">
-        <NavLink
-          to='/'
-          activeStyle={selectColor}>
-            <i className="fas fa-home"></i> Home
-        </NavLink>
+    const openModal = (role, comp) => {
+        setModalOpen(true);
+        setModalRole(role);
+        setModalComp(comp);
+    }
+    const closeModal = () => {
+        setModalOpen(false);
+        setModalRole(null);
+        setModalComp(null);
+    }
 
-        <div className="line"></div>
+    const loginLink = () => {
+        return (
+            <>
+                <NavLink
+                    to='/login'
+                    activeStyle={selectColor}>
+                    <i className="fas fa-user"></i> Sign In
+                </NavLink>
+                <NavLink
+                    to='#'
+                    activeStyle={selectColor}
+                    onClick={() => openModal("customer", <CustomerRegistrationForm close={closeModal}/>)}>
+                    <i className="fas fa-user"></i> Sign Up
+                </NavLink>
+            </>
+        );
+    }
 
-        <NavLink
-          to='/login'
-          activeStyle={selectColor}>
-            <i className="fas fa-user"></i> Sign Up or Sign In
-        </NavLink>
-      </div>
+    const logoutLink = () => {
+        return (
+            <NavLink
+                to='#'
+                activeStyle={selectColor}
+                onClick={() => dispatch(logout())}>
+                <i className="fas fa-user"></i> Sign Out
+            </NavLink>
+        );
+    }
+    const loginOrOutLink = user ? logoutLink() : loginLink();
 
-      <div className='inline'></div>
+    const becomeDriver = () => {
+        return (
+            <NavLink
+                to="#"
+                onClick={() => openModal("driver", <DriverRegistrationForm close={closeModal}/>)}>
+                Be a driver
+            </NavLink>
+        );
+    };
 
-      <div className="body">
-        <Link
-          to={{pathname: "http://localhost:4200/utopia/restaurants/addRestaurant"}}
+    const becomeDriverLink = user ? "" : becomeDriver();
+
+    return (
+        <div id="side-bar">
+            <RegistrationModal show={modalOpen} onHide={closeModal} role={modalRole} comp={modalComp}/>
+            <div className="head">
+                <NavLink
+                    to='/'
+                    activeStyle={selectColor}>
+                    <i className="fas fa-home"></i> Home
+                </NavLink>
+
+                <div className="line"></div>
+                {loginOrOutLink}
+            </div>
+
+            <div className='inline'></div>
+
+            <div className="body">
+                <Link
+                    to={{pathname: "http://localhost:4200/utopia/restaurants/addRestaurant"}}
           target="_blank">
            Add Restaurant
         </Link>
-        <Link
-          to={{pathname: "https://google.com/"}} target="_blank">
-           Be a driver
-        </Link>
+                {becomeDriverLink}
         <Link
           to={{pathname: "https://google.com/"}} target="_blank">
            Company Portal

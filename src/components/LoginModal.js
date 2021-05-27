@@ -1,5 +1,5 @@
 //import '../style/login-page.css';
-import { Button, Modal } from 'react-bootstrap';
+import {Modal} from 'react-bootstrap';
 import LoginForm from './LoginForm'
 
 const LoginModal = (props) => {
@@ -12,11 +12,6 @@ const LoginModal = (props) => {
         <Modal.Body>
             <LoginForm role={props.role} close={props.onHide}/>
         </Modal.Body>
-        <Modal.Footer>
-            <Button variant="secondary" onClick={() => props.onHide()}>
-                Close
-            </Button>
-        </Modal.Footer>
       </Modal>
     </>
   )

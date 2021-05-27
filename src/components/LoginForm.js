@@ -1,78 +1,67 @@
 //import '../style/login-page.css';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
-import LoginService from '../adapters/loginService'
+import {Formik} from 'formik';
+import * as yup from 'yup';
+import {useDispatch} from 'react-redux';
+import {Button, Form} from 'react-bootstrap';
+import {login} from '../actions/authActions'
+
+const schema = yup.object({
+    username: yup.string().ensure().trim().required().min(3).max(20),
+    password: yup.string().ensure().trim().required().min(6).max(200),
+    role: yup.string().ensure().trim().required().matches(/(customer|driver|owner)/),
+});
 
 const LoginForm = (props) => {
-    const [form, setForm] = useState({ role: props.role });
-    const [errors, setErrors] = useState({});
 
-    const setField = (field, value) => {
-        setForm((form) => ({ ...form, [field]: value }));
-        if (!!errors[field]) {
-            setErrors((errors) => ({ ...errors, [field]: null }));
-        }
+    const dispatch = useDispatch();
+
+    const onSuccess = (values) => {
+        dispatch(login(values));
+        props.close();
     };
 
-    const findFormErrors = () => {
-        const { username, password, role } = form;
-        const newErrors = {};
-        // username errors
-        if (!username || username === '') newErrors.username = 'cannot be blank';
-        else if (username.length < 3) newErrors.username = 'must be at least 3 characters';
-        else if (username.length > 20) newErrors.username = 'cannot be more than 20 characters';
-        // password errors
-        if (!password || password === '') newErrors.password = 'cannot be blank';
-        else if (password.length < 6) newErrors.password = 'must be at least 6 characters';
-        else if (password.length > 200) newErrors.password = 'cannot be more than 200 characters';
-        // role errors
-        if (!role || role === '') newErrors.role = 'cannot be blank';
-        else if (role !== props.role) newErrors.role = 'incorrect role for this form';
-        else if (role !== "customer" && role !== "driver" && role !== "owner") newErrors.role = 'role is invalid';
-        return newErrors
-    }
-
-    const submitCredentials = (e) => {
-        e.preventDefault();
-        const newErrors = findFormErrors();
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-        } else {
-            LoginService.loginPost(form.username, form.password, form.role)
-                .then(data => {
-                    console.log(data.headers);
-                    props.close();
-                    
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-        }
-    }
     return (
-        <>
-            <Form>
-                <Form.Group controlId="formUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Username" onChange={e => setField('username', e.target.value)} />
-                    <Form.Control.Feedback type='invalid'>
-                        {errors.username}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={e => setField('password', e.target.value)} />
-                    <Form.Control.Feedback type='invalid'>
-                        {errors.password}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <Button variant="primary" type="submit" onClick={(e) => submitCredentials(e)}>
-                    Submit
-                </Button>
-            </Form>
-        </>
-    )
+        <Formik
+            validationSchema={schema}
+            onSubmit={onSuccess}
+            initialValues={{
+                username: '',
+                password: '',
+                role: props.role,
+            }}
+        >
+            {({
+                  handleSubmit,
+                  handleChange,
+                  values,
+                  errors,
+              }) => {
+                return (
+                    <Form noValidate onSubmit={handleSubmit}>
+                        <Form.Group controlId="formUsername">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" name="username" autoComplete="off" placeholder="Enter Username"
+                                          onChange={handleChange} value={values.username} isInvalid={errors.username}/>
+                            <Form.Control.Feedback type='invalid'>
+                                {errors.username}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" autoComplete="off" placeholder="Password"
+                                          onChange={handleChange} value={values.password} isInvalid={errors.password}/>
+                            <Form.Control.Feedback type='invalid'>
+                                {errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+                );
+            }}
+        </Formik>
+    );
 }
 
 export default LoginForm;
