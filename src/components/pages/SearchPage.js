@@ -21,14 +21,13 @@ const SearchPage = () => {
   useEffect(() => {
     setQuery(getQuery());
     RestaurantService.getRestaurants(query, currentPage, sortOrder, filters)
-    .then(response => response.json())
-    .then(results => {
+    .then(({ data }) => {
       if(filters.length > 0){
-        setSearchResults(results.content.slice(currentPage * results.size, results.size * (currentPage + 1)));
-        setTotalPages(Math.floor(results.numberOfElements/results.size));
+        setSearchResults(data.content.slice(currentPage * data.size, data.size * (currentPage + 1)));
+        setTotalPages(Math.floor(data.numberOfElements/data.size));
       }else{
-        setSearchResults(results.content);
-        setTotalPages(results.totalPages - 1);
+        setSearchResults(data.content);
+        setTotalPages(data.totalPages - 1);
       }
     })
 
@@ -36,9 +35,8 @@ const SearchPage = () => {
 
   useEffect(() => {
     RestaurantService.getCategories()
-    .then(response => response.json())
-    .then(results => {
-      setCategories(results);
+    .then(({data}) => {
+      setCategories(data);
     })
   }, [])
 
