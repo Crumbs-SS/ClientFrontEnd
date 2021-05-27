@@ -5,6 +5,7 @@
 }
 
 .filter-option{
+  margin-bottom: 1em;
   background: rgb(220, 220, 220);
   color: rgb(102, 102, 102);
   display: inline-block;

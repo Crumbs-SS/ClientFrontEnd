@@ -1,15 +1,24 @@
 const url = 'http://localhost:8080';
 const restaurantsRoute = url + '/restaurants';
+const categoriesRoute = url + '/categories';
 const restaurantsQueryRoute = restaurantsRoute + '/search';
-// const menuitemsRoute = url + '/menuitems';
 
 class RestaurantService{
 
-  static getRestaurants(query, page=0){
-    return fetch(restaurantsQueryRoute+`?query=${query}&page=${page}`, {
-      method: "GET",
-      headers: {'Content-Type': 'application/json'}
-    })
+  static getRestaurants(query, page=0, sortOrder, filters){
+    let sortBy = '';
+    let order = '';
+    if(sortOrder){
+      sortBy = sortOrder.sortBy;
+      order = sortOrder.order;
+    }
+    return fetch(restaurantsQueryRoute+
+      `?query=${query}&page=${page}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`
+    );
+  }
+
+  static getCategories(){
+    return fetch(categoriesRoute);
   }
 
 }

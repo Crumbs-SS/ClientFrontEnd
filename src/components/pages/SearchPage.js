@@ -1,5 +1,6 @@
 import '../../style/search-page.css';
 import Header from '../Header';
+import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
 import { useEffect, useState } from 'react';
 import SearchResult from '../SearchResult';
@@ -14,29 +15,44 @@ const SearchPage = () => {
   const [ currentPage, setCurrentPage ] = useState(0);
   const [ sortOrder, setSortOrder ] = useState(null);
   const [ selectedSort, setSelectedSort ] = useState(null);
+  const [ categories, setCategories ] = useState(null);
+  const [ filters, setFilters ] = useState([]);
 
   useEffect(() => {
     setQuery(getQuery());
-    RestaurantService.getRestaurants(query, currentPage)
+    RestaurantService.getRestaurants(query, currentPage, sortOrder, filters)
     .then(response => response.json())
     .then(results => {
-      setSearchResults(results.content);
-      setTotalPages(results.totalPages - 1);
+      if(filters.length > 0){
+        setSearchResults(results.content.slice(currentPage * results.size, results.size * (currentPage + 1)));
+        setTotalPages(Math.floor(results.numberOfElements/results.size));
+      }else{
+        setSearchResults(results.content);
+        setTotalPages(results.totalPages - 1);
+      }
     })
-  }, [query, currentPage])
+
+  }, [query, currentPage, sortOrder, selectedSort, filters])
+
+  useEffect(() => {
+    RestaurantService.getCategories()
+    .then(response => response.json())
+    .then(results => {
+      setCategories(results);
+    })
+  }, [])
 
   const getQuery = () => {
     const queryStream = window.location.search.split('?'); //returns Query Stream
     const queryParams = queryStream[1].split('&'); // returns separated query params
     const search = queryParams[0].split('=')[1];
-    return search.split('%20').join(' ')
+    return search.split('%20').join(' ');
   }
 
   const sort = (text, timesClicked) => {
     let name = text.toString().toLowerCase();
     if(name==='$$$') name='priceRating';
 
-    console.log(timesClicked);
     switch(timesClicked) {
       case 0:
         setSortOrder({
@@ -58,14 +74,36 @@ const SearchPage = () => {
       }
     }
 
+  const selectFilter = (text, selected) => {
+    if(selected){
+      setFilters(filters.filter(filter => filter !== text));
+    }else{
+      setFilters([...filters, text]);
+    }
+  }
+
   return(
     <>
       <Header setQuery={setQuery}/>
       <div className='search-page'>
         <div className='filter-options'>
-          <FilterOption sort={sort} text={'$$$'} selectedSort={selectedSort} />
-          <FilterOption sort={sort} text={'Rating'} selectedSort={selectedSort} />
-          <FilterOption sort={sort} text={'Name'} selectedSort={selectedSort} />
+          <SortOption sort={sort} text={'$$$'} selectedSort={selectedSort} />
+          <SortOption sort={sort} text={'Rating'} selectedSort={selectedSort} />
+          <SortOption sort={sort} text={'Name'} selectedSort={selectedSort} />
+        </div>
+
+        <div className='filter-options'>
+          {
+            categories ? categories.map(category =>
+              <FilterOption
+                key={category.name}
+                text={category.name}
+                selectFilter={selectFilter}
+              />
+            )
+            :
+            null
+          }
         </div>
 
         <h5 id='result-text'> { query ? `Showing search results for "${query}"` : 'Showing: All Restaurants'} </h5>
@@ -77,7 +115,11 @@ const SearchPage = () => {
                   : <h3 id='result-status'> No Results Found </h3>
             }
           </div>
-          <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </div>
     </>

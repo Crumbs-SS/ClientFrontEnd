@@ -1,38 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const FilterOption = ({ text, sort, selectedSort }) => {
-  let span;
-  const [ timesClicked, setTimesClicked ] = useState(0);
+const FilterOption = ({ text, selectFilter}) => {
+  const [ selected, setSelect ] = useState(false);
 
-  useEffect(() => {
-    if(selectedSort !== text)
-      setTimesClicked(0);
-  }, [selectedSort, text])
-
-  switch(timesClicked) {
-    case 1:
-      span = <span>{text} <i className="fas fa-sort-up"></i></span>
-      break;
-    case 2:
-      span = <span>{text} <i className="fas fa-sort-down"></i></span>
-      break;
-    default:
-      span = <span>{text} <i className="fas fa-sort"></i></span>
-    }
-
-    const changeTimesClicked = () => {
-      sort(text, timesClicked);
-      setTimesClicked((timesClicked + 1) % 3);
-    }
+  const select = () => {
+    setSelect(!selected);
+    selectFilter(text, selected);
+  }
 
   return(
     <div
-      onClick={() => changeTimesClicked()}
+      onClick={() => select()}
       data-testid='filter-option'
       className='filter-option'
-      style={selectedSort===text ? {background: "rgb(255, 120, 120)"} : null}
+      style={selected ? {background: "rgb(255, 120, 120)"} : null}
     >
-      {span}
+      <span> {text} </span>
     </div>
   )
 }
