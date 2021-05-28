@@ -30,6 +30,8 @@ const SearchPage = () => {
         setTotalPages(data.totalPages - 1);
       }
     })
+    .catch(() => {
+    })
 
   }, [query, currentPage, sortOrder, selectedSort, filters])
 
@@ -38,6 +40,9 @@ const SearchPage = () => {
     .then(({data}) => {
       setCategories(data);
     })
+    .catch(() => {
+    })
+
   }, [])
 
   const getQuery = () => {
