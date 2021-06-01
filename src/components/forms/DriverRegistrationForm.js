@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {logout, registerDriver} from "../actions/authActions";
+import {logout, registerDriver} from "../../actions/authActions";
 import {Formik} from "formik";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
