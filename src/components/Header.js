@@ -31,8 +31,8 @@ const Header = ({ setQuery }) => {
             <Nav.Link href="/logout">Logout</Nav.Link>
             <div className="vert-line"></div>
           </Nav>
-          <Nav className="title-namee">
-            SCRUMPTIOUS
+          <Nav className="title-name">
+            Crumbs
           </Nav>
           <Form inline onSubmit={searchForContent}>
             <input
