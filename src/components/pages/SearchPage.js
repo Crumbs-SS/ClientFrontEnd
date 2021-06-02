@@ -51,8 +51,11 @@ const SearchPage = () => {
     if(queryStream.length > 1){
       const queryParams = queryStream[1].split('&'); // returns separated query params
       const search = queryParams[0].split('=')[1];
-      return search.split('%20').join(' ');
+      const query = search.split('%20').join(' ');
+      if(!query) setFoodOption(false);
+      return query;
     }else{
+      setFoodOption(false);
       return '';
     }
   }

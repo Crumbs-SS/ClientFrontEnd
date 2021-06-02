@@ -25,7 +25,7 @@ const LandingPage = () => {
             <input
                 className="input-text"
                 onChange={e => setSearchText(e.target.value)}
-                placeholder="Enter restaurant name"
+                placeholder="What are you craving?"
             ></input>
             <div id="search-button" onClick={searchForContent}>
               <i className="fas fa-angle-right"></i>
