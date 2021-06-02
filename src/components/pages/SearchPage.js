@@ -1,4 +1,5 @@
 import '../../style/search-page.css';
+import { Form } from 'react-bootstrap';
 import Header from '../Header';
 import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
@@ -97,12 +98,30 @@ const SearchPage = () => {
     <>
       <Header setQuery={setQuery}/>
       <div className='search-page'>
+        <div id="search-options">
+            <Form.Check
+              inline
+              type='radio'
+              id="restaurant-option"
+              checked={!foodOption}
+              label='Search By Restaurant'
+              onChange={() => setFoodOption(false)}
+            />
 
-        <input type="radio" id="food-option" name="search-type" value="male" checked={foodOption} />
-        <label htmlFor="food-option" onClick={() => setFoodOption(true)}> Search By Food</label>
+          <div id="food-option1">
+              <Form.Check
+                inline
+                type='radio'
+                id="food-option"
+                checked={foodOption}
+                label='Search By Food'
+                disabled={(query === '') ? true : false }
+                onChange={() => setFoodOption(true)}
+              />
+            { (query === '') ? <span className='error'> Please search something. </span> : null }
+          </div>
 
-        <input type="radio" id="restaurant-option" name="search-type" value="male" checked={!foodOption}/>
-        <label htmlFor="restaurant-option" onClick={() => setFoodOption(false)}> Search By Restaurant</label>
+        </div>
 
         <div className='filter-options'>
           <SortOption sort={sort} text={'$$$'} selectedSort={selectedSort} />
