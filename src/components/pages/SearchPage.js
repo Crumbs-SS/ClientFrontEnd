@@ -17,10 +17,11 @@ const SearchPage = () => {
   const [ selectedSort, setSelectedSort ] = useState(null);
   const [ categories, setCategories ] = useState(null);
   const [ filters, setFilters ] = useState([]);
+  const [ foodOption, setFoodOption ] = useState(true);
 
   useEffect(() => {
     setQuery(getQuery());
-    RestaurantService.getRestaurants(query, currentPage, sortOrder, filters)
+    RestaurantService.getRestaurants(foodOption, {query, currentPage, sortOrder, filters})
     .then(({ data }) => {
       if(filters.length > 0){
         setSearchResults(data.content.slice(currentPage * data.size, data.size * (currentPage + 1)));
@@ -30,10 +31,10 @@ const SearchPage = () => {
         setTotalPages(data.totalPages - 1);
       }
     })
-    .catch(() => {
+    .catch((e) => {
     })
 
-  }, [query, currentPage, sortOrder, selectedSort, filters])
+  }, [query, currentPage, sortOrder, selectedSort, filters, foodOption])
 
   useEffect(() => {
     RestaurantService.getCategories()
@@ -47,9 +48,13 @@ const SearchPage = () => {
 
   const getQuery = () => {
     const queryStream = window.location.search.split('?'); //returns Query Stream
-    const queryParams = queryStream[1].split('&'); // returns separated query params
-    const search = queryParams[0].split('=')[1];
-    return search.split('%20').join(' ');
+    if(queryStream.length > 1){
+      const queryParams = queryStream[1].split('&'); // returns separated query params
+      const search = queryParams[0].split('=')[1];
+      return search.split('%20').join(' ');
+    }else{
+      return '';
+    }
   }
 
   const sort = (text, timesClicked) => {
@@ -89,6 +94,13 @@ const SearchPage = () => {
     <>
       <Header setQuery={setQuery}/>
       <div className='search-page'>
+
+        <input type="radio" id="food-option" name="search-type" value="male" checked={foodOption} />
+        <label htmlFor="food-option" onClick={() => setFoodOption(true)}> Search By Food</label>
+
+        <input type="radio" id="restaurant-option" name="search-type" value="male" checked={!foodOption}/>
+        <label htmlFor="restaurant-option" onClick={() => setFoodOption(false)}> Search By Restaurant</label>
+
         <div className='filter-options'>
           <SortOption sort={sort} text={'$$$'} selectedSort={selectedSort} />
           <SortOption sort={sort} text={'Rating'} selectedSort={selectedSort} />
@@ -109,7 +121,14 @@ const SearchPage = () => {
           }
         </div>
 
-        <h5 id='result-text'> { query ? `Showing search results for "${query}"` : 'Showing: All Restaurants'} </h5>
+        <h5 id='result-text'>
+          { query ?
+            <span> Showing search results for:
+               <span id = "search-query"> {query} </span>
+            </span>
+            : 'Showing: All Restaurants'
+          }
+        </h5>
         <div className='mid-section'>
           <div className='content-context'>
             {
