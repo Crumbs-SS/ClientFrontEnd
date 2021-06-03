@@ -1,0 +1,38 @@
+#restaurant-page{
+  margin: 4em;
+  margin-left: 6em;
+  margin-right: 6em;
+}
+
+.img-holder1{
+  width: 100%;
+  height: 30em;
+}
+
+.img-holder1 img{
+  background: rgb(60, 60, 60);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1em;
+}
+
+.img-holder1{
+  margin-bottom: 2em;
+}
+
+.details{
+  display: flex;
+  font-size: 1.2em;
+  color: rgb(131, 131, 131);
+  user-select: none;
+  margin-bottom: 4em;
+}
+
+.highlight{
+  /* color: rgb() */
+}
+
+.stars{
+  font-size: 1em;
+}

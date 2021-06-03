@@ -4,6 +4,7 @@ import Header from '../Header';
 import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
 import { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import SearchResult from '../SearchResult';
 import Pagination from '../Pagination';
 import RestaurantService from '../../adapters/restaurantService';
@@ -18,7 +19,8 @@ const SearchPage = () => {
   const [ selectedSort, setSelectedSort ] = useState(null);
   const [ categories, setCategories ] = useState(null);
   const [ filters, setFilters ] = useState([]);
-  const [ foodOption, setFoodOption ] = useState(true);
+  const [ foodOption, setFoodOption ] = useState(false);
+  const [ redirectUser, setRedirectUser ] = useState(null);
 
   useEffect(() => {
     setQuery(getQuery());
@@ -94,6 +96,10 @@ const SearchPage = () => {
     }
   }
 
+  const onClick = (restaurant) => {
+    setRedirectUser(restaurant);
+  }
+
   return(
     <>
       <Header setQuery={setQuery}/>
@@ -155,7 +161,7 @@ const SearchPage = () => {
           <div className='content-context'>
             {
               (searchResults && searchResults.length > 0) ?
-                searchResults.map(result => <SearchResult key={result.id} result={result}/>)
+                searchResults.map(result => <SearchResult key={result.id} result={result} onClick={onClick}/>)
                   : <h3 id='result-status'> No Results Found </h3>
             }
           </div>
@@ -166,6 +172,7 @@ const SearchPage = () => {
           />
         </div>
       </div>
+      { redirectUser ? <Redirect push to={`/restaurants/${redirectUser.id}`} /> : null }
     </>
   )
 }

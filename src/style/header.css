@@ -3,6 +3,7 @@
   top: 0px;
   position: sticky;
   background-color: rgb(249, 246, 240);
+  user-select: none;
 }
 
 .inline-header{
@@ -31,7 +32,7 @@
 }
 
 .shopping-icon{
-  width: 2.5em;
+  width: 3em;
   margin-left: 1.3em;
   background: rgb(235, 54, 62);
   border-radius: 1em;
@@ -39,6 +40,7 @@
   color: white;
   font-weight: bold;
   font-size: 1.4em;
+  padding: .3em;
 }
 
 .vert-line{

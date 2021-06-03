@@ -20,6 +20,10 @@ class RestaurantService{
     return axios.get(categoriesRoute);
   }
 
+  static findRestaurant(restaurantId){
+    return axios.get(restaurantsRoute + `/${restaurantId}`);
+  }
+
 }
 
 export default RestaurantService;

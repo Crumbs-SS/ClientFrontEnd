@@ -11,7 +11,7 @@ const Header = ({ setQuery }) => {
   const searchForContent = (e) => {
     e.preventDefault();
     if(searchText){
-      setQuery(searchText);
+      if(setQuery) setQuery(searchText);
       doRedirectUser(true);
     }
   }
@@ -32,7 +32,7 @@ const Header = ({ setQuery }) => {
             <div className="vert-line"></div>
           </Nav>
           <Nav className="title-namee">
-            SCRUMPTIOUS
+            CRUMBS
           </Nav>
           <Form inline onSubmit={searchForContent}>
             <input
@@ -41,7 +41,7 @@ const Header = ({ setQuery }) => {
               placeholder="Search"
               className="search-input"
             />
-            <span className="shopping-icon">0</span>
+          <span className="fas fa-shopping-cart shopping-icon"> 0</span>
           </Form>
         </Navbar>
         <div className="inline-header"></div>
