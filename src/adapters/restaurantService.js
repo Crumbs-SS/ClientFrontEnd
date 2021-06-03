@@ -3,16 +3,17 @@ const url = 'http://localhost:8070';
 const restaurantsRoute = url + '/restaurants';
 const categoriesRoute = url + '/categories';
 const restaurantsQueryRoute = restaurantsRoute + '/search';
+const menuItemsRoute = restaurantsRoute + '/menuitems';
 
 class RestaurantService{
 
-  static getRestaurants(query, page=0, sortOrder, filters){
+  static getRestaurants(foodOption, {query, currentPage=0, sortOrder, filters}){
     const sortBy = sortOrder ? sortOrder.sortBy : '';
     const order = sortOrder ? sortOrder.order : '';
-    
-    return axios.get(restaurantsQueryRoute+
-      `?query=${query}&page=${page}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`
-    );
+    const path = `?query=${query}&page=${currentPage}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`;
+
+    return foodOption ? axios.get(menuItemsRoute + path)
+    :  axios.get(restaurantsQueryRoute + path);
   }
 
   static getCategories(){

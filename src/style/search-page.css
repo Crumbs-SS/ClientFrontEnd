@@ -86,3 +86,37 @@
   flex-flow: column;
   align-items: center;
 }
+
+.search-page label{
+  margin-right: 2em;
+  color: rgb(102, 102, 102);
+  font-size: 1.2em;
+  user-select: none;
+}
+
+.search-page input{
+  margin-right: .3em;
+  font-size:1em;
+}
+
+#search-query{
+  color: rgb(255, 50, 50);
+}
+
+#search-options{
+  display: flex;
+  align-items: baseline;
+}
+
+#food-option1{
+  display: flex;
+  flex-flow: column;
+}
+
+.error{
+  color: rgb(220, 0, 0);
+}
+
+#search-options{
+  margin-bottom: 1em;
+}
