@@ -3,7 +3,7 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
 import {Button, Form} from 'react-bootstrap';
-import {login} from '../actions/authActions'
+import {login} from '../../actions/authActions'
 
 const schema = yup.object({
     username: yup.string().ensure().trim().required().min(3).max(20),

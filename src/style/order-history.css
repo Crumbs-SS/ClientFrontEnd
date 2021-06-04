@@ -1,0 +1,13 @@
+#OrderHistoryContainer{
+    top: 0px;
+    height: 100%;
+    border-radius: 25px;
+    position: sticky;
+    background-color: rgb(220, 220, 220);
+}
+
+.container-title {
+    color: #000000;
+    font-size: large;
+    padding-bottom: 5px;
+}

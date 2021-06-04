@@ -10,13 +10,16 @@ import {
     REGISTER_SUCCESS,
     USER_LOADED,
     USER_LOADING,
+    ACCOUNT_DELETE_SUCCESS,
+    ACCOUNT_DELETE_FAIL,
+    ACCOUNT_UPDATE_SUCCESS,
+    ACCOUNT_UPDATE_FAIL,
 } from './types';
 
 const authURL = 'http://localhost:8080'
 const accountURL = 'http://localhost:8090'
 
 export const loadUser = () => (dispatch, getState) => {
-    console.log("load user");
     dispatch({type: USER_LOADING});
 
     const id = getState().auth.id;
@@ -53,7 +56,6 @@ export const registerCustomer = ({username, password, email, firstName, lastName
             });
         })
         .catch(err => {
-            console.log(err.response);
             dispatch(returnErrors(err.response.data.message, err.response.status, 'REGISTER_FAIL'));
             dispatch({
                 type: REGISTER_FAIL,
@@ -80,7 +82,6 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
             });
         })
         .catch(err => {
-            console.log(err.response);
             dispatch(returnErrors(err.response.data.message, err.response.status, 'REGISTER_FAIL'));
             dispatch({
                 type: REGISTER_FAIL,
@@ -104,6 +105,7 @@ export const login = ({username, password, role}) => dispatch => {
                 payload: {
                     token: res.headers['authorization'],
                     id: res.headers['userid'],
+                    role: role,
                 },
             });
             dispatch(loadUser());
@@ -118,4 +120,51 @@ export const login = ({username, password, role}) => dispatch => {
 
 export const logout = () => {
     return {type: LOGOUT_SUCCESS};
+};
+
+export const deleteAccount = (username, password) => (dispatch) => {
+    const body = JSON.stringify({username, password});
+    const config = {
+        data: body,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    axios.delete(accountURL + '/customers', config)
+        .then(res => {
+            dispatch({
+                type: ACCOUNT_DELETE_SUCCESS,
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data.message, err.response.status, 'ACCOUNT_DELETE_FAIL'));
+            dispatch({
+                type: ACCOUNT_DELETE_FAIL,
+            });
+        });
+}
+
+export const updateProfile = ({username, email, firstName, lastName}) => (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+
+    const body = JSON.stringify({username, email, firstName, lastName});
+
+    axios.put(accountURL + '/customers', body, config)
+        .then(res => {
+            dispatch({
+                type: ACCOUNT_UPDATE_SUCCESS,
+                payload: res.data,
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status, 'ACCOUNT_UPDATE_FAIL'));
+            dispatch({
+                type: ACCOUNT_UPDATE_FAIL,
+            });
+        });
 };

@@ -2,7 +2,7 @@ import '../../style/login-page.css';
 import {useState} from 'react';
 import SideBar from '../SideBar';
 import {Button} from 'react-bootstrap';
-import LoginModal from '../LoginModal';
+import LoginModal from '../modals/LoginModal';
 
 const LoginPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
