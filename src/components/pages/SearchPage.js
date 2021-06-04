@@ -4,6 +4,7 @@ import Header from '../Header';
 import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
 import { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import SearchResult from '../SearchResult';
 import Pagination from '../Pagination';
@@ -13,7 +14,6 @@ const SearchPage = () => {
 
   const [ searchResults, setSearchResults ] = useState(null);
   const [ totalPages, setTotalPages ] = useState(null);
-  const [ query, setQuery ] = useState(null);
   const [ currentPage, setCurrentPage ] = useState(0);
   const [ sortOrder, setSortOrder ] = useState(null);
   const [ selectedSort, setSelectedSort ] = useState(null);
@@ -22,8 +22,9 @@ const SearchPage = () => {
   const [ foodOption, setFoodOption ] = useState(false);
   const [ redirectUser, setRedirectUser ] = useState(null);
 
+  const query = useSelector(state => state.search.query);
+
   useEffect(() => {
-    setQuery(getQuery());
     RestaurantService.getRestaurants(foodOption, {query, currentPage, sortOrder, filters})
     .then(({ data }) => {
       if(filters.length > 0){
@@ -34,7 +35,7 @@ const SearchPage = () => {
         setTotalPages(data.totalPages - 1);
       }
     })
-    .catch((e) => {
+    .catch(() => {
     })
 
   }, [query, currentPage, sortOrder, selectedSort, filters, foodOption])
@@ -48,20 +49,6 @@ const SearchPage = () => {
     })
 
   }, [])
-
-  const getQuery = () => {
-    const queryStream = window.location.search.split('?'); //returns Query Stream
-    if(queryStream.length > 1){
-      const queryParams = queryStream[1].split('&'); // returns separated query params
-      const search = queryParams[0].split('=')[1];
-      const query = search.split('%20').join(' ');
-      if(!query) setFoodOption(false);
-      return query;
-    }else{
-      setFoodOption(false);
-      return '';
-    }
-  }
 
   const sort = (text, timesClicked) => {
     let name = text.toString().toLowerCase();
@@ -102,7 +89,7 @@ const SearchPage = () => {
 
   return(
     <>
-      <Header setQuery={setQuery}/>
+      <Header />
       <div className='search-page'>
         <div id="search-options">
             <Form.Check

@@ -2,8 +2,11 @@ import '../style/header.css';
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import { setQuery } from '../actions/queryActions';
+import { useDispatch } from 'react-redux';
 
-const Header = ({ setQuery }) => {
+const Header = () => {
+  const dispatch = useDispatch();
 
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
@@ -11,7 +14,7 @@ const Header = ({ setQuery }) => {
   const searchForContent = (e) => {
     e.preventDefault();
     if(searchText){
-      if(setQuery) setQuery(searchText);
+      dispatch(setQuery(searchText));
       doRedirectUser(true);
     }
   }
@@ -46,7 +49,7 @@ const Header = ({ setQuery }) => {
         </Navbar>
         <div className="inline-header"></div>
       </div>
-      { redirectUser ? <Redirect push to={`/search?query=${searchText}`}/> : null }
+      { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )
 }
