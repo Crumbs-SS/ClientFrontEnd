@@ -7,6 +7,8 @@ import {
     REGISTER_SUCCESS,
     USER_LOADED,
     USER_LOADING,
+    ACCOUNT_DELETE_SUCCESS,
+    ACCOUNT_UPDATE_SUCCESS,
 } from '../actions/types'
 
 const initialState = {
@@ -47,10 +49,16 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 ...action.payload,
             };
+        case ACCOUNT_UPDATE_SUCCESS:
+            return {
+              ...state,
+              user: action.payload,
+            };
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
         case REGISTER_FAIL:
+        case ACCOUNT_DELETE_SUCCESS:
             localStorage.removeItem('token');
             localStorage.removeItem('id');
             localStorage.removeItem('role');
