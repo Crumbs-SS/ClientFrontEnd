@@ -4,13 +4,17 @@ import Header from '../Header';
 import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
 import { useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import SearchResult from '../SearchResult';
 import Pagination from '../Pagination';
 import RestaurantService from '../../adapters/restaurantService';
+import { setFoodSearchOption } from '../../actions/queryActions';
+
 
 const SearchPage = () => {
+
+  const dispatch = useDispatch();
 
   const [ searchResults, setSearchResults ] = useState(null);
   const [ totalPages, setTotalPages ] = useState(null);
@@ -19,13 +23,14 @@ const SearchPage = () => {
   const [ selectedSort, setSelectedSort ] = useState(null);
   const [ categories, setCategories ] = useState(null);
   const [ filters, setFilters ] = useState([]);
-  const [ foodOption, setFoodOption ] = useState(false);
   const [ redirectUser, setRedirectUser ] = useState(null);
 
-  const query = useSelector(state => state.search.query);
+  const state = useSelector(state => state.search);
+  const query = state.query;
+  const foodSearchOption = state.foodSearchOption;
 
   useEffect(() => {
-    RestaurantService.getRestaurants(foodOption, {query, currentPage, sortOrder, filters})
+    RestaurantService.getRestaurants(foodSearchOption, {query, currentPage, sortOrder, filters})
     .then(({ data }) => {
       if(filters.length > 0){
         setSearchResults(data.content.slice(currentPage * data.size, data.size * (currentPage + 1)));
@@ -38,7 +43,7 @@ const SearchPage = () => {
     .catch(() => {
     })
 
-  }, [query, currentPage, sortOrder, selectedSort, filters, foodOption])
+  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption])
 
   useEffect(() => {
     RestaurantService.getCategories()
@@ -96,9 +101,9 @@ const SearchPage = () => {
               inline
               type='radio'
               id="restaurant-option"
-              checked={!foodOption}
+              checked={!foodSearchOption}
               label='Search By Restaurant'
-              onChange={() => setFoodOption(false)}
+              onChange={() => dispatch(setFoodSearchOption(false))}
             />
           {(query === '') ?
             null
@@ -107,9 +112,9 @@ const SearchPage = () => {
                 inline
                 type='radio'
                 id="food-option"
-                checked={foodOption}
+                checked={foodSearchOption}
                 label='Search By Food'
-                onChange={() => setFoodOption(true)}
+                onChange={() => dispatch(setFoodSearchOption(true))}
               />
             </div>
           }

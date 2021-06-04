@@ -2,13 +2,20 @@ import '../../style/restaurant-page.css';
 import RestaurantService from '../../adapters/restaurantService';
 import { useEffect, useState } from 'react';
 import Header from '../Header';
-import { Form } from 'react-bootstrap';
 import MenuItem from '../MenuItem';
-
+import { setFoodSearchOption } from '../../actions/queryActions';
+import { useSelector, useDispatch } from 'react-redux';
 
 const RestaurantPage = ()  => {
+  const defaultImage = 'https://media.istockphoto.com/photos/table-top-counter-with-blurred-people-and-restaurant-interior-picture-id1077538138?k=6&m=1077538138&s=170667a&w=0&h=fFWA2PnwCxXAeOnlB58rJiMqTDXy1-UZs7tHliD2f78=';
 
+  const dispatch = useDispatch();
+
+  const state = useSelector(state => state.search);
+  const query = state.query;
+  const foodSearchOption = state.foodSearchOption;
   const [ restaurant, setRestaurant ] = useState(null);
+  const [ foodQuery, setFoodQuery ] = useState('');
   const {
     name,
     menuItems,
@@ -16,6 +23,7 @@ const RestaurantPage = ()  => {
     rating,
     priceRating
   } = restaurant ? restaurant : {};
+  const [ shownMenuItems, setShownMenuItems ] = useState(menuItems);
 
   let categoryRow = '';
   let stars = [];
@@ -42,16 +50,30 @@ const RestaurantPage = ()  => {
       expenseRating += '$';
   }
 
-  const defaultImage = 'https://media.istockphoto.com/photos/table-top-counter-with-blurred-people-and-restaurant-interior-picture-id1077538138?k=6&m=1077538138&s=170667a&w=0&h=fFWA2PnwCxXAeOnlB58rJiMqTDXy1-UZs7tHliD2f78=';
-
   useEffect(() => {
     const id = window.location.pathname.split('/restaurants/')[1];
+    if(foodSearchOption){
+      setFoodQuery(query);
+      dispatch(setFoodSearchOption());
+    }
+
     RestaurantService.findRestaurant(id)
     .then(({ data }) => {
       setRestaurant(data);
+      setShownMenuItems(data.menuItems.filter(
+        ({name}) => name.toLowerCase().includes(foodQuery)
+      ));
     })
     .catch(() => {})
-  }, [])
+  }, [query, foodSearchOption, foodQuery, dispatch])
+
+  const onChange = (text) => {
+    text = text.toLowerCase();
+    setFoodQuery(text);
+    setShownMenuItems(menuItems.filter(
+      ({name}) => name.toLowerCase().includes(text)
+    ));
+  }
 
   return(
     <>
@@ -78,19 +100,19 @@ const RestaurantPage = ()  => {
           <div className='full-menu'>
             <div className='full-menu-header'>
               <h2> Menu </h2>
-                <Form inline>
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="search-input"
-                  />
-                </Form>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="search-input"
+                  value={foodQuery}
+                  onChange={e => onChange(e.target.value)}
+                />
             </div>
             <div className="inline-header"></div>
 
             <div className='menu-items'>
               {
-                menuItems ? menuItems.map(menuItem =>
+                shownMenuItems ? shownMenuItems.map(menuItem =>
                   <MenuItem key={menuItem.id} menuItem={menuItem} />)
                     : null
               }
