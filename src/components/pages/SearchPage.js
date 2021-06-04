@@ -113,19 +113,19 @@ const SearchPage = () => {
               label='Search By Restaurant'
               onChange={() => setFoodOption(false)}
             />
-
-          <div id="food-option1">
+          {(query === '') ?
+            null
+          : <div id="food-option1">
               <Form.Check
                 inline
                 type='radio'
                 id="food-option"
                 checked={foodOption}
                 label='Search By Food'
-                disabled={(query === '') ? true : false }
                 onChange={() => setFoodOption(true)}
               />
-            { (query === '') ? <span className='error'> Please search something. </span> : null }
-          </div>
+            </div>
+          }
 
         </div>
 

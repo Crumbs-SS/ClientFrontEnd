@@ -29,10 +29,22 @@
   margin-bottom: 4em;
 }
 
-.highlight{
-  /* color: rgb() */
-}
-
 .stars{
   font-size: 1em;
+}
+
+.full-menu{
+  margin-top: 2em;
+  width: 80%;
+}
+
+.full-menu-header{
+  display: flex;
+  justify-content: space-between;
+  padding: 0em 2em;
+}
+
+.menu-items{
+  display: flex;
+  flex-wrap: wrap;
 }

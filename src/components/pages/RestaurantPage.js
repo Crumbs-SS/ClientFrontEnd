@@ -2,6 +2,8 @@ import '../../style/restaurant-page.css';
 import RestaurantService from '../../adapters/restaurantService';
 import { useEffect, useState } from 'react';
 import Header from '../Header';
+import { Form } from 'react-bootstrap';
+import MenuItem from '../MenuItem';
 
 
 const RestaurantPage = ()  => {
@@ -12,7 +14,6 @@ const RestaurantPage = ()  => {
     menuItems,
     categories,
     rating,
-    location,
     priceRating
   } = restaurant ? restaurant : {};
 
@@ -73,6 +74,28 @@ const RestaurantPage = ()  => {
             •&nbsp;&nbsp;{expenseRating}
           </div>
           <div className="inline-header"></div>
+
+          <div className='full-menu'>
+            <div className='full-menu-header'>
+              <h2> Menu </h2>
+                <Form inline>
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="search-input"
+                  />
+                </Form>
+            </div>
+            <div className="inline-header"></div>
+
+            <div className='menu-items'>
+              {
+                menuItems ? menuItems.map(menuItem =>
+                  <MenuItem key={menuItem.id} menuItem={menuItem} />)
+                    : null
+              }
+            </div>
+          </div>
 
         </div>
       </div>
