@@ -12,9 +12,10 @@ import {
 const initialState = {
     token: localStorage.getItem('token'),
     id: localStorage.getItem('id'),
+    user: null,
+    role: null,
     isAuthenticated: null,
     isLoading: false,
-    user: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -34,6 +35,7 @@ const authReducer = (state = initialState, action) => {
         case LOGIN_SUCCESS:
             localStorage.setItem('token', action.payload.token);
             localStorage.setItem('id', action.payload.id);
+            localStorage.setItem('role', action.payload.role);
             return {
                 ...state,
                 ...action.payload,
@@ -51,11 +53,13 @@ const authReducer = (state = initialState, action) => {
         case REGISTER_FAIL:
             localStorage.removeItem('token');
             localStorage.removeItem('id');
+            localStorage.removeItem('role');
             return {
                 ...state,
                 token: null,
                 id: null,
                 user: null,
+                role: null,
                 isAuthenticated: false,
                 isLoading: false,
             };

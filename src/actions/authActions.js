@@ -104,6 +104,7 @@ export const login = ({username, password, role}) => dispatch => {
                 payload: {
                     token: res.headers['authorization'],
                     id: res.headers['userid'],
+                    role: role,
                 },
             });
             dispatch(loadUser());
