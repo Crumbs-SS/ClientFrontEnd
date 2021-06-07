@@ -28,6 +28,7 @@ const RestaurantPage = ()  => {
     rating,
     priceRating
   } = restaurant ? restaurant : {};
+
   const [ shownMenuItems, setShownMenuItems ] = useState(menuItems);
 
   let categoryRow = '';
@@ -85,10 +86,6 @@ const RestaurantPage = ()  => {
     setModalDetails(menuItem);
   }
 
-  const onModalClose = () => {
-    setModalOpen(false);
-  }
-
   return(
     <>
       <Header />
@@ -96,7 +93,7 @@ const RestaurantPage = ()  => {
         <MenuItemModal
           show={isModalOpen}
           menuItem={modalDetails}
-          onHide={onModalClose}
+          onHide={() => setModalOpen(false)}
         />
         <div className='hero-holder'>
           <div className='img-holder1'>
@@ -130,13 +127,11 @@ const RestaurantPage = ()  => {
             <div className="inline-header"></div>
 
             <div className='menu-items'>
-              {
-                shownMenuItems ? shownMenuItems.map(menuItem =>
+              {shownMenuItems ? shownMenuItems.map(menuItem =>
                   <MenuItem key={menuItem.id} menuItem={menuItem}
                       openModal={openModal}
                      />)
-                    : null
-              }
+                    : null}
             </div>
           </div>
 

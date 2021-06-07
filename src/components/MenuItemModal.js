@@ -1,13 +1,15 @@
 import '../style/menuItemModal.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import  { addToCart } from '../actions/cartActions';
+import { addToCart } from '../actions/cartActions';
 
 const MenuItemModal = ({ show, menuItem, onHide }) => {
 
   const defaultImage = "http://www.texasmonthly.com/wp-content/uploads/2015/11/Tacos-Al-Pastor-Tierra-Caliente-Houston.jpg"
   const dispatch = useDispatch();
+
+  const maxQuantity = 50;
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -36,23 +38,19 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
   }
 
   const addItemToCart = () => {
-    const menuItemObj = {
-      ...menuItem,
-      preferences,
-    }
+    if(!show) return;
+
+    const menuItemObj = {...menuItem, preferences};
 
     for (let i = 0; i < quantity; i++)
       dispatch(addToCart(menuItemObj));
 
     onHide();
-    
     setPreferences('');
     setQuantity(1);
   }
 
-  const isNumeric = str => {
-    return str && str.match("[0-9.]+");
-  }
+  const isNumeric = str =>  str && str.match("[0-9.]+");
 
   return(
     <div className='menu-item-modal'>
@@ -98,10 +96,15 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
 
         <Modal.Footer>
           <div className='quantities'>
-            <div onClick={() => changeQuantity('dec')} className='decrease quantity-button'>
+            <div
+              onClick={() => changeQuantity('dec')}
+              className='decrease quantity-button'
+            >
               <i className="fas fa-minus-circle"></i>
             </div>
+
             <br />
+
             <input
               onChange={changeQuantity}
               type="text"
@@ -111,11 +114,20 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
             <div onClick={() => changeQuantity('inc')} className='increase quantity-button'>
               <i className="fas fa-plus-circle"></i>
             </div>
+
           </div>
 
-          <Button onClick={addItemToCart} variant='danger' className='add-to-cart'>
-            Add to cart - {formatter.format(menuItem.price * quantity)}
+          <Button
+            onClick={addItemToCart}
+            variant='danger'
+            className='add-to-cart'
+            disabled={(quantity >= maxQuantity)}
+          >
+            { (show) ?
+              `Add to cart - ${formatter.format(menuItem.price * quantity)}`
+              : <Spinner animation="grow" variant='light' />}
           </Button>
+
         </Modal.Footer>
 
       </Modal>

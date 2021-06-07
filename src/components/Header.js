@@ -11,9 +11,13 @@ const Header = () => {
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
 
-  const cart = useSelector(state => state.cart.shoppingCart);
+  const cart = useSelector(state => state.cart);
+  const cartDetails = {
+    items: cart.shoppingCart,
+    total: cart.total
+  };
 
-  const searchForContent = (e) => {
+  const searchForContent = e => {
     e.preventDefault();
     if(searchText){
       dispatch(setQuery(searchText));
@@ -25,6 +29,9 @@ const Header = () => {
     doRedirectUser(false);
     setSearchText(text);
   }
+
+  const displayCart = () => console.log(cartDetails);
+
 
   return(
     <>
@@ -46,7 +53,7 @@ const Header = () => {
               placeholder="Search"
               className="search-input"
             />
-          <span className="fas fa-shopping-cart shopping-icon"> {cart.length}</span>
+          <span onClick={() => displayCart()} className="fas fa-shopping-cart shopping-icon">&nbsp;&nbsp;{cartDetails.items.length}</span>
           </Form>
         </Navbar>
         <div className="inline-header"></div>
