@@ -3,13 +3,15 @@ import { Navbar, Nav, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { setQuery } from '../actions/queryActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Header = () => {
   const dispatch = useDispatch();
 
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
+
+  const cart = useSelector(state => state.cart.shoppingCart);
 
   const searchForContent = (e) => {
     e.preventDefault();
@@ -44,7 +46,7 @@ const Header = () => {
               placeholder="Search"
               className="search-input"
             />
-          <span className="fas fa-shopping-cart shopping-icon"> 0</span>
+          <span className="fas fa-shopping-cart shopping-icon"> {cart.length}</span>
           </Form>
         </Navbar>
         <div className="inline-header"></div>
