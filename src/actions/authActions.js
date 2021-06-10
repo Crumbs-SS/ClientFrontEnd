@@ -89,6 +89,32 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
         });
 };
 
+export const registerOwner = ({username, password, email, firstName, lastName, phone}) => dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    const body = JSON.stringify({username, password, email, firstName, lastName, phone});
+
+    axios.post(accountURL + '/owners/register', body, config)
+        .then(res => {
+            const id = res.headers['location'].split("/").slice(-1).pop();
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: {
+                    id: id,
+                },
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data.message, err.response.status, 'REGISTER_FAIL'));
+            dispatch({
+                type: REGISTER_FAIL,
+            });
+        });
+};
+
 export const login = ({username, password, role}) => dispatch => {
     const config = {
         headers: {
