@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { setQuery } from '../actions/queryActions';
 import { useDispatch, useSelector } from 'react-redux';
+import CartBar from './CartBar';
 
 const Header = () => {
   const dispatch = useDispatch();
 
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
+  const [ cartBar, setCartBar ] = useState(false);
 
   const cart = useSelector(state => state.cart);
   const cartDetails = {
@@ -29,8 +31,6 @@ const Header = () => {
     doRedirectUser(false);
     setSearchText(text);
   }
-
-  const displayCart = () => console.log(cartDetails);
 
 
   return(
@@ -53,11 +53,12 @@ const Header = () => {
               placeholder="Search"
               className="search-input"
             />
-          <span onClick={() => displayCart()} className="fas fa-shopping-cart shopping-icon">&nbsp;&nbsp;{cartDetails.items.length}</span>
+            <span onClick={() => setCartBar(!cartBar)} className="fas fa-shopping-cart shopping-icon">&nbsp;&nbsp;{cartDetails.items.length}</span>
           </Form>
         </Navbar>
         <div className="inline-header"></div>
       </div>
+      <CartBar active={cartBar} />
       { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )
