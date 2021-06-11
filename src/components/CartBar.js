@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { useEffect, useMemo, useState } from 'react';
 import RestaurantComponent from './RestaurantComponent';
 import '../style/cart-bar.css';
 
@@ -12,50 +11,42 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 const CartBar = ({ active }) => {
 
-  const [ renderRestaurants, setRenderRestaurants ] = useState({});
-
   const cart = useSelector(state => state.cart);
   const isEmpty = cart.shoppingCart ? cart.shoppingCart.length<=0 : false;
-  const restaurants = useMemo(() => {
-    return {};
-  }, []);
+  const restaurants = {};
 
+  let menuItems = [];
 
-  useEffect(() => {
-    let menuItems = [];
+  cart.shoppingCart.forEach((item) => {
+    if(!menuItems.find(v => v.id === item.id)){
+      menuItems = [
+        ...menuItems,
+        {...item,
+          quantity: cart.shoppingCart.filter(v => v.id === item.id).length}
+      ];
+    }
+  });
 
-    cart.shoppingCart.forEach((item) => {
-      if(!menuItems.find(v => v.id === item.id)){
-        menuItems = [
-          ...menuItems,
-          {...item,
-            quantity: cart.shoppingCart.filter(v => v.id === item.id).length}
-        ];
-      }
-    });
+  menuItems.forEach((item) => {
+    const restaurant = restaurants[item.restaurant.name];
 
-    menuItems.forEach((item) => {
-      const restaurant = restaurants[item.restaurant.name];
-
-      if(restaurant){
-        const oldMenuItem = restaurant.menuItems.findIndex(v => v.id === item.id);
-        if(oldMenuItem !== -1){
-          restaurant.menuItems[oldMenuItem].quantity = item.quantity;
-        } else{
-          restaurants[item.restaurant.name] =
-            {...item.restaurant,
-              menuItems: [...restaurant.menuItems, item]}
-        }
-
+    if(restaurant){
+      const oldMenuItem = restaurant.menuItems.findIndex(v => v.id === item.id);
+      if(oldMenuItem !== -1){
+        restaurant.menuItems[oldMenuItem].quantity = item.quantity;
       } else{
-        restaurants[item.restaurant.name] = {
-          ...item.restaurant,
-           menuItems: [item]
-        }
+        restaurants[item.restaurant.name] =
+          {...item.restaurant,
+            menuItems: [...restaurant.menuItems, item]}
       }
-    });
-    setRenderRestaurants(restaurants);
-  }, [cart, restaurants])
+
+    } else{
+      restaurants[item.restaurant.name] = {
+        ...item.restaurant,
+         menuItems: [item]
+      }
+    }
+  });
 
   return(
     <div id='cart-bar' className={active ? 'active-cart-bar' : null}>
@@ -70,9 +61,8 @@ const CartBar = ({ active }) => {
           <b> Your cart is empty </b>
         </p>
         : null }
-      { Object.keys(renderRestaurants).map(restaurant =>{
-        const restaurantObj = renderRestaurants[restaurant];
-        console.log(restaurantObj);
+      { Object.keys(restaurants).map(restaurant =>{
+        const restaurantObj = restaurants[restaurant];
         return <RestaurantComponent
                   key={restaurantObj.id}
                   restaurant={restaurantObj}
