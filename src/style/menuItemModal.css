@@ -1,0 +1,68 @@
+.quantities{
+  display: flex;
+  font-size: 1.4em;
+  justify-content: space-between;
+
+  user-select: none;
+  width: 5em;
+  margin-right: 1em;
+}
+
+.quantity-button{
+  cursor: pointer;
+}
+
+.quantities input{
+  width: 3em;
+  border-radius: .8em;
+  padding: 0em .4em;
+  border-width: thin;
+  margin: 0em .3em;
+  font-size: .7em;
+}
+
+.m-description{
+  color: rgb(100, 100, 100);
+  font-weight: 100;
+}
+
+.preferences-textbox{
+  background: rgb(240, 240, 240);
+  border: none;
+  border-radius: .5em;
+  padding: .7em;
+  height: 6em;
+  resize: none;
+}
+
+.preferences{
+  display: flex;
+  flex-flow: column;
+}
+
+.extra-instructions{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.extra-instructions span{
+  font-size: .9em;
+  color: rgb(120, 120, 120);
+}
+
+.menu-item-modal-image{
+  height: 20em;
+  width: 100%;
+}
+
+.menu-item-modal-image img{
+  background: rgb(60, 60, 60);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.add-to-cart{
+  border-radius: 2em;
+}

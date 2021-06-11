@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Redirect, Route, Switch,} from 'react-router-dom';
+import RestaurantPage from './components/pages/RestaurantPage';
 import LandingPage from './components/pages/LandingPage';
 import SearchPage from './components/pages/SearchPage';
 import LoginPage from './components/pages/LoginPage';
@@ -28,6 +29,8 @@ const App = () => {
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
                     <Route path='/restaurantOwner' component={RestaurantOwnerPage} exact={true}/>
+                    <Route exact path='/restaurants/:id' component={RestaurantPage}/>
+
                 </Switch>
             </Router>
         </div>

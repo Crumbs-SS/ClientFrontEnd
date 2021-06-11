@@ -4,25 +4,33 @@ import Header from '../Header';
 import SortOption from '../SortOption';
 import FilterOption from '../FilterOption';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from 'react-router-dom';
 import SearchResult from '../SearchResult';
 import Pagination from '../Pagination';
 import RestaurantService from '../../adapters/restaurantService';
+import { setFoodSearchOption } from '../../actions/queryActions';
+
 
 const SearchPage = () => {
 
+  const dispatch = useDispatch();
+
   const [ searchResults, setSearchResults ] = useState(null);
   const [ totalPages, setTotalPages ] = useState(null);
-  const [ query, setQuery ] = useState(null);
   const [ currentPage, setCurrentPage ] = useState(0);
   const [ sortOrder, setSortOrder ] = useState(null);
   const [ selectedSort, setSelectedSort ] = useState(null);
   const [ categories, setCategories ] = useState(null);
   const [ filters, setFilters ] = useState([]);
-  const [ foodOption, setFoodOption ] = useState(true);
+  const [ redirectUser, setRedirectUser ] = useState(null);
+
+  const state = useSelector(state => state.search);
+  const query = state.query;
+  const foodSearchOption = state.foodSearchOption;
 
   useEffect(() => {
-    setQuery(getQuery());
-    RestaurantService.getRestaurants(foodOption, {query, currentPage, sortOrder, filters})
+    RestaurantService.getRestaurants(foodSearchOption, {query, currentPage, sortOrder, filters})
     .then(({ data }) => {
       if(filters.length > 0){
         setSearchResults(data.content.slice(currentPage * data.size, data.size * (currentPage + 1)));
@@ -32,10 +40,10 @@ const SearchPage = () => {
         setTotalPages(data.totalPages - 1);
       }
     })
-    .catch((e) => {
+    .catch(() => {
     })
 
-  }, [query, currentPage, sortOrder, selectedSort, filters, foodOption])
+  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption])
 
   useEffect(() => {
     RestaurantService.getCategories()
@@ -46,20 +54,6 @@ const SearchPage = () => {
     })
 
   }, [])
-
-  const getQuery = () => {
-    const queryStream = window.location.search.split('?'); //returns Query Stream
-    if(queryStream.length > 1){
-      const queryParams = queryStream[1].split('&'); // returns separated query params
-      const search = queryParams[0].split('=')[1];
-      const query = search.split('%20').join(' ');
-      if(!query) setFoodOption(false);
-      return query;
-    }else{
-      setFoodOption(false);
-      return '';
-    }
-  }
 
   const sort = (text, timesClicked) => {
     let name = text.toString().toLowerCase();
@@ -94,32 +88,36 @@ const SearchPage = () => {
     }
   }
 
+  const onClick = (restaurant) => {
+    setRedirectUser(restaurant);
+  }
+
   return(
     <>
-      <Header setQuery={setQuery}/>
+      <Header />
       <div className='search-page'>
         <div id="search-options">
             <Form.Check
               inline
               type='radio'
               id="restaurant-option"
-              checked={!foodOption}
+              checked={!foodSearchOption}
               label='Search By Restaurant'
-              onChange={() => setFoodOption(false)}
+              onChange={() => dispatch(setFoodSearchOption(false))}
             />
-
-          <div id="food-option1">
+          {(query === '') ?
+            null
+          : <div id="food-option1">
               <Form.Check
                 inline
                 type='radio'
                 id="food-option"
-                checked={foodOption}
+                checked={foodSearchOption}
                 label='Search By Food'
-                disabled={(query === '') ? true : false }
-                onChange={() => setFoodOption(true)}
+                onChange={() => dispatch(setFoodSearchOption(true))}
               />
-            { (query === '') ? <span className='error'> Please search something. </span> : null }
-          </div>
+            </div>
+          }
 
         </div>
 
@@ -155,7 +153,7 @@ const SearchPage = () => {
           <div className='content-context'>
             {
               (searchResults && searchResults.length > 0) ?
-                searchResults.map(result => <SearchResult key={result.id} result={result}/>)
+                searchResults.map(result => <SearchResult key={result.id} result={result} onClick={onClick}/>)
                   : <h3 id='result-status'> No Results Found </h3>
             }
           </div>
@@ -166,6 +164,7 @@ const SearchPage = () => {
           />
         </div>
       </div>
+      { redirectUser ? <Redirect push to={`/restaurants/${redirectUser.id}`} /> : null }
     </>
   )
 }

@@ -2,8 +2,11 @@ import '../../style/landing-page.css';
 import {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import SideBar from '../SideBar';
+import { setQuery } from '../../actions/queryActions';
+import { useDispatch } from 'react-redux';
 
 const LandingPage = () => {
+  const dispatch = useDispatch();
 
   const [searchText, setSearchText] = useState('');
   const [redirectUser, doRedirectUser] = useState(false);
@@ -11,6 +14,7 @@ const LandingPage = () => {
   const searchForContent = (e = null) => {
     if (e) e.preventDefault();
     if (searchText) {
+      dispatch(setQuery(searchText));
       doRedirectUser(true);
     }
   }
@@ -36,7 +40,7 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      { redirectUser ? <Redirect push to={`/search?query=${searchText}`}/> : null }
+      { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )
 }

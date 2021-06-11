@@ -30,6 +30,10 @@ class RestaurantService{
   }
   
 
+  static findRestaurant(restaurantId){
+    return axios.get(restaurantsRoute + `/${restaurantId}`);
+  }
+
 }
 
 export default RestaurantService;
