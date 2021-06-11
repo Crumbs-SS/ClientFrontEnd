@@ -1,8 +1,8 @@
-import '../style/menuItemModal.css';
+import '../../style/menuItemModal.css';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../actions/cartActions';
+import { addToCart } from '../../actions/cartActions';
 
 const MenuItemModal = ({ show, menuItem, onHide }) => {
 

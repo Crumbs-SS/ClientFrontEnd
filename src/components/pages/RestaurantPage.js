@@ -5,7 +5,7 @@ import Header from '../Header';
 import MenuItem from '../MenuItem';
 import { setFoodSearchOption } from '../../actions/queryActions';
 import { useSelector, useDispatch } from 'react-redux';
-import MenuItemModal from '../MenuItemModal';
+import MenuItemModal from '../modals/MenuItemModal';
 
 const RestaurantPage = ()  => {
   const defaultImage = 'https://media.istockphoto.com/photos/table-top-counter-with-blurred-people-and-restaurant-interior-picture-id1077538138?k=6&m=1077538138&s=170667a&w=0&h=fFWA2PnwCxXAeOnlB58rJiMqTDXy1-UZs7tHliD2f78=';

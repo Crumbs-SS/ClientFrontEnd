@@ -3,9 +3,9 @@ import {Link, NavLink} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../actions/authActions'
 import {useState} from "react";
-import CustomerRegistrationForm from "./CustomerRegistrationForm";
-import DriverRegistrationForm from "./DriverRegistrationForm";
-import RegistrationModal from "./RegistrationModal";
+import CustomerRegistrationForm from "./forms/CustomerRegistrationForm";
+import DriverRegistrationForm from "./forms/DriverRegistrationForm";
+import RegistrationModal from "./modals/RegistrationModal";
 
 const SideBar = () => {
     const selectColor = {color: "red"};

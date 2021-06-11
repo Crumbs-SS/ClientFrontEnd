@@ -1,0 +1,69 @@
+.profile-page{
+    margin: 4em;
+    margin-left: 6em;
+    margin-right: 6em;
+}
+
+.profile-buttons {
+    padding-top: 30px;
+}
+
+#ProfileInfoContainer{
+    top: 0px;
+    height: 100%;
+    border-radius: 25px;
+    position: sticky;
+    background-color: rgb(220, 220, 220);
+}
+
+.button{
+    margin-bottom: 1em;
+    background: rgb(220, 220, 220);
+    color: rgb(102, 102, 102);
+    display: inline-block;
+    height: 30px;
+    padding: 0em 1em;
+    border-radius: 1.6em;
+    margin-right: 1em;
+    font-size: 1.2em;
+    cursor: pointer;
+    user-select: none;
+    outline: none !important;
+    transition: background .3s
+}
+
+.button:hover{
+    color: black;
+    background: rgb(200, 200, 200);
+}
+
+.content-context{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    justify-content: center;
+}
+
+.mid-section{
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+}
+
+.profile-page label{
+    margin-right: 2em;
+    color: rgb(102, 102, 102);
+    font-size: 1.2em;
+    user-select: none;
+}
+
+.profile-page input{
+    margin-right: .3em;
+    font-size:1em;
+}
+
+.error{
+    color: rgb(220, 0, 0);
+}
+

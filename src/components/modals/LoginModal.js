@@ -1,6 +1,6 @@
 //import '../style/login-page.css';
 import {Modal} from 'react-bootstrap';
-import LoginForm from './LoginForm'
+import LoginForm from '../forms/LoginForm'
 
 const LoginModal = (props) => {
   return(
