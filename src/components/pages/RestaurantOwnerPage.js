@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import RestaurantService from '../../adapters/restaurantService';
-import { Button, ButtonGroup,Table } from 'reactstrap';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import UpdateRestaurantForm from '../forms/UpdateRestaurantForm';
 import UpdateRestaurantModal from '../modals/UpdateRestaurantModal';
+import {
+  Button,
+  ButtonGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead
+} from "@material-ui/core";
 
 const RestaurantOwnerPage = () => {
 
@@ -12,14 +21,15 @@ const RestaurantOwnerPage = () => {
   const [show, setShow] = useState(false);
   const [modalBody, setModalBody] = useState(null);
 
+
   const handleClose = () => setShow(false);
   const openModal = (body) => {
+    setModalBody(body);
     setShow(true);
-    setModalBody(body)
   };
 
   useEffect(() => {
-    RestaurantService.getOwnerRestaurants(168).then(res => {
+    RestaurantService.getOwnerRestaurants(17).then(res => {
       setRestaurants(res.data);
     })
   })
@@ -31,46 +41,49 @@ const RestaurantOwnerPage = () => {
     })
   }
 
-
   const restaurantList = restaurants.map(restaurant => {
-    return <tr key={restaurant.id}>
-      <td>{restaurant.name}</td>
-      <td>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</td>
-      <td>
-        <UpdateRestaurantModal show={show} onHide={handleClose} body= {modalBody}></UpdateRestaurantModal>
+    return <TableRow key={restaurant.id}>
+      <TableCell>{restaurant.name}</TableCell>
+      <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</TableCell>
+      <TableCell>
+        <UpdateRestaurantModal show={show} onHide={handleClose} body={modalBody}></UpdateRestaurantModal>
         <ButtonGroup>
-          <Button size="sm" color="primary" tag={Link} to={"restaurantOwner/" + restaurant.id}>View</Button>
-          <Button size="sm" color="primary" onClick={() => openModal(<UpdateRestaurantForm id={restaurant.id} close={handleClose}></UpdateRestaurantForm>)}>Edit</Button>
-          <Button size="sm" color="danger" onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
+          <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
+          <Button size="small" color="primary" onClick={() => openModal(<UpdateRestaurantForm res={restaurant} close={handleClose}></UpdateRestaurantForm>)}>Edit</Button>
+          <Button size="small" color="secondary" onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
         </ButtonGroup>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   });
+
 
   return (
     <>
-      <div>
-        <div>
+      <div className="container p-3 my-3 border" style={{width:800+'em'}}>
+        <div style={{ marginRight: 18 + 'em', padding: 10 + 'px' }} >
           <h1>Welcome to your dashboard</h1>
           <h2>You have: {restaurants.length} restaurants</h2>
+          <Button variant="contained">Profile</Button>
+          <Button variant="contained">Add Restaurant</Button>
         </div>
         <div>
-
-          <Table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {restaurantList}
-            </tbody>
-          </Table>
-
+          <TableContainer aria-label="simple table" style={{ maxWidth: 900, border: '1px solid black' }}>
+            <Table >
+              <TableHead>
+                <TableRow  >
+                  <TableCell>Name</TableCell>
+                  <TableCell>Location</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {restaurantList}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
+      
     </>
   )
 
