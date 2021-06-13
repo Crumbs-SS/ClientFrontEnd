@@ -13,9 +13,10 @@ const App = () => {
     const currentRole = useSelector(state => state.auth.role);
     const dispatch = useDispatch();
 
-    dispatch(loadUser);
+    dispatch(loadUser());
 
     const isCustomer = (role) => 'customer' === role;
+
 
     return (
         <div className="App">

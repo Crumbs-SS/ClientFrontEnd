@@ -15,4 +15,6 @@ export const ACCOUNT_UPDATE_SUCCESS = "ACCOUNT_UPDATE_SUCCESS";
 export const ACCOUNT_UPDATE_FAIL = "ACCOUNT_UPDATE_FAIL";
 export const SET_QUERY = 'SET_QUERY';
 export const SET_FOOD_OPTION = 'SET_FOOD_OPTION';
-export const ADD_TO_CART = 'ADD_TO_CART';
+export const SET_CART = 'SET_CART';
+export const CHECK_OUT_CART = 'CHECK_OUT_CART';
+export const CLEAR_CART = 'CLEAR_CART';

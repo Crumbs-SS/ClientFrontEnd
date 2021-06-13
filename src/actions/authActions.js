@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from './errorActions'
+import { loadCart } from './cartActions';
 
 import {
     AUTH_ERROR,
@@ -14,6 +15,7 @@ import {
     ACCOUNT_DELETE_FAIL,
     ACCOUNT_UPDATE_SUCCESS,
     ACCOUNT_UPDATE_FAIL,
+    CLEAR_CART
 } from './types';
 
 const authURL = 'http://localhost:8080'
@@ -25,10 +27,13 @@ export const loadUser = () => (dispatch, getState) => {
     const id = getState().auth.id;
 
     axios.get(authURL + '/users/' + id)
-        .then(res => dispatch({
+        .then(res => {
+          dispatch({
             type: USER_LOADED,
             payload: res.data,
-        }))
+          })
+          dispatch(loadCart(id));
+      })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({
@@ -118,8 +123,9 @@ export const login = ({username, password, role}) => dispatch => {
         });
 };
 
-export const logout = () => {
-    return {type: LOGOUT_SUCCESS};
+export const logout = () => dispatch => {
+    dispatch({type: LOGOUT_SUCCESS});
+    dispatch({type: CLEAR_CART});
 };
 
 export const deleteAccount = (username, password) => (dispatch) => {
