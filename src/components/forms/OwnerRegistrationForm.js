@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {logout, registerDriver} from "../../actions/authActions";
+import {logout, registerOwner} from "../../actions/authActions";
 import {Formik} from "formik";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
@@ -16,14 +16,16 @@ const schema = yup.object({
         .matches(/^[A-Za-z']*$/, "Name can only contain letters and apostrophes."),
     lastName: yup.string().ensure().trim().required().min(1).max(50)
         .matches(/^[A-Za-z']*$/, "Name can only contain letters and apostrophes."),
-    licenseId: yup.string().ensure().trim().required().min(7).max(30)
+    phone: yup.string().ensure().trim().required().min(7).max(15)
+        .matches(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+            "Phone number must be valid."),
 });
 
-const DriverRegistrationForm = (props) => {
+const OwnerRegistrationForm = (props) => {
     const dispatch = useDispatch();
     const goodResponse = useSelector(state => state.auth.id)
     const onSuccess = (values) => {
-        dispatch(registerDriver(values));
+        dispatch(registerOwner(values));
     };
 
     useEffect(() => {
@@ -123,14 +125,12 @@ const DriverRegistrationForm = (props) => {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group controlId="formLicenseId">
-                            <Form.Label>Driver's License Id</Form.Label>
-                            <Form.Control type="text" name="licenseId" autoComplete="off"
-                                          placeholder="Enter Drivers License Id"
-                                          onChange={handleChange} value={values.licenseId}
-                                          isInvalid={errors.licenseId}/>
+                        <Form.Group controlId="formPhone">
+                            <Form.Label>Phone Number</Form.Label>
+                            <Form.Control type="text" name="phone" autoComplete="off" placeholder="Enter Phone Number"
+                                          onChange={handleChange} value={values.phone} isInvalid={errors.phone}/>
                             <Form.Control.Feedback type='invalid'>
-                                {errors.licenseId}
+                                {errors.phone}
                             </Form.Control.Feedback>
                         </Form.Group>
 
@@ -144,4 +144,4 @@ const DriverRegistrationForm = (props) => {
     );
 }
 
-export default DriverRegistrationForm;
+export default OwnerRegistrationForm;
