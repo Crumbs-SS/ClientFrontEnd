@@ -20,18 +20,15 @@ const LoginPage = () => {
         dispatch(clearErrors());
     }
 
-
     return (
         <>
             <SideBar/>
             <div id="login-page">
                 <LoginModal show={modalOpen} onHide={closeModal} role={modalRole}/>
-                <div className={"container row align-items-center vertical-center"}>
-
+                <div className={"container"}>
                     <div className={"button"} onClick={() => openModal("customer")}>Login as Customer</div>
                     <div className={"button"}  onClick={() => openModal("driver")}>Login as Driver</div>
                     <div className={"button"}  onClick={() => openModal("owner")}>Login as Owner</div>
-
                 </div>
             </div>
     </>

@@ -13,28 +13,17 @@
 .container{
     display: flex; /* or inline-flex */
     flex-direction: column;
-    float: none;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%);
+    margin-left: 50%;
+    margin-top: 23%;
     padding: 5px;
 }
 .container > *{
     margin: 5px;
     min-width: 230px;
     text-align: center;
-}
-
-.vertical-center{
-    margin: 0;
-    position: absolute;
-    top: 25%;
-    -ms-transform: translateY(-25%);
-    transform: translateY(-25%);
-}
-  
-.content-context{
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 2em;
-    justify-content: center;
 }
 
 .button{
