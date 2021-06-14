@@ -29,7 +29,7 @@ const RestaurantOwnerPage = () => {
   };
 
   useEffect(() => {
-    RestaurantService.getOwnerRestaurants(17).then(res => {
+    RestaurantService.getOwnerRestaurants(33).then(res => {
       setRestaurants(res.data);
     })
   })

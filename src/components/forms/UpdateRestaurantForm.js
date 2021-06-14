@@ -1,4 +1,4 @@
-import { Formik, FieldArray, ErrorMessage } from "formik";
+import { Formik, FieldArray, ErrorMessage, Field } from "formik";
 import { Form } from "react-bootstrap";
 import * as yup from "yup";
 import RestaurantService from "../../adapters/restaurantService";
@@ -8,7 +8,7 @@ import {
     Select,
     MenuItem,
 } from "@material-ui/core";
-
+import React from "react";
 
 
 const schema = yup.object({
@@ -27,8 +27,8 @@ const schema = yup.object({
     menu: yup.array().of(
         yup.object(
             {
-                name: yup.string().required("Name required").min(1, "size 1 min"),
-                price: yup.number().required("Price is required"),
+                name: yup.string().required("Name required").min(1, "Cannot be blank"),
+                price: yup.number("Must be a number").required("Price is required"),
                 description: yup.string().required("Description is required")
             }
         )
@@ -74,6 +74,7 @@ const UpdateRestaurantForm = (props) => {
         <>
             <Formik
                 validationSchema={schema}
+                validateOnChange={true}
                 onSubmit={onSuccess}
                 initialValues={{
                     name: props.res.name,
@@ -82,7 +83,7 @@ const UpdateRestaurantForm = (props) => {
                     state: props.res.location.state,
                     zip: props.res.location.zipCode,
                     categories: [],
-                    menu: []  = props.res.menuItems
+                    menu: [] = props.res.menuItems
                 }}>
                 {({
                     handleSubmit,
@@ -96,7 +97,7 @@ const UpdateRestaurantForm = (props) => {
                             <div>
                                 {
                                     httpError ?
-                                        <div style={{color:"red"}}><p>{httpError.message}</p></div>
+                                        <div style={{ color: "red" }}><p>{httpError.message}</p></div>
                                         :
                                         null
                                 }
@@ -114,15 +115,15 @@ const UpdateRestaurantForm = (props) => {
                                 <Form.Group>
 
                                     <Form.Label>Choose new restaurant categories: </Form.Label>
-                                    <br/>
+                                    <br />
                                     <Select
                                         multiple
                                         value={values.categories}
                                         onChange={handleChange}
                                         name="categories"
-                                        style={{minWidth:200}}
-                                        >
-                                        
+                                        style={{ minWidth: 200 }}
+                                    >
+
                                         {categories.map((cat) => {
 
                                             return (<MenuItem key={cat.name} value={cat.name}>
@@ -173,63 +174,70 @@ const UpdateRestaurantForm = (props) => {
                             <h4>Update Restaurant Menu</h4>
                             <h6>Your Menu is listed below. Modify any field to make an update.</h6>
 
+                            <FieldArray
+                                name="menu"
+                                render={arrayHelpers => {
+                                    const menu = values.menu;
+                                    return (
+                                        <div className="container p-3 my-3 border">
 
-                            <Form.Group>
-                                <FieldArray name="menu">
-                                    {(arrayHelpers) => (
-                                        <div>
-                                            {values.menu.map((menuItem, index) => {
-                                                return (
-                                                    <div key={menuItem.id} className="container p-3 my-3 bg-dark text-white">
+                                            {menu.map((menuItem, index) => (
 
-                                                        <h5>Menu Item {index}:</h5>
-                                                        <Form.Group>
-                                                            <Form.Label>Enter new item name:</Form.Label>
-                                                            <Form.Control type="text" name={`menu.${index}.name`} placeholder={menuItem.name}
-                                                                onChange={handleChange} value={values.menu.name} isInvalid={errors.zip} />
-                                                            {/* <Form.Control.Feedback type='invalid'>
-                                                                {errors.menu.map(error => <div>{error}</div>)}
-                                                            </Form.Control.Feedback> */}
+                                                <div key={index} className="container-sm  p-3 my-3 border">
+                                                    <h5>Menu Item {index}:</h5>
+                                                    <Form.Label>Enter new item name:  </Form.Label>
+                                                    <br/>
+                                                    <Field
+                                                        placeholder={menuItem.name}
+                                                        name={`menu.${index}.name`}
+                                                    />
+                                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <ErrorMessage name={`menu.${index}.name`}/>
+                                                    <br/>
+                                                    <Form.Label>Enter new price:  </Form.Label>
+                                                    <br/>
+                                                    <Field placeholder={menuItem.price}
+                                                        name={`menu.${index}.price`}></Field>
+                                                    <span>&nbsp;&nbsp;</span>
+                                                    <ErrorMessage name={`menu.${index}.price`} class="error"/>
+                                                    <br/>
+                                                    <Form.Label>Enter new description:</Form.Label>
+                                                    <br/>
+                                                    <Field
+                                                        placeholder={menuItem.description}
+                                                        name={`menu.${index}.description`}
+                                                    />
+                                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <ErrorMessage name={`menu.${index}.description`} />
+                                                    <br/>
+                                                    <br/>
+                                                    <Button variant="contained" color="secondary" onClick={() => arrayHelpers.remove(index)}>Delete</Button>
 
-                                                        </Form.Group>
-                                                        <Form.Group>
-                                                            <Form.Label>Enter new price:</Form.Label>
-                                                            <Form.Control type="text" name={`menu.${index}.price`} autoComplete="off" placeholder={menuItem.price}
-                                                                onChange={handleChange} value={values.menu.price} />
+                                                </div>
 
-                                                        </Form.Group>
-                                                        <Form.Group>
-                                                            <Form.Label>Enter new description:</Form.Label>
-                                                            <Form.Control type="text" name={`menu.${index}.description`} autoComplete="off" placeholder={menuItem.description}
-                                                                onChange={handleChange} value={values.menu.descirption} />
-                                                            <ErrorMessage name={`menu.${index}.description`}> {msg => <div>{msg}</div>}</ErrorMessage>
+                                            ))
 
-                                                        </Form.Group>
-                                                        <Button variant="contained" color="secondary" onClick={() => arrayHelpers.remove(index)}>Delete</Button>
-                                                        <br />
-                                                        {/* <TextField placeholder={menuItem.name} name={`menu.${index}.name`} onChange={handleChange} value={values.menu.name} isInvalid={errors.state} />
-                                                        <TextField placeholder={menuItem.price} name={`menu.${index}.price`} onChange={handleChange} value={values.menu.price} isInvalid={errors.state} />
-                                                        <TextField placeholder={menuItem.description} name={`menu.${index}.description`} onChange={handleChange} value={values.menu.description} fullWidth={true} isInvalid={errors.state} /> */}
-
-
-                                                    </div>
-
-                                                )
-                                            })}
+                                            }
                                             <Button variant="contained" color="primary" onClick={() => arrayHelpers.push({
                                                 name: '',
                                                 price: '',
                                                 description: ''
                                             })}>Add New Menu Item</Button>
                                         </div>
-                                    )}
+                                    )
+                                }
 
-                                </FieldArray>
-                            </Form.Group>
+                                }>
+
+                            </FieldArray>
+
+
+
+
 
                             <Button variant="contained" type="submit" color="default">Submit</Button>
-                            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-                            <pre>{JSON.stringify(errors, null, 2)}</pre>
+                            {/* <pre>{JSON.stringify(values, null, 2)}</pre>
+                            <pre>{JSON.stringify(errors, null, 2)}</pre> */}
                         </Form>
 
                     );
