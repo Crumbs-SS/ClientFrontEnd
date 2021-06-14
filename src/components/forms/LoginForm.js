@@ -1,9 +1,11 @@
-//import '../style/login-page.css';
+import '../../style/forms.css';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Button, Form} from 'react-bootstrap';
-import {login} from '../../actions/authActions'
+import {clearLoginStatus, login} from '../../actions/authActions'
+import {clearErrors} from "../../actions/errorActions";
+import {useEffect} from "react";
 
 const schema = yup.object({
     username: yup.string().ensure().trim().required().min(3).max(20),
@@ -14,11 +16,19 @@ const schema = yup.object({
 const LoginForm = (props) => {
 
     const dispatch = useDispatch();
-
+    const loggedIn = useSelector(state => state.auth.loginSuccess);
     const onSuccess = (values) => {
+        dispatch(clearErrors());
         dispatch(login(values));
-        props.close();
     };
+
+    useEffect(() => {
+        if (loggedIn) {
+            dispatch(clearLoginStatus());
+            props.close();
+        }
+    }, [loggedIn, props, dispatch])
+
 
     return (
         <Formik

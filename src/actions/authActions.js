@@ -4,10 +4,14 @@ import {returnErrors} from './errorActions'
 import {
     AUTH_ERROR,
     LOGIN_FAIL,
+    LOGIN_PENDING,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
+    REGISTER_PENDING,
     REGISTER_FAIL,
     REGISTER_SUCCESS,
+    CLEAR_REGISTRATION_STATUS,
+    CLEAR_LOGIN_STATUS,
     USER_LOADED,
     USER_LOADING,
     ACCOUNT_DELETE_SUCCESS,
@@ -45,6 +49,8 @@ export const registerCustomer = ({username, password, email, firstName, lastName
     };
     const body = JSON.stringify({username, password, email, firstName, lastName, phone});
 
+    dispatch({ type: REGISTER_PENDING });
+
     axios.post(accountURL + '/customers/register', body, config)
         .then(res => {
             const id = res.headers['location'].split("/").slice(-1).pop();
@@ -70,6 +76,8 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
         }
     };
     const body = JSON.stringify({username, password, email, firstName, lastName, licenseId});
+
+    dispatch({ type: REGISTER_PENDING });
 
     axios.post(accountURL + '/drivers/register', body, config)
         .then(res => {
@@ -97,6 +105,8 @@ export const login = ({username, password, role}) => dispatch => {
     };
 
     const body = JSON.stringify({username, password, role});
+
+    dispatch({ type: LOGIN_PENDING});
 
     axios.post(authURL + '/authenticate', body, config)
         .then(res => {
@@ -168,3 +178,11 @@ export const updateProfile = ({username, email, firstName, lastName}) => (dispat
             });
         });
 };
+
+export const clearRegistrationStatus = () => (dispatch) => {
+    dispatch({ type: CLEAR_REGISTRATION_STATUS });
+}
+
+export const clearLoginStatus = () => (dispatch) => {
+    dispatch({ type: CLEAR_LOGIN_STATUS });
+}

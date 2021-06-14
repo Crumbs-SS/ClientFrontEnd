@@ -1,12 +1,14 @@
 import '../../style/login-page.css';
 import {useState} from 'react';
 import SideBar from '../SideBar';
-import {Button} from 'react-bootstrap';
 import LoginModal from '../modals/LoginModal';
+import {clearErrors} from "../../actions/errorActions";
+import {useDispatch} from "react-redux";
 
 const LoginPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalRole, setModalRole] = useState(null);
+  const dispatch = useDispatch();
 
     const openModal = (role) => {
         setModalOpen(true);
@@ -15,6 +17,7 @@ const LoginPage = () => {
     const closeModal = () => {
         setModalOpen(false);
         setModalRole(null);
+        dispatch(clearErrors());
     }
 
 

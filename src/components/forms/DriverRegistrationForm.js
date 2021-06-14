@@ -1,5 +1,6 @@
+import '../../style/forms.css';
 import {useDispatch, useSelector} from "react-redux";
-import {logout, registerDriver} from "../../actions/authActions";
+import {clearRegistrationStatus, registerDriver} from "../../actions/authActions";
 import {Formik} from "formik";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
@@ -22,15 +23,20 @@ const schema = yup.object({
 
 const DriverRegistrationForm = (props) => {
     const dispatch = useDispatch();
-    const goodResponse = useSelector(state => state.auth.id)
+    const registered = useSelector(state => state.auth.registerSuccess)
     const error = useSelector(state => state.error.msg);
+
     const onSuccess = (values) => {
         dispatch(clearErrors());
         dispatch(registerDriver(values));
-        if (!error || Object.keys(error).length < 1) {
+    };
+
+    useEffect(() => {
+        if (registered) {
+            dispatch(clearRegistrationStatus());
             props.close();
         }
-    };
+    }, [registered, props, dispatch])
 
     const showError = (error) => {
         if (!error) {
@@ -43,13 +49,6 @@ const DriverRegistrationForm = (props) => {
             return <div style={{ color: 'red' }}>{error}</div>;
         }
     };
-
-    useEffect(() => {
-        if (null !== goodResponse) {
-            dispatch(logout());
-            props.close();
-        }
-    }, [goodResponse, dispatch, props]);
 
     return (
         <>
