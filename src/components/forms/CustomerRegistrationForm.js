@@ -1,9 +1,11 @@
+import '../../style/forms.css';
 import {useDispatch, useSelector} from "react-redux";
-import {logout, registerCustomer} from "../../actions/authActions";
+import {clearRegistrationStatus, registerCustomer} from "../../actions/authActions";
 import {Formik} from "formik";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
 import {useEffect} from "react";
+import {clearErrors} from "../../actions/errorActions";
 
 const schema = yup.object({
     username: yup.string().ensure().trim().required().min(3).max(20)
@@ -23,19 +25,36 @@ const schema = yup.object({
 
 const CustomerRegistrationForm = (props) => {
     const dispatch = useDispatch();
-    const goodResponse = useSelector(state => state.auth.id)
+    const registered = useSelector(state => state.auth.registerSuccess)
+    const error = useSelector(state => state.error.msg);
+
     const onSuccess = (values) => {
+        dispatch(clearErrors());
         dispatch(registerCustomer(values));
     };
 
     useEffect(() => {
-        if (null !== goodResponse) {
-            dispatch(logout());
+        if (registered) {
+            dispatch(clearRegistrationStatus());
             props.close();
         }
-    }, [goodResponse, dispatch, props]);
+    }, [registered, props, dispatch])
+
+    const showError = (error) => {
+        if (!error) {
+            return null;
+        }
+        else if (Object.keys(error).length < 1) {
+            return null;
+        }
+        else {
+            return <div style={{ color: 'red' }}>{error}</div>;
+        }
+    };
 
     return (
+        <>
+        {showError(error)}
         <Formik
             validationSchema={schema}
             onSubmit={onSuccess}
@@ -61,7 +80,8 @@ const CustomerRegistrationForm = (props) => {
                         <Form.Group controlId="formUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control type="text" name="username" autoComplete="off" placeholder="Enter Username"
-                                          onChange={handleChange} value={values.username} isInvalid={errors.username}/>
+                                          onChange={handleChange}
+                                          value={values.username} isInvalid={errors.username}/>
                             <Form.Control.Feedback type='invalid'>
                                 {errors.username}
                             </Form.Control.Feedback>
@@ -70,7 +90,8 @@ const CustomerRegistrationForm = (props) => {
                         <Form.Group controlId="formPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" name="password" autoComplete="off" placeholder="Password"
-                                          onChange={handleChange} value={values.password} isInvalid={errors.password}/>
+                                          onChange={handleChange}
+                                          value={values.password} isInvalid={errors.password}/>
                             <Form.Control.Feedback type='invalid'>
                                 {errors.password}
                             </Form.Control.Feedback>
@@ -141,6 +162,7 @@ const CustomerRegistrationForm = (props) => {
                 );
             }}
         </Formik>
+        </>
     );
 }
 

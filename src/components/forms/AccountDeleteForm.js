@@ -1,4 +1,5 @@
 import '../../style/delete-form.css'
+import '../../style/forms.css';
 import {useState} from "react";
 import {Formik} from 'formik';
 import * as yup from 'yup';

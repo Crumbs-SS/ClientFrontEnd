@@ -6,6 +6,7 @@ import {useState} from "react";
 import CustomerRegistrationForm from "./forms/CustomerRegistrationForm";
 import DriverRegistrationForm from "./forms/DriverRegistrationForm";
 import RegistrationModal from "./modals/RegistrationModal";
+import {clearErrors} from "../actions/errorActions";
 
 const SideBar = () => {
     const selectColor = {color: "red"};
@@ -25,6 +26,7 @@ const SideBar = () => {
         setModalOpen(false);
         setModalRole(null);
         setModalComp(null);
+        dispatch(clearErrors());
     }
 
     const loginLink = () => {

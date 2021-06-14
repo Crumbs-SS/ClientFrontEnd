@@ -18,7 +18,16 @@
 }
 .container > *{
     margin: 5px;
-    min-width: 200px;
+    min-width: 230px;
+    text-align: center;
+}
+
+.vertical-center{
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    -ms-transform: translateY(-25%);
+    transform: translateY(-25%);
 }
   
 .content-context{
@@ -26,6 +35,27 @@
     flex-wrap: wrap;
     margin-top: 2em;
     justify-content: center;
+}
+
+.button{
+    margin-bottom: 1em;
+    background: rgb(220, 220, 220);
+    color: rgb(102, 102, 102);
+    display: inline-block;
+    height: 30px;
+    padding: 0em 1em;
+    border-radius: 1.6em;
+    margin-right: 1em;
+    font-size: 1.2em;
+    cursor: pointer;
+    user-select: none;
+    outline: none !important;
+    transition: background .3s
+}
+
+.button:hover{
+    color: black;
+    background: rgb(200, 200, 200);
 }
 
   
