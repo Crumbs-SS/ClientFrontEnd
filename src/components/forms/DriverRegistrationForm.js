@@ -52,7 +52,7 @@ const DriverRegistrationForm = (props) => {
 
     return (
         <>
-        {showError(error)}
+            {showError(error)}
         <Formik
             validationSchema={schema}
             onSubmit={onSuccess}
