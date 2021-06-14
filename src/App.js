@@ -25,11 +25,10 @@ const App = () => {
                     <Route exact path='/'>
                         {loggedIn && isCustomer(currentRole) ? <Redirect to='search'/> : <LandingPage/>}
                     </Route>
-                    <Route path='/search' component={SearchPage} exact={true}/>
+                    <Route exact path='/search' component={SearchPage}/>
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
-                    <Route exact path='/restaurants/:id' component={RestaurantPage}/>
-
+                    <Route exact path='/restaurants/:id' component={RestaurantPage} />
                 </Switch>
             </Router>
         </div>

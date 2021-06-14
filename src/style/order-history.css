@@ -4,10 +4,26 @@
     border-radius: 25px;
     position: sticky;
     background-color: rgb(220, 220, 220);
+    padding: 1em;
 }
 
 .container-title {
     color: #000000;
     font-size: large;
     padding-bottom: 5px;
+}
+
+.restaurant-name{
+  margin-bottom: 0em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.order-location{
+  color: rgb(100, 100, 100);
+  margin-bottom: 0em;
+}
+
+.om-name{
+  color: rgb(255, 0, 0)
 }

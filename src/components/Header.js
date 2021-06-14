@@ -75,7 +75,7 @@ const Header = () => {
               className="search-input"
             />
           {
-            authorized ?
+            (authorized) ?
             <span
               onClick={() => setCartBar(!cartBar)}
               className="fas fa-shopping-cart shopping-icon">

@@ -1,4 +1,6 @@
 import { SET_CART, CLEAR_CART } from './types';
+import { loadOrders, setFreshOrders } from './orderActions';
+
 import axios from 'axios';
 
 const url = 'http://localhost:8010';
@@ -19,12 +21,12 @@ export const addToCart = (id, menuItem) => (dispatch) => {
      })
   })
   .catch();
-
 }
 
 export const clearCart = id => dispatch =>  {
   axios.delete(customersRoute+`/${id}/cart`)
-  .then(() => dispatch({type: CLEAR_CART}));
+  .then(() => dispatch({type: CLEAR_CART}))
+  .catch();
 }
 
 export const loadCart = (id) => dispatch => {
@@ -35,14 +37,21 @@ export const loadCart = (id) => dispatch => {
       payload: { shoppingCart: data }
     })
   })
+  .catch();
 }
 
-export const checkoutCart = (id, menuItems) => (dispatch) => {
+export const checkoutCart = (id, cartItems, {phone, address, preferences}) => (dispatch) => {
   dispatch(clearCart(id));
-  axios.post(customersRoute + `/${id}/orders`, JSON.stringify(menuItems), config)
+  const body = {
+    phone,
+    address,
+    preferences,
+    cartItems
+  }
+  axios.post(customersRoute + `/${id}/orders`, JSON.stringify(body), config)
   .then(({ data }) => {
-    axios.get(customersRoute + `/${id}/orders`)
-    .then(({data}) => console.log(data))
+    dispatch(setFreshOrders(data));
+    dispatch(loadOrders(id));
   })
   .catch();
 }
@@ -53,4 +62,5 @@ export const deleteItem = (userId, menuItemId) => dispatch => {
     type: SET_CART,
     payload: {shoppingCart: data}
   }))
+  .catch();
 }

@@ -2,6 +2,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { checkoutCart } from '../actions/cartActions';
 import RestaurantComponent from './RestaurantComponent';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import CheckoutModal from './modals/CheckoutModal';
 import '../style/cart-bar.css';
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -18,7 +21,13 @@ const CartBar = ({ active, setCartBar }) => {
   const isEmpty = cart.shoppingCart ? cart.shoppingCart.length<=0 : false;
   const restaurants = {};
 
+  const [ displayModal, setDisplayModal ] = useState(false);
+  const [ redirect, setRedirect ] = useState(false);
+
   let menuItems = [];
+
+  if(isEmpty && displayModal)
+    setDisplayModal(false);
 
   cart.shoppingCart.forEach((item) => {
     if(!menuItems.find(v => v.menuItem.id === item.menuItem.id)){
@@ -53,8 +62,20 @@ const CartBar = ({ active, setCartBar }) => {
 
   const checkout = () => {
     setCartBar(false);
-    dispatch(checkoutCart(user.id, cart.shoppingCart));
+    if(!isEmpty)
+      setDisplayModal(true);
   };
+
+  const onHide = () => {setDisplayModal(false); return false;}
+
+  const onSubmit = (values) => {
+    if(values.phone && values.address){
+      onHide();
+
+      dispatch(checkoutCart(user.id, cart.shoppingCart, values));
+      setRedirect('/profile');
+    }
+  }
 
   return(
     <div id='cart-bar' className={active ? 'active-cart-bar' : null}>
@@ -83,6 +104,14 @@ const CartBar = ({ active, setCartBar }) => {
                  />
         })}
 
+    <CheckoutModal
+      show={displayModal}
+      onHide={onHide}
+      onSubmit={onSubmit}
+      restaurants={restaurants}
+      total={cart.total}
+    />
+    { redirect ? <Redirect push to={redirect} /> : null }
     </div>
   )
 }
