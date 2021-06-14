@@ -4,6 +4,7 @@ import {Formik} from "formik";
 import {Button, Form} from "react-bootstrap";
 import * as yup from "yup";
 import {useEffect} from "react";
+import {clearErrors} from "../../actions/errorActions";
 
 const schema = yup.object({
     username: yup.string().ensure().trim().required().min(3).max(20)
@@ -24,8 +25,27 @@ const schema = yup.object({
 const CustomerRegistrationForm = (props) => {
     const dispatch = useDispatch();
     const goodResponse = useSelector(state => state.auth.id)
+    const error = useSelector(state => state.error.msg);
     const onSuccess = (values) => {
+        dispatch(clearErrors());
         dispatch(registerCustomer(values));
+
+        // remove this to some other condition
+        if (!error || Object.keys(error).length < 1) {
+            props.close();
+        }
+    };
+
+    const showError = (error) => {
+        if (!error) {
+            return null;
+        }
+        else if (Object.keys(error).length < 1) {
+            return null;
+        }
+        else {
+            return <div style={{ color: 'red' }}>{error}</div>;
+        }
     };
 
     useEffect(() => {
@@ -36,6 +56,8 @@ const CustomerRegistrationForm = (props) => {
     }, [goodResponse, dispatch, props]);
 
     return (
+        <>
+        {showError(error)}
         <Formik
             validationSchema={schema}
             onSubmit={onSuccess}
@@ -141,6 +163,7 @@ const CustomerRegistrationForm = (props) => {
                 );
             }}
         </Formik>
+        </>
     );
 }
 
