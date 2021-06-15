@@ -1,11 +1,10 @@
-import { SET_ORDERS, SET_FRESH_ORDERS, CLEAR_ORDERS } from '../actions/types';
+import { SET_ORDERS, CLEAR_ORDERS } from '../actions/types';
 
 
 const initialState = {
   orders: [],
   activeOrders: [],
   inactiveOrders: [],
-  freshOrders: []
 }
 
 const orderReducer = (state = initialState, action) => {
@@ -17,11 +16,6 @@ const orderReducer = (state = initialState, action) => {
         orders: action.payload.orders,
         activeOrders: action.payload.activeOrders,
         inactiveOrders: action.payload.inactiveOrders
-      }
-    case SET_FRESH_ORDERS:
-      return{
-        ...state,
-        freshOrders: action.payload.orders
       }
     case CLEAR_ORDERS:
       return{

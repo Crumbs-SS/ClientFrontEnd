@@ -19,5 +19,4 @@ export const SET_CART = 'SET_CART';
 export const CHECK_OUT_CART = 'CHECK_OUT_CART';
 export const CLEAR_CART = 'CLEAR_CART';
 export const SET_ORDERS = 'SET_ORDERS';
-export const SET_FRESH_ORDERS = 'SET_FRESH_ORDERS';
 export const CLEAR_ORDERS = 'CLEAR_ORDERS';

@@ -1,12 +1,8 @@
-import { SET_ORDERS, SET_FRESH_ORDERS } from './types';
-import axios from 'axios';
-
-const url = 'http://localhost:8010';
-const customersRoute = url +'/customers';
-
+import { SET_ORDERS } from './types';
+import OrderService from '../adapters/orderService';
 
 export const loadOrders = (id) => dispatch => {
-  axios.get(customersRoute + `/${id}/orders`)
+  OrderService.loadOrders(id)
   .then(({data}) => {
     dispatch({
       type: SET_ORDERS,
@@ -19,11 +15,4 @@ export const loadOrders = (id) => dispatch => {
 
   })
   .catch();
-}
-
-export const setFreshOrders = (orders) => {
-  return{
-    type: SET_FRESH_ORDERS,
-    payload: {orders}
-  }
 }

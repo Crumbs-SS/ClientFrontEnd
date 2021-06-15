@@ -15,8 +15,9 @@ const Header = () => {
   const [ cartBar, setCartBar ] = useState(false);
 
   const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
   const loggedIn = user != null;
-  const isCustomer = (user ? user.customer : false);
+  const isCustomer = (user ? role==='customer' : false);
   const authorized = (!loggedIn || isCustomer);
 
   const cart = useSelector(state => state.cart);

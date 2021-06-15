@@ -30,10 +30,7 @@ export const loadUser = () => (dispatch, getState) => {
 
     axios.get(authURL + '/users/' + id)
         .then(res => {
-          dispatch({
-            type: USER_LOADED,
-            payload: res.data,
-          })
+          dispatch({type: USER_LOADED, payload: res.data});
           dispatch(loadCart(id));
           dispatch(loadOrders(id));
       })

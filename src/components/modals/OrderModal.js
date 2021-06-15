@@ -26,7 +26,7 @@ const OrderModal = ({show, order, onHide}) => {
           <Button
             onClick={onHide}
             variant='danger'
-            classNmae='add-to-cart'>
+            className='add-to-cart'>
             Close
           </Button>
         </Modal.Footer>

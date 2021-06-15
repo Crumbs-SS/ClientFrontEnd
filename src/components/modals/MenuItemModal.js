@@ -11,8 +11,10 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
+
   const loggedIn = user != null;
-  const isCustomer = (user ? user.customer : false);
+  const isCustomer = (user ? role==='customer' : false);
   const authorized = (!loggedIn || isCustomer);
   const maxQuantity = 50;
 
