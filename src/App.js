@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 //import {useEffect} from 'react';
 import {loadUser} from './actions/authActions'
 import RestaurantOwnerPage from './components/pages/RestaurantOwnerPage';
+import UpdateRestaurantForm from './components/forms/UpdateRestaurantForm';
 
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
@@ -28,8 +29,9 @@ const App = () => {
                     <Route path='/search' component={SearchPage} exact={true}/>
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
-                    <Route path='/restaurantOwner' component={RestaurantOwnerPage} exact={true}/>
                     <Route exact path='/restaurants/:id' component={RestaurantPage}/>
+                    <Route path='/owner/homePage' component={RestaurantOwnerPage} exact={true}/>
+                    <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
 
                 </Switch>
             </Router>
