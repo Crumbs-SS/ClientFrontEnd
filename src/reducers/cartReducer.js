@@ -1,4 +1,4 @@
-import { ADD_TO_CART } from '../actions/types';
+import { SET_CART, CLEAR_CART } from '../actions/types';
 
 const initialState = {
   shoppingCart: [],
@@ -8,16 +8,23 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
 
   switch(action.type){
-    case ADD_TO_CART:
-      const menuItem = action.payload.menuItem;
-        return{
-          total: state.total += menuItem.price,
-          shoppingCart: [...state.shoppingCart, menuItem]
-        }
+    case SET_CART:
+      const shoppingCart = action.payload.shoppingCart;
+
+      const total = shoppingCart ? getTotal(shoppingCart) : 0;
+      return{ total,shoppingCart}
+    case CLEAR_CART:
+      return {
+        total: 0,
+        shoppingCart: []
+      }
     default:
       return state;
   }
 
 }
+
+const getTotal = (shoppingCart) => shoppingCart.reduce(
+  (total, {menuItem}) => total + menuItem.price, 0);
 
 export default cartReducer;

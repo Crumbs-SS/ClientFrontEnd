@@ -1,4 +1,5 @@
-
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteItem } from '../actions/cartActions';
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -15,7 +16,7 @@ const RestaurantComponent = ({ restaurant }) => {
         {
           restaurant.menuItems.map(item => <QuantityItem
             key={item.id}
-            menuItem={item}
+            item={item}
           />
           )
         }
@@ -24,19 +25,25 @@ const RestaurantComponent = ({ restaurant }) => {
   )
 }
 
-const QuantityItem = ({ menuItem }) => {
+const QuantityItem = ({ item }) => {
+
+  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
+
+  const deleteMenuItems = item => dispatch(deleteItem(user.id, item.menuItem.id));
+
   return (
     <div className='quantity-item'>
       <div className='details-sc'>
-        <p>{ menuItem.quantity } x</p>
+        <p>{ item.quantity } x</p>
 
         <div className='name-description'>
-          <p> {menuItem.name} </p>
-          <p> {menuItem.description} </p>
-          <p className='remove-sc'> Remove </p>
+          <p> {item.menuItem.name} </p>
+          <p> {item.menuItem.description} </p>
+          <p className='remove-sc' onClick={() => deleteMenuItems(item)}> Remove </p>
         </div>
 
-        <p> {formatter.format(menuItem.price)} </p>
+        <p> {formatter.format(item.menuItem.price)} </p>
       </div>
     </div>
   )

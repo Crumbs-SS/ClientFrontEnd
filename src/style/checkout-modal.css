@@ -1,0 +1,11 @@
+.input-cm{
+  background: rgb(240, 240, 240);
+  border: none;
+  border-radius: .5em;
+  padding: .5em;
+  width: 100%;
+}
+
+#restaurant-components-cm{
+  width: 70%;
+}

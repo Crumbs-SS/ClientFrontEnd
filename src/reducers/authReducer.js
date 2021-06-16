@@ -19,7 +19,7 @@ const initialState = {
     token: localStorage.getItem('token'),
     id: localStorage.getItem('id'),
     user: null,
-    role: null,
+    role: localStorage.getItem('role'),
     isAuthenticated: null,
     isLoading: false,
     registerSuccess: false,

@@ -1,6 +1,6 @@
 import '../../style/profile-page.css';
-import ProfileHeader from "../ProfileHeader";
 import {Col, Container, Row} from "react-bootstrap";
+import Header from '../Header';
 import {useDispatch, useSelector} from "react-redux";
 import OrderHistory from "../OrderHistory";
 import {useState} from "react";
@@ -59,7 +59,7 @@ const ProfilePage = () => {
 
     return (
         <>
-            <ProfileHeader/>
+            <Header />
             <ProfilePageModal show={modalOpen} onHide={closeModal} comp={modalComp}/>
             <div className="profile-page">
                 <Container>

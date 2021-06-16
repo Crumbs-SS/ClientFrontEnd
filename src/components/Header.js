@@ -13,7 +13,13 @@ const Header = () => {
   const [ searchText, setSearchText ] = useState('');
   const [ redirectUser, doRedirectUser ] = useState(false);
   const [ cartBar, setCartBar ] = useState(false);
-  const loggedIn = useSelector(state => state.auth.user !== null);
+
+  const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
+  const loggedIn = user != null;
+  const isCustomer = (user ? role==='customer' : false);
+  const authorized = (!loggedIn || isCustomer);
+
   const cart = useSelector(state => state.cart);
   const cartDetails = {
     items: cart.shoppingCart,
@@ -69,12 +75,20 @@ const Header = () => {
               placeholder="Search"
               className="search-input"
             />
-            <span onClick={() => setCartBar(!cartBar)} className="fas fa-shopping-cart shopping-icon">&nbsp;&nbsp;{cartDetails.items.length}</span>
+          {
+            (authorized) ?
+            <span
+              onClick={() => setCartBar(!cartBar)}
+              className="fas fa-shopping-cart shopping-icon">
+              &nbsp;&nbsp;{cartDetails.items.length}
+            </span>
+            : null
+          }
           </Form>
         </Navbar>
         <div className="inline-header"></div>
       </div>
-      <CartBar active={cartBar} />
+      { authorized ?  <CartBar active={cartBar} setCartBar={setCartBar} /> : null }
       { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )

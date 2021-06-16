@@ -15,9 +15,10 @@ const App = () => {
     const currentRole = useSelector(state => state.auth.role);
     const dispatch = useDispatch();
 
-    dispatch(loadUser);
+    dispatch(loadUser());
 
     const isCustomer = (role) => 'customer' === role;
+
 
     return (
         <div className="App">
@@ -26,7 +27,7 @@ const App = () => {
                     <Route exact path='/'>
                         {loggedIn && isCustomer(currentRole) ? <Redirect to='search'/> : <LandingPage/>}
                     </Route>
-                    <Route path='/search' component={SearchPage} exact={true}/>
+                    <Route exact path='/search' component={SearchPage}/>
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
                     <Route exact path='/restaurants/:id' component={RestaurantPage}/>

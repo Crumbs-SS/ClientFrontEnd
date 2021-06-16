@@ -1,7 +1,8 @@
 import '../../style/menuItemModal.css';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../actions/cartActions';
 
 const MenuItemModal = ({ show, menuItem, onHide }) => {
@@ -9,6 +10,12 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
   const defaultImage = "http://www.texasmonthly.com/wp-content/uploads/2015/11/Tacos-Al-Pastor-Tierra-Caliente-Houston.jpg"
   const dispatch = useDispatch();
 
+  const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
+
+  const loggedIn = user != null;
+  const isCustomer = (user ? role==='customer' : false);
+  const authorized = (!loggedIn || isCustomer);
   const maxQuantity = 50;
 
   const formatter = new Intl.NumberFormat('en-US', {
@@ -18,6 +25,7 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
 
   const [ quantity, setQuantity ] = useState(1);
   const [ preferences, setPreferences ] = useState('');
+  const [ redirect, setRedirect ] = useState('');
 
   const changeQuantity = mode => {
     switch(mode){
@@ -39,11 +47,13 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
 
   const addItemToCart = () => {
     if(!show) return;
+    if(!authorized) return onHide();
+    if(!isCustomer) return setRedirect('/login');
 
     const menuItemObj = {...menuItem, preferences};
 
     for (let i = 0; i < quantity; i++)
-      dispatch(addToCart(menuItemObj));
+      dispatch(addToCart(user.id, menuItemObj));
 
     onHide();
     setPreferences('');
@@ -95,27 +105,28 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <div className='quantities'>
-            <div
-              onClick={() => changeQuantity('dec')}
-              className='decrease quantity-button'
-            >
-              <i className="fas fa-minus-circle"></i>
-            </div>
+          { authorized ?
+            <div className='quantities'>
+              <div
+                onClick={() => changeQuantity('dec')}
+                className='decrease quantity-button'
+              >
+                <i className="fas fa-minus-circle"></i>
+              </div>
 
-            <br />
+              <br />
 
-            <input
-              onChange={changeQuantity}
-              type="text"
-              value={ quantity }
-            />
+              <input
+                onChange={changeQuantity}
+                type="text"
+                value={ quantity }
+              />
 
-            <div onClick={() => changeQuantity('inc')} className='increase quantity-button'>
-              <i className="fas fa-plus-circle"></i>
-            </div>
+              <div onClick={() => changeQuantity('inc')} className='increase quantity-button'>
+                <i className="fas fa-plus-circle"></i>
+              </div>
 
-          </div>
+            </div> : null }
 
           <Button
             onClick={addItemToCart}
@@ -123,14 +134,16 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
             className='add-to-cart'
             disabled={(quantity >= maxQuantity)}
           >
-            { (show) ?
+            { authorized ?  (show) ?
               `Add to cart - ${formatter.format(menuItem.price * quantity)}`
-              : <Spinner animation="grow" variant='light' />}
+              : <Spinner animation="grow" variant='light' />
+            : `Close` }
           </Button>
 
         </Modal.Footer>
 
       </Modal>
+      { redirect ? <Redirect push to={redirect} /> : null }
     </div>
   )
 }
