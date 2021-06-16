@@ -5,7 +5,9 @@ import {logout} from '../actions/authActions'
 import {useState} from "react";
 import CustomerRegistrationForm from "./forms/CustomerRegistrationForm";
 import DriverRegistrationForm from "./forms/DriverRegistrationForm";
+import OwnerRegistrationForm from "./forms/OwnerRegistrationForm";
 import RegistrationModal from "./modals/RegistrationModal";
+import {clearErrors} from "../actions/errorActions";
 
 const SideBar = () => {
     const selectColor = {color: "red"};
@@ -25,6 +27,7 @@ const SideBar = () => {
         setModalOpen(false);
         setModalRole(null);
         setModalComp(null);
+        dispatch(clearErrors());
     }
 
     const loginLink = () => {
@@ -62,12 +65,24 @@ const SideBar = () => {
             <NavLink
                 to="#"
                 onClick={() => openModal("driver", <DriverRegistrationForm close={closeModal}/>)}>
-                Be a driver
+                Register as a driver
             </NavLink>
         );
     };
 
     const becomeDriverLink = user ? "" : becomeDriver();
+
+    const becomeOwner= () => {
+        return (
+            <NavLink
+                to="#"
+                onClick={() => openModal("owner", <OwnerRegistrationForm close={closeModal}/>)}>
+                Register as a Restaurant Owner
+            </NavLink>
+        );
+    };
+
+    const becomeOwnerLink = user ? "" : becomeOwner();
 
     return (
         <div id="side-bar">
@@ -92,6 +107,7 @@ const SideBar = () => {
            Add Restaurant
         </Link>
                 {becomeDriverLink}
+                {becomeOwnerLink}
         <Link
           to={{pathname: "https://google.com/"}} target="_blank">
            Company Portal
