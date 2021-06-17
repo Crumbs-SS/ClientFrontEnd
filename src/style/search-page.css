@@ -50,6 +50,13 @@
   width: 35em;
   padding: 2em;
   box-shadow: 5px 10px 10px rgb(120, 120, 120);
+  cursor: pointer;
+
+  transition: box-shadow .5s;
+}
+
+.search-result:hover{
+  box-shadow: 5px 10px 10px rgb(200, 120, 120);
 }
 
 .img-holder{

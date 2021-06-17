@@ -1,21 +1,35 @@
 import '../style/header.css';
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import {Redirect, Link} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import { Redirect, Link } from 'react-router-dom';
+import { setQuery } from '../actions/queryActions';
+import { useDispatch, useSelector } from 'react-redux';
+import CartBar from './CartBar';
 import {logout} from "../actions/authActions";
 
-const Header = ({ setQuery }) => {
-  const [ searchText, setSearchText ] = useState('');
-  const [ redirectUser, doRedirectUser ] = useState(false);
-
-  const loggedIn = useSelector(state => state.auth.user !== null);
+const Header = () => {
   const dispatch = useDispatch();
 
-  const searchForContent = (e) => {
+  const [ searchText, setSearchText ] = useState('');
+  const [ redirectUser, doRedirectUser ] = useState(false);
+  const [ cartBar, setCartBar ] = useState(false);
+
+  const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
+  const loggedIn = user != null;
+  const isCustomer = (user ? role==='customer' : false);
+  const authorized = (!loggedIn || isCustomer);
+
+  const cart = useSelector(state => state.cart);
+  const cartDetails = {
+    items: cart.shoppingCart,
+    total: cart.total
+  };
+
+  const searchForContent = e => {
     e.preventDefault();
     if(searchText){
-      setQuery(searchText);
+      dispatch(setQuery(searchText));
       doRedirectUser(true);
     }
   }
@@ -47,12 +61,12 @@ const Header = ({ setQuery }) => {
                   <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
                     {logoutLink()}
                   </>
-              : null
+                : <Nav.Link as={Link} to='/login'>Login</Nav.Link>
             }
             <div className="vert-line"></div>
           </Nav>
           <Nav className="title-name">
-            Crumbs
+            CRUMBS
           </Nav>
           <Form inline onSubmit={searchForContent}>
             <input
@@ -61,12 +75,21 @@ const Header = ({ setQuery }) => {
               placeholder="Search"
               className="search-input"
             />
-            <span className="shopping-icon">0</span>
+          {
+            (authorized) ?
+            <span
+              onClick={() => setCartBar(!cartBar)}
+              className="fas fa-shopping-cart shopping-icon">
+              &nbsp;&nbsp;{cartDetails.items.length}
+            </span>
+            : null
+          }
           </Form>
         </Navbar>
         <div className="inline-header"></div>
       </div>
-      { redirectUser ? <Redirect push to={`/search?query=${searchText}`}/> : null }
+      { authorized ?  <CartBar active={cartBar} setCartBar={setCartBar} /> : null }
+      { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )
 }
