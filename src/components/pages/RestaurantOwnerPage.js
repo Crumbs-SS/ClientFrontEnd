@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Nav} from 'react-bootstrap';
 
 import {
   Button,
@@ -19,7 +20,7 @@ const RestaurantOwnerPage = () => {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    RestaurantService.getOwnerRestaurants(68).then(res => {
+    RestaurantService.getOwnerRestaurants(34).then(res => {
       setRestaurants(res.data);
     })
   })
@@ -52,6 +53,7 @@ const RestaurantOwnerPage = () => {
           <h2>You have: {restaurants.length} restaurants</h2>
           <Button variant="contained">Profile</Button>
           <Button variant="contained">Add Restaurant</Button>
+          <Nav.Link as={Link} to="/">Home</Nav.Link>
         </div>
         <div>
           <TableContainer aria-label="simple table" style={{ maxWidth: 900, border: '1px solid black' }}>

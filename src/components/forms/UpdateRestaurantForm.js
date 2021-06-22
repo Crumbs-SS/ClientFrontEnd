@@ -2,7 +2,7 @@ import { Formik, FieldArray, ErrorMessage, Field } from "formik";
 import { Form } from "react-bootstrap";
 import * as yup from "yup";
 import RestaurantService from "../../adapters/restaurantService";
-import {withRouter, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
     Button,
@@ -229,7 +229,7 @@ const UpdateRestaurantForm = () => {
                                                                     <ErrorMessage name={`menu.${index}.price`} class="error" /></TableCell>
                                                                     <TableCell><Field placeholder={menuItem.description} name={`menu.${index}.description`} style={{width:'100%'}}/><br />
                                                                     <ErrorMessage name={`menu.${index}.description`} /></TableCell>
-                                                                    <TableCell style={{width:'15%'}}><Button variant="contained" color="secondary" onClick={() => arrayHelpers.remove(index)}>Delete</Button></TableCell>
+                                                                    <TableCell style={{width:'15%'}}><Button variant="contained" color="secondary" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) arrayHelpers.remove(index)}}>Delete</Button></TableCell>
                                                                 </TableRow>
                                                             ))}
 
@@ -268,4 +268,4 @@ const UpdateRestaurantForm = () => {
 
 
 };
-export default withRouter(UpdateRestaurantForm);
+export default UpdateRestaurantForm;
