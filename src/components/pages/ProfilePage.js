@@ -8,10 +8,13 @@ import AccountDeleteForm from "../forms/AccountDeleteForm";
 import ProfileUpdateForm from "../forms/ProfileUpdateForm";
 import ProfilePageModal from "../modals/ProfilePageModal";
 import {clearErrors} from "../../actions/errorActions";
+import {Link } from 'react-router-dom';
+
 
 const ProfilePage = () => {
     const user = useSelector(state => state.auth.user);
     const role = useSelector(state => state.auth.role);
+    const id = useSelector(state => state.auth.id);
     const dispatch = useDispatch();
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -26,6 +29,7 @@ const ProfilePage = () => {
         setModalOpen(false);
         setModalComp(null);
     }
+    console.log(id);
 
     const userElements = (user) => {
         return (
@@ -65,8 +69,9 @@ const ProfilePage = () => {
                 <Container>
                     <Row>
                         {userElements(user, role)}
-                        <Col><OrderHistory/></Col>
+                        {role === 'owner' || role === 'driver' ? null : <Col><OrderHistory/></Col>}
                     </Row>
+                    <br/>
                     <Row className="profile-buttons justify-content-md-center">
                         <div className="button"
                              onClick={() => openModal(<ProfileUpdateForm user={user} close={closeModal}/>)}>
@@ -76,6 +81,8 @@ const ProfilePage = () => {
                              onClick={() => openModal(<AccountDeleteForm username={user.username} close={closeModal}/>)}>
                             Delete Account
                         </div>
+                        {role === 'owner' ? <div className="button"><Link to={`/owner/${id}/homePage`}>Go to Restaurant Page</Link></div> : null}
+                        
                     </Row>
                 </Container>
             </div>
