@@ -112,9 +112,6 @@ const SideBar = () => {
           to={{pathname: "https://google.com/"}} target="_blank">
            Company Portal
         </Link>
-        <NavLink to='owner/homePage'>
-            <i>Owner Page</i>
-        </NavLink>
       </div>
 
     </div>

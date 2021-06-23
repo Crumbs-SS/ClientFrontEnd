@@ -51,6 +51,7 @@ const UpdateRestaurantForm = () => {
     const [httpError, setHttpError] = useState([]);
     const [redirectUser, setRedirect] = useState(false);
 
+
     useEffect(() => {
 
         const id = window.location.pathname.split('/owner/updateRestaurant/')[1];
@@ -94,10 +95,9 @@ const UpdateRestaurantForm = () => {
     if (restaurant) {
         return (
             <>
-                <h1 className="title">Welcome to your Update Restaurant Page</h1>
-                <h2>Your are updating restaurant with name: {restaurant.name} at location: {restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</h2>
+                <h1 className="title">Update your restaurant: {restaurant.name} </h1>
+                {/* <h2>Your are updating restaurant with name: {restaurant.name} at location: {restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</h2> */}
                 <br />
-
 
                 <Formik
                     validationSchema={schema}
@@ -252,7 +252,7 @@ const UpdateRestaurantForm = () => {
 
 
                 </Formik>
-                { redirectUser ? <Redirect push to={`/owner/homePage`} /> : null }
+                { redirectUser ? <Redirect push to={`/owner/${restaurant.id}/homePage`} /> : null }
 
 
 

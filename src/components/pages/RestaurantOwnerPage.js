@@ -3,6 +3,7 @@ import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Nav} from 'react-bootstrap';
+import Header from '../Header';
 
 import {
   Button,
@@ -20,20 +21,24 @@ const RestaurantOwnerPage = () => {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    RestaurantService.getOwnerRestaurants(34).then(res => {
+    const id = window.location.pathname.split('/owner/')[1].split('/homePage')[0];
+    
+    RestaurantService.getOwnerRestaurants(id).then(res => {
       setRestaurants(res.data);
     })
-  })
+  },[])
 
   const deleteRestaurant = (id) => {
-    RestaurantService.requestDeleteRestaurant(id).then(() => {})
+    RestaurantService.requestDeleteRestaurant(id).then(() => {
+
+    })
   }
 
   const restaurantList = restaurants.map(restaurant => {
     return <TableRow key={restaurant.id}>
       <TableCell>{restaurant.name}</TableCell>
       <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</TableCell>
-      <TableCell>{restaurant.status}</TableCell>
+      <TableCell>{restaurant.restaurantStatus.status}</TableCell>
       <TableCell>
         <ButtonGroup>
           <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
@@ -46,14 +51,12 @@ const RestaurantOwnerPage = () => {
 
   return (
     <>
-    
-      <div className="container p-3 my-3 border">
+    <Header />
+      <div className="container p-3 my-3 ">
         <div>
           <h1>Welcome to your dashboard</h1>
           <h2>You have: {restaurants.length} restaurants</h2>
-          <Button variant="contained">Profile</Button>
-          <Button variant="contained">Add Restaurant</Button>
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
+          
         </div>
         <div>
           <TableContainer aria-label="simple table" style={{ maxWidth: 900, border: '1px solid black' }}>
