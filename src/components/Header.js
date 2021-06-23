@@ -54,7 +54,8 @@ const Header = () => {
         <Navbar>
           <Nav className="mr-auto">
             <div className="sidebar-opener"></div>
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            {isCustomer ? <Nav.Link as={Link} to="/">Home</Nav.Link> : null}
+            
             {
               loggedIn ?
                   <>
@@ -68,7 +69,7 @@ const Header = () => {
           <Nav className="title-name">
             CRUMBS
           </Nav>
-          <Form inline onSubmit={searchForContent}>
+          {isCustomer ? <Form inline onSubmit={searchForContent}>
             <input
               onChange={e => setSearchTextSafe(e.target.value)}
               type="text"
@@ -84,7 +85,8 @@ const Header = () => {
             </span>
             : null
           }
-          </Form>
+          </Form> : null}
+          
         </Navbar>
         <div className="inline-header"></div>
       </div>

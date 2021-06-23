@@ -252,7 +252,7 @@ const UpdateRestaurantForm = () => {
 
 
                 </Formik>
-                { redirectUser ? <Redirect push to={`/owner/${restaurant.id}/homePage`} /> : null }
+                { redirectUser ? <Redirect push to={`/owner/${restaurant.restaurantOwner.id}/homePage`} /> : null }
 
 
 

@@ -13,7 +13,7 @@ import UpdateRestaurantForm from './components/forms/UpdateRestaurantForm';
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
     const currentRole = useSelector(state => state.auth.role);
-    const ownerID = useSelector(state => state.auth.id);
+    const id = useSelector(state => state.auth.id);
     const dispatch = useDispatch();
 
     dispatch(loadUser());
@@ -28,14 +28,13 @@ const App = () => {
                 <Switch>
                     <Route exact path='/'>
                         {loggedIn && isCustomer(currentRole) ? <Redirect to='search'/> : <LandingPage/>}
-                        {loggedIn && isOwner(currentRole) ? <Redirect to={`/owner/${ownerID}/homePage`}/> : <LandingPage/>}
+                        {loggedIn && isOwner(currentRole) ? <Redirect to={`/owner/${id}/homePage`}/> : <LandingPage/>}
                     </Route>
                     <Route exact path='/search' component={SearchPage}/>
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
-                
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
                     <Route exact path='/restaurants/:id' component={RestaurantPage}/>
-                    <Route exact path='/owner/:id/homePage' component={RestaurantOwnerPage}/>
+                    <Route exact path='/owner/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <RestaurantOwnerPage/>} </Route>
                     <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
 
                 </Switch>

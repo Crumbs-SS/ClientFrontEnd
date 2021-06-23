@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Nav} from 'react-bootstrap';
 import Header from '../Header';
 
 import {
@@ -42,8 +41,8 @@ const RestaurantOwnerPage = () => {
       <TableCell>
         <ButtonGroup>
           <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
-          <Button size="small" color="primary" disabled={restaurant.status === "pending_delete"}><Link to={`/owner/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
-          <Button size="small" color="secondary" disabled={restaurant.status === "pending_delete"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
+          <Button size="small" color="primary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
+          <Button size="small" color="secondary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
         </ButtonGroup>
       </TableCell>
     </TableRow>
