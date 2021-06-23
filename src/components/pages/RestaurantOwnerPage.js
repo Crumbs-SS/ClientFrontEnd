@@ -25,7 +25,7 @@ const RestaurantOwnerPage = () => {
     RestaurantService.getOwnerRestaurants(id).then(res => {
       setRestaurants(res.data);
     })
-  },[])
+  },[restaurants])
 
   const deleteRestaurant = (id) => {
     RestaurantService.requestDeleteRestaurant(id).then(() => {
