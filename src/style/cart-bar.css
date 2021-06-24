@@ -1,0 +1,51 @@
+#cart-bar{
+  position: fixed;
+  right: -22em;
+  height: 100%;
+  width: 22em;
+  background: rgb(249, 246, 240);
+  padding: 3em 1.3em 3em 1.3em;
+  overflow: scroll;
+
+  transition: all .2s ease-in .2s;
+}
+
+#cart-bar.active-cart-bar{
+  right: 0;
+  box-shadow: 1px 10px 40px rgb(120, 120, 120);
+}
+
+.restaurant-name-sc{
+  color: rgb(255, 0, 0);
+  font-weight: bold;
+}
+
+.checkout{
+  border-radius: 1em;
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+.title-sc{
+  margin-bottom: 1em;
+}
+
+.sub-title-sc{
+  text-align: center;
+}
+
+.details-sc{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.name-description p{
+  margin-bottom: 0em;
+}
+
+.remove-sc{
+  color: rgb(255, 0, 0);
+  font-weight: bold;
+  cursor: pointer;
+}

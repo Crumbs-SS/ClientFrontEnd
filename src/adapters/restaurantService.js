@@ -19,6 +19,18 @@ class RestaurantService{
   static getCategories(){
     return axios.get(categoriesRoute);
   }
+  static getOwnerRestaurants(id){
+    return axios.get(url+'/owner/'+id+'/restaurants');
+  }
+  static requestDeleteRestaurant(id){
+    return axios.put(url + '/owner/requestDeleteRestaurant/' + id);
+  }
+  static updateRestaurant(id, values,config){
+    return axios.put(restaurantsRoute +'/'+id,values, config);
+  }
+  static findRestaurant(restaurantId){
+    return axios.get(restaurantsRoute + `/${restaurantId}`);
+  }
 
 }
 

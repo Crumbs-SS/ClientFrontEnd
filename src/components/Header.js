@@ -1,21 +1,35 @@
 import '../style/header.css';
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import {Redirect, Link} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import { Redirect, Link } from 'react-router-dom';
+import { setQuery } from '../actions/queryActions';
+import { useDispatch, useSelector } from 'react-redux';
+import CartBar from './CartBar';
 import {logout} from "../actions/authActions";
 
-const Header = ({ setQuery }) => {
-  const [ searchText, setSearchText ] = useState('');
-  const [ redirectUser, doRedirectUser ] = useState(false);
-
-  const loggedIn = useSelector(state => state.auth.user !== null);
+const Header = () => {
   const dispatch = useDispatch();
 
-  const searchForContent = (e) => {
+  const [ searchText, setSearchText ] = useState('');
+  const [ redirectUser, doRedirectUser ] = useState(false);
+  const [ cartBar, setCartBar ] = useState(false);
+
+  const user = useSelector(state => state.auth.user);
+  const role = useSelector(state => state.auth.role);
+  const loggedIn = user != null;
+  const isCustomer = (user ? role==='customer' : false);
+  const authorized = (!loggedIn || isCustomer);
+
+  const cart = useSelector(state => state.cart);
+  const cartDetails = {
+    items: cart.shoppingCart,
+    total: cart.total
+  };
+
+  const searchForContent = e => {
     e.preventDefault();
     if(searchText){
-      setQuery(searchText);
+      dispatch(setQuery(searchText));
       doRedirectUser(true);
     }
   }
@@ -40,33 +54,44 @@ const Header = ({ setQuery }) => {
         <Navbar>
           <Nav className="mr-auto">
             <div className="sidebar-opener"></div>
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            {isCustomer ? <Nav.Link as={Link} to="/">Home</Nav.Link> : null}
+            
             {
               loggedIn ?
                   <>
                   <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
                     {logoutLink()}
                   </>
-              : null
+                : <Nav.Link as={Link} to='/login'>Login</Nav.Link>
             }
             <div className="vert-line"></div>
           </Nav>
           <Nav className="title-name">
-            Crumbs
+            CRUMBS
           </Nav>
-          <Form inline onSubmit={searchForContent}>
+          {isCustomer ? <Form inline onSubmit={searchForContent}>
             <input
               onChange={e => setSearchTextSafe(e.target.value)}
               type="text"
               placeholder="Search"
               className="search-input"
             />
-            <span className="shopping-icon">0</span>
-          </Form>
+          {
+            (authorized) ?
+            <span
+              onClick={() => setCartBar(!cartBar)}
+              className="fas fa-shopping-cart shopping-icon">
+              &nbsp;&nbsp;{cartDetails.items.length}
+            </span>
+            : null
+          }
+          </Form> : null}
+          
         </Navbar>
         <div className="inline-header"></div>
       </div>
-      { redirectUser ? <Redirect push to={`/search?query=${searchText}`}/> : null }
+      { authorized ?  <CartBar active={cartBar} setCartBar={setCartBar} /> : null }
+      { redirectUser ? <Redirect push to={'/search'}/> : null }
     </>
   )
 }

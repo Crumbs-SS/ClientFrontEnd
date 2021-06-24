@@ -3,6 +3,7 @@
   top: 0px;
   position: sticky;
   background-color: rgb(249, 246, 240);
+  user-select: none;
 }
 
 .inline-header{
@@ -31,14 +32,25 @@
 }
 
 .shopping-icon{
-  width: 2.5em;
+  height: 2em;
   margin-left: 1.3em;
   background: rgb(235, 54, 62);
   border-radius: 1em;
   text-align: center;
   color: white;
   font-weight: bold;
-  font-size: 1.4em;
+  font-size: 1.2em;
+  padding: 1em .7em;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  transition: background .3s;
+}
+
+.shopping-icon:hover{
+  cursor: pointer;
+  background: rgb(160, 54, 62);
 }
 
 .vert-line{

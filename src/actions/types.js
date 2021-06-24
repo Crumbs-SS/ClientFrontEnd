@@ -1,3 +1,4 @@
+
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -16,3 +17,10 @@ export const ACCOUNT_DELETE_SUCCESS = "ACCOUNT_DELETE_SUCCESS";
 export const ACCOUNT_DELETE_FAIL = "ACCOUNT_DELETE_FAIL";
 export const ACCOUNT_UPDATE_SUCCESS = "ACCOUNT_UPDATE_SUCCESS";
 export const ACCOUNT_UPDATE_FAIL = "ACCOUNT_UPDATE_FAIL";
+export const SET_QUERY = 'SET_QUERY';
+export const SET_FOOD_OPTION = 'SET_FOOD_OPTION';
+export const SET_CART = 'SET_CART';
+export const CHECK_OUT_CART = 'CHECK_OUT_CART';
+export const CLEAR_CART = 'CLEAR_CART';
+export const SET_ORDERS = 'SET_ORDERS';
+export const CLEAR_ORDERS = 'CLEAR_ORDERS';
