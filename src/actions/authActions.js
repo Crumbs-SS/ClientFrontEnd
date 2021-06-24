@@ -21,7 +21,7 @@ import {
 } from './types';
 
 const authURL = 'http://localhost:8080'
-const accountURL = 'http://localhost:8090'
+const accountURL = 'http://localhost:8080'
 
 export const loadUser = () => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
