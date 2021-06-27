@@ -23,7 +23,7 @@ class RestaurantService{
     return axios.get(url+'/owner/'+id+'/restaurants');
   }
   static requestDeleteRestaurant(id){
-    return axios.put(url + '/owner/requestDeleteRestaurant/' + id);
+    return axios.delete(url + '/owner/restaurant/' + id);
   }
   static updateRestaurant(id, values,config){
     return axios.put(restaurantsRoute +'/'+id,values, config);

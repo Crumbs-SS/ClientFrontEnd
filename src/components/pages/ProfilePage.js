@@ -29,7 +29,6 @@ const ProfilePage = () => {
         setModalOpen(false);
         setModalComp(null);
     }
-    console.log(id);
 
     const userElements = (user) => {
         return (
