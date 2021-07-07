@@ -1,15 +1,22 @@
 import '../style/order-history.css';
 import {Row, Col} from "react-bootstrap";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import OrderModal from './modals/OrderModal';
+import UpdateModal from './modals/UpdateModal';
+import { updateOrder } from '../actions/orderActions';
 
 const OrderHistory = () => {
 
+  const dispatch = useDispatch();
+
   const orders = useSelector((state) => state.ordersState);
+  const user = useSelector(state => state.auth.user);
   const activeOrders = orders.activeOrders;
 
   const [showModal, setShowModal] = useState(false);
+  const [ showEditModal, setShowEditModal ] = useState(false);
+
   const [ chosenOrder, setChosenOrder ] = useState(null);
 
   const onClick = order => {
@@ -18,6 +25,19 @@ const OrderHistory = () => {
   }
 
   const onHide = () => setShowModal(false);
+  const hideEditModal = () => setShowEditModal(false);
+
+  const onEdit = () => {
+    setShowModal(false);
+    setShowEditModal(true);
+  }
+
+  const onUpdate = (fields) => {
+    hideEditModal();
+    setShowModal(true);
+
+    dispatch(updateOrder(user.id, chosenOrder.id, fields));
+  }
 
     return (
         <>
@@ -30,7 +50,8 @@ const OrderHistory = () => {
                    : "You don't have any orders"
                 } </Col>
             </div>
-            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} />
+            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} />
+            <UpdateModal show={showEditModal} onHide={hideEditModal} order={chosenOrder} onUpdate={onUpdate} />
         </>
     );
 }

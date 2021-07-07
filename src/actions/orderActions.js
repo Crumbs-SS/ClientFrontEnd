@@ -16,3 +16,11 @@ export const loadOrders = (id) => dispatch => {
   })
   .catch();
 }
+
+export const updateOrder = (userId, orderId, fields) => dispatch => {
+  OrderService.updateOrders(userId, orderId, fields)
+  .then(() => {
+    dispatch(loadOrders(userId))
+  })
+  .catch();
+}

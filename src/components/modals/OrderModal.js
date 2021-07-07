@@ -5,7 +5,7 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const OrderModal = ({show, order, onHide}) => {
+const OrderModal = ({show, order, onHide, onEdit}) => {
   return(
     <div className='order-modal'>
       <Modal show={show} onHide={onHide} centered scrollable>
@@ -13,8 +13,20 @@ const OrderModal = ({show, order, onHide}) => {
           <Modal.Title> Order from {order ? order.restaurant.name : null} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <b> Delivery Location </b>
+          <p> { order ? order.deliveryLocation.street : null } </p>
+
+          <b> Phone Number </b>
+          <p> { order ? order.phone : null } </p>
+
+          <b> Order Status </b>
+          <p> { order ? order.orderStatus.status.replace('_', ' ') : null } </p>
+            {
+              order ? order.preferences ? <> <b> Preferences </b>
+                        <p> { order.preferences } </p> </> : null : null
+            }
+
           <b> Items </b>
-          <br />
           <br />
           <div id='restaurant-components-cm'>
             { order ? order.foodOrders.map((item) => <FoodItemComponent foodItem={item} key={item.id} />) : null}
@@ -23,10 +35,16 @@ const OrderModal = ({show, order, onHide}) => {
         </Modal.Body>
 
         <Modal.Footer>
+        <Button
+          onClick={onEdit}
+          variant='secondary'
+          className='add-to-cart om'>
+          Edit
+        </Button>
           <Button
             onClick={onHide}
             variant='danger'
-            className='add-to-cart'>
+            className='add-to-cart om'>
             Close
           </Button>
         </Modal.Footer>
