@@ -17,7 +17,7 @@ export default class OrderService{
 
   static updateOrders(id, orderId, {phone, address, preferences, foodOrders}){
     const body = {
-      phone, address, preferences, foodOrders
+      phone, address, preferences, cartItems: foodOrders
     }
 
     return axios.put(customersRoute + `/${id}/order/${orderId}`,

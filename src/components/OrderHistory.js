@@ -1,7 +1,7 @@
 import '../style/order-history.css';
 import {Row, Col} from "react-bootstrap";
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import OrderModal from './modals/OrderModal';
 import UpdateModal from './modals/UpdateModal';
 import { updateOrder } from '../actions/orderActions';
@@ -14,10 +14,16 @@ const OrderHistory = () => {
   const user = useSelector(state => state.auth.user);
   const activeOrders = orders.activeOrders;
 
-  const [showModal, setShowModal] = useState(false);
+  const [ showModal, setShowModal ] = useState(false);
   const [ showEditModal, setShowEditModal ] = useState(false);
 
   const [ chosenOrder, setChosenOrder ] = useState(null);
+
+  useEffect(() => {
+    if(chosenOrder)
+      setChosenOrder(orders.activeOrders.find(order => order.id === chosenOrder.id));
+    
+  }, [orders])
 
   const onClick = order => {
     setChosenOrder(order);
@@ -33,10 +39,9 @@ const OrderHistory = () => {
   }
 
   const onUpdate = (fields) => {
+    dispatch(updateOrder(user.id, chosenOrder.id, fields));
     hideEditModal();
     setShowModal(true);
-
-    dispatch(updateOrder(user.id, chosenOrder.id, fields));
   }
 
     return (
