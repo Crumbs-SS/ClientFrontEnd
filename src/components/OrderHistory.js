@@ -16,15 +16,8 @@ const OrderHistory = () => {
 
   const [ showModal, setShowModal ] = useState(false);
   const [ showEditModal, setShowEditModal ] = useState(false);
-
   const [ chosenOrder, setChosenOrder ] = useState(null);
-
-  useEffect(() => {
-    if(chosenOrder)
-      setChosenOrder(orders.activeOrders.find(order => order.id === chosenOrder.id));
     
-  }, [orders])
-
   const onClick = order => {
     setChosenOrder(order);
     setShowModal(true);
@@ -39,10 +32,20 @@ const OrderHistory = () => {
   }
 
   const onUpdate = (fields) => {
-    dispatch(updateOrder(user.id, chosenOrder.id, fields));
-    hideEditModal();
-    setShowModal(true);
+      dispatch(updateOrder(user.id, chosenOrder.id, fields));
+      hideEditModal();
+      setShowModal(true);
+
+      if(fields.foodOrders.length > 0){
+        // Delete the order
+      }
   }
+
+  // Refresh chosenOrder for moda
+  useEffect(() => {
+    if(chosenOrder)
+      setChosenOrder(orders.activeOrders.find(order => order.id === chosenOrder.id));
+  }, [orders, chosenOrder])
 
     return (
         <>
