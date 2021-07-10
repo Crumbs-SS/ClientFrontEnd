@@ -50,13 +50,7 @@ const OrderHistory = () => {
     return (
         <>
             <div id="OrderHistoryContainer">
-                <Row className="container-title justify-content-center">Pending Orders</Row>
-                <Col className="justify-content-center"> {activeOrders.length > 0 ?
-                   activeOrders.map((order, i) => {
-                    return <OrderComponent key={order.id} order={order} onClick={onClick} />
-                  })
-                   : "You don't have any orders"
-                } </Col>
+
             </div>
             <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} />
             <UpdateModal show={showEditModal} onHide={hideEditModal} order={chosenOrder} onUpdate={onUpdate} />
