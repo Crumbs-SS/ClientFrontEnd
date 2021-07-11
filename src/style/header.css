@@ -1,9 +1,10 @@
 
 #header-component{
   top: 0px;
-  position: sticky;
+  position: static;
   background-color: rgb(249, 246, 240);
   user-select: none;
+  min-width: max-content;
 }
 
 .inline-header{

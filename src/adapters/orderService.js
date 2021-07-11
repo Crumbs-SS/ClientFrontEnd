@@ -11,8 +11,8 @@ const config = {
 
 
 export default class OrderService{
-  static loadOrders(id){
-    return axios.get(customersRoute + `/${id}/orders`);
+  static loadOrders(id, page){
+    return axios.get(customersRoute + `/${id}/orders?page=${page}`);
   }
 
   static updateOrders(id, orderId, {phone, address, preferences, foodOrders}){

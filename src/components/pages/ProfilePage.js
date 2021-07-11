@@ -17,6 +17,7 @@ const ProfilePage = () => {
     const user = useSelector(state => state.auth.user);
     const role = useSelector(state => state.auth.role);
     const id = useSelector(state => state.auth.id);
+    const { customer } = user;
     const dispatch = useDispatch();
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -32,14 +33,6 @@ const ProfilePage = () => {
         setModalComp(null);
     }
 
-    const userElements = (user) => {
-        return (
-            <>
-
-            </>
-        );
-    };
-
     return (
         <>
             <Header />
@@ -53,7 +46,7 @@ const ProfilePage = () => {
                             </div>
                             <div className="loyalty-points-counter">
                                 <h4> Loyal Points </h4>
-                                <h4> 0 </h4>
+                                <h4><b> {customer.loyaltyPoints} </b></h4>
                             </div>
                         </div>
                         <div className="payment-information gray-pp">
@@ -72,11 +65,14 @@ const ProfilePage = () => {
                             <div className='inline-pp' />
                             <DetailColumn title={"Phone"} field={formatPhoneNumber(user.phone)} />
                             <div className='inline-pp' />
-                            <DetailColumn title={"Address"} field={isEmpty(user.locations) ? "No location available" : user.location[0].street} />
+                            <DetailColumn title={"Address"} field={isEmpty(user.locations) ? "No location available" : user.location[0].street} disabled={isEmpty(user.locations)} />
                         </div>
                         <div className="orders-pp">
                             <div className="orders gray-pp">
                                 <h4> Active Orders </h4>
+                                <div className="order-history">
+                                    <OrderHistory  />
+                                </div>
                             </div>
                             <div className="orders gray-pp">
                                 <h4> Past Orders </h4>
@@ -96,18 +92,18 @@ export default ProfilePage;
 const DetailColumn = (props) => {
 
     return(
-    <div className="detail-column">
-        <span className="title-dc">{props.title}</span>
-        <span className="field-dc"> {props.field} </span>
-    </div>)
+        <div className="detail-column">
+            <span className="title-dc">{props.title}</span>
+            <span className={props.disabled ? "disabled" : null}> {props.field} </span>
+        </div>
+    );
 }
 
 const formatPhoneNumber = number => {
     const cleaned = ('' + number).replace(/\D/g, '');
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if(match){
+    if(match)
         return '(' + match[1] + ') ' + match[2] + '-' + match[3];
-    }
 
     return null;
 }

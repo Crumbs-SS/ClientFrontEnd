@@ -32,14 +32,15 @@
 
 .gray-pp{
     background: rgb(220, 220, 220);
-    border-radius: .5em;
+    border-radius: .2em;
     padding: 1em;
+
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, .5);
 }
 
 .inner-content-pp{
     display: flex;
-    padding: 1em;
-
+    position: static;
 }
 
 .lp-payment{
@@ -50,6 +51,8 @@
     justify-content: space-between;
     margin-right: 2em;
 
+
+    min-width: max-content;
 }
 
 .payment-information{
@@ -85,6 +88,8 @@
 
 .payment-information{
     height: 17em;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .details-orders{
@@ -100,11 +105,19 @@
     margin-right: 4em;
     display: inline-block;
     width: 10em;
+
+    user-select: none;
 }
 
 .detail-column span{
     font-size: 1.5em;
+    white-space: nowrap;
 }
+
+.detail-column{
+    overflow-x:auto;
+}
+
 
 .empty-location{
     color: rgb(120, 120, 120);
@@ -122,7 +135,11 @@
 .details-pp{
     padding: 2em;
     margin-bottom: 2em;
+
+    overflow-x: auto;
 }
+
+
 
 .orders-pp{
     display: flex;
@@ -132,4 +149,9 @@
 .orders{
     width: 48.5%;
     height: 20em;
+}
+
+.detail-column .disabled{
+    color: rgb(144, 144, 144);
+    user-select: none;
 }
