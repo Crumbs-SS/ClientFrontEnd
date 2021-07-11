@@ -34,8 +34,9 @@ const OrderHistory = () => {
 
   const onUpdate = (fields) => {
     
-    if(fields.foodOrders.length > 0){
+    if(fields.foodOrders.length <= 0){
       // Delete the order
+      return
     }
 
     dispatch(updateOrder(user.id, chosenOrder.id, fields));
@@ -81,13 +82,22 @@ const OrderHistory = () => {
 
 export default OrderHistory;
 
+const orderStatus = {
+  "AWAITING_DRIVER": "Waiting on driver",
+  "FULFILLED": "Delivered",
+  "DELIVERING": "On the way"
+}
+
 
 const OrderComponent = ({order, onClick}) => {
+  console.log(order);
   return(
-    <div className='order-component'>
-      <p onClick={() => onClick(order)} className='restaurant-name'> <b>{order.restaurant.name}</b></p>
-      <p className='order-location'> { order.address } </p>
-      <p className='order-location'> { order.preferences } </p>
+    <div onClick={() => onClick(order)} className='order-component'>
+      <div className='first-oc/'> 
+        <p className='restaurant-name'> <b>{order.restaurant.name}</b></p>
+        <p className='order-location'> { order.deliveryLocation.street } </p>
+      </div>
+      <p className='restaurant-name'> {orderStatus[order.orderStatus.status]}</p>
     </div>
   )
 }

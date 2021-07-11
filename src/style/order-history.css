@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   
-  bottom: 0;
+  /* bottom: 0; */
 }
 
 .container-title {
@@ -13,7 +13,6 @@
 
 .restaurant-name{
   margin-bottom: 0em;
-  cursor: pointer;
   user-select: none;
 }
 
@@ -34,7 +33,12 @@
 .order-component{
   padding: .5em;
   border-radius: .5em;
+  cursor: pointer;
   transition: background .2s;
+
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .order-component:hover{

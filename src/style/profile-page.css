@@ -149,6 +149,8 @@
 .orders{
     width: 48.5%;
     height: 20em;
+
+    padding: 1em;
 }
 
 .detail-column .disabled{
