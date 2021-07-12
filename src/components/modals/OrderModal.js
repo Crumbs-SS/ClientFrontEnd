@@ -6,6 +6,10 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const OrderModal = ({show, order, onHide, onEdit}) => {
+
+    //900000 milliseconds = 15minutes
+    const canUpdate = order ? (Date.now() - new Date(order.createdAt).getTime()) < 900000 : null
+
   return(
     <div className='order-modal'>
       <Modal show={show} onHide={onHide} centered scrollable>
@@ -35,12 +39,15 @@ const OrderModal = ({show, order, onHide, onEdit}) => {
         </Modal.Body>
 
         <Modal.Footer>
-        <Button
-          onClick={onEdit}
-          variant='secondary'
-          className='add-to-cart om'>
-          Edit
-        </Button>
+          {
+            canUpdate ? 
+          <Button
+            onClick={onEdit}
+            variant='secondary'
+            className='add-to-cart om'>
+            Edit
+          </Button> : null
+          }
           <Button
             onClick={onHide}
             variant='danger'

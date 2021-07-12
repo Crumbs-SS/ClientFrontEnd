@@ -39,7 +39,7 @@ const OrderHistory = () => {
       return
     }
 
-    dispatch(updateOrder(user.id, chosenOrder.id, fields));
+    dispatch(updateOrder(user.id, chosenOrder.id, fields, currentPage));
     hideEditModal();
     setShowModal(true);
   }
@@ -90,7 +90,6 @@ const orderStatus = {
 
 
 const OrderComponent = ({order, onClick}) => {
-  console.log(order);
   return(
     <div onClick={() => onClick(order)} className='order-component'>
       <div className='first-oc/'> 

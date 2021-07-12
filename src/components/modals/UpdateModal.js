@@ -13,7 +13,6 @@ const UpdateModal = props => {
   const [ phone, setPhone ] = useState('');
   const [ address, setAddress ] = useState('');
   const [foodOrders, setFoodOrders] = useState([]);
-
   const { order, onUpdate } = props;
 
 
