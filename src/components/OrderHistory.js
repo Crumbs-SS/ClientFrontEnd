@@ -5,13 +5,15 @@ import OrderModal from './modals/OrderModal';
 import UpdateModal from './modals/UpdateModal';
 import { updateOrder, loadOrders } from '../actions/orderActions';
 import  Pagination  from './Pagination';
-const OrderHistory = () => {
+const OrderHistory = ( { orderType }) => {
 
   const dispatch = useDispatch();
 
   const orders = useSelector((state) => state.ordersState);
   const user = useSelector(state => state.auth.user);
-  const { activeOrders: { content: activeOrders } } = orders;
+  const { activeOrders, inactiveOrders  } = orders;
+  const shownOrders = (orderType === "active") ? 
+    activeOrders.content : inactiveOrders.content;
 
   const [ showModal, setShowModal ] = useState(false);
   const [ showEditModal, setShowEditModal ] = useState(false);
@@ -47,28 +49,29 @@ const OrderHistory = () => {
 
   // Refresh chosenOrder for modal
   useEffect(() => {
-    setTotalPages(orders.activeOrders.totalPages - 1);
+    setTotalPages(orders[orderType+"Orders"].totalPages - 1);
+
 
     if(chosenOrder)
-      setChosenOrder(activeOrders.find(order => order.id === chosenOrder.id));
-  }, [orders, chosenOrder, activeOrders])
+      setChosenOrder(shownOrders.find(order => order.id === chosenOrder.id));
+  }, [orders, chosenOrder, shownOrders])
 
 
   useEffect(() => {
     dispatch(loadOrders(user.id, currentPage))
-  }, [currentPage])
+  }, [currentPage, dispatch, user])
 
     return (
         <>
             <div id="OrderHistoryContainer">
               {
-              activeOrders.length > 0 ?
-                   activeOrders.map(order => {
+              shownOrders.length > 0 ?
+                   shownOrders.map(order => {
                     return <OrderComponent key={order.id} order={order} onClick={onClick} />
                   })
                    : "You don't have any orders"
               }
-              { orders.activeOrders.totalPages > 1 ? 
+              { orders[orderType+"Orders"].totalPages > 1 ? 
                 <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
                 :
                 null

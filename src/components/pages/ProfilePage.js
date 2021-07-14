@@ -38,6 +38,19 @@ const ProfilePage = () => {
             <Header />
             <ProfilePageModal show={modalOpen} onHide={closeModal} comp={modalComp}/>
             <div id="profile-page">
+
+                <div className='buttons-pp'>
+                    <div className="button-pp"
+                        onClick={() => openModal(<ProfileUpdateForm user={user} close={closeModal}/>)}>
+                        Edit Profile
+                    </div>
+                    <div className="button-pp"
+                            onClick={() => openModal(<AccountDeleteForm username={user.username} close={closeModal}/>)}>
+                        Delete Account
+                    </div>
+                    {role === 'owner' ? <div className="button-pp"><Link to={`/owner/${id}/homePage`}>Go to Restaurant Page</Link></div> : null}
+                </div>
+
                 <div className="inner-content-pp">
                     <div className="lp-payment">
                         <div className="loyalty-points gray-pp">
@@ -71,11 +84,14 @@ const ProfilePage = () => {
                             <div className="orders gray-pp">
                                 <h4> Active Orders </h4>
                                 <div className="order-history">
-                                    <OrderHistory  />
+                                    <OrderHistory orderType={"active"}  />
                                 </div>
                             </div>
                             <div className="orders gray-pp">
                                 <h4> Past Orders </h4>
+                                <div className="order-history">
+                                    <OrderHistory orderType={"inactive"}  />
+                                </div>
                             </div>
                         </div>
 

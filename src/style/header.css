@@ -1,7 +1,7 @@
 
 #header-component{
   top: 0px;
-  position: static;
+  position: sticky;
   background-color: rgb(249, 246, 240);
   user-select: none;
   min-width: max-content;

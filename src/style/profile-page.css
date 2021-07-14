@@ -1,4 +1,4 @@
-.button{
+.button-pp{
     margin-bottom: 1em;
     background: rgb(220, 220, 220);
     color: rgb(102, 102, 102);
@@ -10,11 +10,11 @@
     font-size: 1.2em;
     cursor: pointer;
     user-select: none;
-    outline: none !important;
+  
     transition: background .3s
 }
 
-.button:hover{
+.button-pp:hover{
     color: black;
     background: rgb(200, 200, 200);
 }
