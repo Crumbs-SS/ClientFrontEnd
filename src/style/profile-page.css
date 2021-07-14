@@ -1,22 +1,4 @@
-.profile-page{
-    margin: 4em;
-    margin-left: 6em;
-    margin-right: 6em;
-}
-
-.profile-buttons {
-    padding-top: 30px;
-}
-
-#ProfileInfoContainer{
-    top: 0px;
-    height: 100%;
-    border-radius: 25px;
-    position: sticky;
-    background-color: rgb(220, 220, 220);
-}
-
-.button{
+.button-pp{
     margin-bottom: 1em;
     background: rgb(220, 220, 220);
     color: rgb(102, 102, 102);
@@ -28,42 +10,150 @@
     font-size: 1.2em;
     cursor: pointer;
     user-select: none;
-    outline: none !important;
+  
     transition: background .3s
 }
 
-.button:hover{
+.button-pp:hover{
     color: black;
     background: rgb(200, 200, 200);
-}
-
-.content-context{
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 2em;
-    justify-content: center;
-}
-
-.mid-section{
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    align-items: center;
-}
-
-.profile-page label{
-    margin-right: 2em;
-    color: rgb(102, 102, 102);
-    font-size: 1.2em;
-    user-select: none;
-}
-
-.profile-page input{
-    margin-right: .3em;
-    font-size:1em;
 }
 
 .error{
     color: rgb(220, 0, 0);
 }
+#profile-page{
+    margin: 6em;
+}
 
+#profile-page h4{
+    text-align: center;
+}
+
+.gray-pp{
+    background: rgb(220, 220, 220);
+    border-radius: .2em;
+    padding: 1em;
+
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, .5);
+}
+
+.inner-content-pp{
+    display: flex;
+    position: static;
+}
+
+.lp-payment{
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    margin-right: 2em;
+
+
+    min-width: max-content;
+}
+
+.payment-information{
+    padding: 1em;
+}
+
+.loyalty-points{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 27em;
+
+    margin-bottom: 2em;
+}
+
+.orders-pp{
+    display:flex
+}
+
+.loyalty-points-img{
+    height: 75%;
+}
+
+.loyalty-points-img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.loyalty-points-counter{
+    text-align: center;
+}
+
+.payment-information{
+    height: 17em;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.details-orders{
+    width: 75%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.title-dc{
+    font-weight: bold;
+    margin-right: 4em;
+    display: inline-block;
+    width: 10em;
+
+    user-select: none;
+}
+
+.detail-column span{
+    font-size: 1.5em;
+    white-space: nowrap;
+}
+
+.detail-column{
+    overflow-x:auto;
+}
+
+
+.empty-location{
+    color: rgb(120, 120, 120);
+}
+
+.inline-pp{
+    width: 100%;
+    height: 3px;
+
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: rgba(0, 0, 0, .1);
+}
+
+.details-pp{
+    padding: 2em;
+    margin-bottom: 2em;
+
+    overflow-x: auto;
+}
+
+
+
+.orders-pp{
+    display: flex;
+    justify-content: space-between;
+}
+
+.orders{
+    width: 48.5%;
+    height: 20em;
+
+    padding: 1em;
+}
+
+.detail-column .disabled{
+    color: rgb(144, 144, 144);
+    user-select: none;
+}

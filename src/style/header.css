@@ -4,6 +4,7 @@
   position: sticky;
   background-color: rgb(249, 246, 240);
   user-select: none;
+  min-width: max-content;
 }
 
 .inline-header{
