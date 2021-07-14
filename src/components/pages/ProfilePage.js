@@ -1,5 +1,4 @@
 import '../../style/profile-page.css';
-import {Col, Container, Row} from "react-bootstrap";
 import Header from '../Header';
 import {useDispatch, useSelector} from "react-redux";
 import OrderHistory from "../OrderHistory";
@@ -55,7 +54,7 @@ const ProfilePage = () => {
                     <div className="lp-payment">
                         <div className="loyalty-points gray-pp">
                             <div className="loyalty-points-img">
-                                <img src={LoyalPointsImage} alt="loyal points image"/>
+                                <img src={LoyalPointsImage} alt="loyal points"/>
                             </div>
                             <div className="loyalty-points-counter">
                                 <h4> Loyal Points </h4>

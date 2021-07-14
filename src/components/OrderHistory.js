@@ -54,7 +54,7 @@ const OrderHistory = ( { orderType }) => {
 
     if(chosenOrder)
       setChosenOrder(shownOrders.find(order => order.id === chosenOrder.id));
-  }, [orders, chosenOrder, shownOrders])
+  }, [orders, chosenOrder, shownOrders, orderType])
 
 
   useEffect(() => {
@@ -73,8 +73,7 @@ const OrderHistory = ( { orderType }) => {
               }
               { orders[orderType+"Orders"].totalPages > 1 ? 
                 <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
-                :
-                null
+                : null
                }
             </div>
             <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} />
