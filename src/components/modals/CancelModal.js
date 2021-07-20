@@ -1,6 +1,4 @@
-import { Modal, Button, Form } from 'react-bootstrap';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Modal, Button} from 'react-bootstrap';
 
 const CancelModal = props => {
 
