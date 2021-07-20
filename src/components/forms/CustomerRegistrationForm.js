@@ -35,8 +35,9 @@ const CustomerRegistrationForm = (props) => {
 
     useEffect(() => {
         if (registered) {
-            dispatch(clearRegistrationStatus());
             props.close();
+            window.alert('An email has been sent to your inbox. Please click the confirmation link to activate your account.');
+            dispatch(clearRegistrationStatus());
         }
     }, [registered, props, dispatch])
 
