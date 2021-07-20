@@ -24,4 +24,9 @@ export default class OrderService{
       JSON.stringify(body),
        config);
   }
+
+  static cancelOrder(id){
+    return axios.delete(customersRoute + '/orders/' + id);
+  }
+
 }

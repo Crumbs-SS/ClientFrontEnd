@@ -5,10 +5,14 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const OrderModal = ({show, order, onHide, onEdit}) => {
+const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
 
     //900000 milliseconds = 15minutes
     const canUpdate = order ? (Date.now() - new Date(order.createdAt).getTime()) < 900000 : null
+    const canCancel = order ? (Date.now() - new Date(order.createdAt).getTime()) < 300000 : null
+    //for demo purposes
+    //const canCancel = true;
+    const cancelAt = order ? 5 - (new Date().getMinutes() - new Date(order.createdAt).getMinutes() ): null;
 
   return(
     <div className='order-modal'>
@@ -17,6 +21,7 @@ const OrderModal = ({show, order, onHide, onEdit}) => {
           <Modal.Title> Order from {order ? order.restaurant.name : null} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>{canCancel ? 'You have ' + cancelAt + ' minutes left to cancel your order.' : 'You can no longer cancel your order'}</p>
           <b> Delivery Location </b>
           <p> { order ? order.deliveryLocation.street : null } </p>
 
@@ -39,6 +44,15 @@ const OrderModal = ({show, order, onHide, onEdit}) => {
         </Modal.Body>
 
         <Modal.Footer>
+        {
+            canCancel ? 
+          <Button
+            onClick={onSelectCancel}
+            variant='danger'
+            className='add-to-cart om'>
+            Cancel Order
+          </Button> : null
+          }
           {
             canUpdate ? 
           <Button
