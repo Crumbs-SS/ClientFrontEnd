@@ -1,25 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 import EmailService from "../adapters/emailService";
 
 const EmailConfirmationPage = () => {
-
-    const response = "a";
+    
+    const [response, setResponse] = useState();
 
     useEffect(() => {
         const token = window.location.pathname.split('/email/verification/')[1];
+        
         EmailService.confirmToken(token).then(res => {
-            console.log(res);
-            response = res;
+            setResponse(res.data);
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
+            setResponse("Invalid token.")
         })
-
-    })
+    },[])
     return (
         <>
-        <h1>Crumbs Email Verification</h1>
-        <h1>{response}</h1>
+        <div className="container p-3 my-3 "><h1 >{response}</h1></div>
         </>
     )
 
