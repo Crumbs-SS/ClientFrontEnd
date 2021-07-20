@@ -5,7 +5,15 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const OrderModal = ({show, order, onHide}) => {
+const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
+
+    //900000 milliseconds = 15minutes
+    const canUpdate = order ? (Date.now() - new Date(order.createdAt).getTime()) < 900000 : null
+    const canCancel = order ? (Date.now() - new Date(order.createdAt).getTime()) < 300000 : null
+    //for demo purposes
+    //const canCancel = true;
+    const cancelAt = order ? 5 - (new Date().getMinutes() - new Date(order.createdAt).getMinutes() ): null;
+
   return(
     <div className='order-modal'>
       <Modal show={show} onHide={onHide} centered scrollable>
@@ -13,8 +21,21 @@ const OrderModal = ({show, order, onHide}) => {
           <Modal.Title> Order from {order ? order.restaurant.name : null} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>{canCancel ? 'You have ' + cancelAt + ' minutes left to cancel your order.' : 'You can no longer cancel your order'}</p>
+          <b> Delivery Location </b>
+          <p> { order ? order.deliveryLocation.street : null } </p>
+
+          <b> Phone Number </b>
+          <p> { order ? order.phone : null } </p>
+
+          <b> Order Status </b>
+          <p> { order ? order.orderStatus.status.replace('_', ' ') : null } </p>
+            {
+              order ? order.preferences ? <> <b> Preferences </b>
+                        <p> { order.preferences } </p> </> : null : null
+            }
+
           <b> Items </b>
-          <br />
           <br />
           <div id='restaurant-components-cm'>
             { order ? order.foodOrders.map((item) => <FoodItemComponent foodItem={item} key={item.id} />) : null}
@@ -23,10 +44,28 @@ const OrderModal = ({show, order, onHide}) => {
         </Modal.Body>
 
         <Modal.Footer>
+        {
+            canCancel ? 
+          <Button
+            onClick={onSelectCancel}
+            variant='danger'
+            className='add-to-cart om'>
+            Cancel Order
+          </Button> : null
+          }
+          {
+            canUpdate ? 
+          <Button
+            onClick={onEdit}
+            variant='secondary'
+            className='add-to-cart om'>
+            Edit
+          </Button> : null
+          }
           <Button
             onClick={onHide}
             variant='danger'
-            className='add-to-cart'>
+            className='add-to-cart om'>
             Close
           </Button>
         </Modal.Footer>
