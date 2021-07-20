@@ -21,3 +21,10 @@ export const updateOrder = (userId, orderId, fields, page) => dispatch => {
   .then(() => dispatch(loadOrders(userId, page)))
   .catch();
 }
+
+export const cancelOrder = (orderId, userId) => dispatch =>
+{
+  OrderService.cancelOrder(orderId)
+  .then(() => dispatch(loadOrders(userId)))
+  .catch();
+}

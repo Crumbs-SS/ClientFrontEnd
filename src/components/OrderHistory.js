@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import OrderModal from './modals/OrderModal';
 import UpdateModal from './modals/UpdateModal';
-import { updateOrder, loadOrders } from '../actions/orderActions';
+import CancelModal from './modals/CancelModal';
+import { updateOrder, loadOrders, cancelOrder } from '../actions/orderActions';
 import  Pagination  from './Pagination';
 const OrderHistory = ( { orderType }) => {
 
@@ -17,6 +18,7 @@ const OrderHistory = ( { orderType }) => {
 
   const [ showModal, setShowModal ] = useState(false);
   const [ showEditModal, setShowEditModal ] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [ chosenOrder, setChosenOrder ] = useState(null);
   const [ totalPages, setTotalPages ] = useState(0);
   const [ currentPage, setCurrentPage ] = useState(0);
@@ -28,6 +30,7 @@ const OrderHistory = ( { orderType }) => {
 
   const onHide = () => setShowModal(false);
   const hideEditModal = () => setShowEditModal(false);
+  const hideCancelModal = () => setShowCancelModal(false);
 
   const onEdit = () => {
     setShowModal(false);
@@ -37,13 +40,24 @@ const OrderHistory = ( { orderType }) => {
   const onUpdate = (fields) => {
     
     if(fields.foodOrders.length <= 0){
-      // Delete the order
+      //delete order
+      dispatch(cancelOrder(chosenOrder.id, user.id));
+      hideEditModal();
       return
     }
 
     dispatch(updateOrder(user.id, chosenOrder.id, fields, currentPage));
     hideEditModal();
     setShowModal(true);
+  }
+
+  const onSelectCancel = () => {
+    setShowModal(false);
+    setShowCancelModal(true);
+  }
+  const onCancel = () => {
+    dispatch(cancelOrder(chosenOrder.id, user.id));
+    hideCancelModal();
   }
 
 
@@ -76,8 +90,9 @@ const OrderHistory = ( { orderType }) => {
                 : null
                }
             </div>
-            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} />
+            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} onSelectCancel={onSelectCancel}/>
             <UpdateModal show={showEditModal} onHide={hideEditModal} order={chosenOrder} onUpdate={onUpdate} />
+            <CancelModal show={showCancelModal} onHide={hideCancelModal} order={chosenOrder} onCancel={onCancel}></CancelModal>
         </>
     );
 }
