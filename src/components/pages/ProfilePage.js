@@ -18,8 +18,6 @@ const ProfilePage = () => {
     const id = useSelector(state => state.auth.id);
     const { customer } = user;
     const dispatch = useDispatch();
-    const isCustomer = (role) => 'customer' === role;
-
     const [modalOpen, setModalOpen] = useState(false);
     const [modalComp, setModalComp] = useState(null);
 
@@ -49,6 +47,7 @@ const ProfilePage = () => {
                         Delete Account
                     </div>
                     {role === 'owner' ? <div className="button-pp"><Link to={`/owner/${id}/homePage`}>Go to Restaurant Page</Link></div> : null}
+                    {role === 'driver' ? <div className="button-pp"><Link to={`/driver/${id}/homePage`}>Back</Link></div> : null}
                 </div>
 
                 <div className="inner-content-pp">
@@ -80,7 +79,7 @@ const ProfilePage = () => {
                             <div className='inline-pp' />
                             <DetailColumn title={"Address"} field={isEmpty(user.locations) ? "No location available" : user.location[0].street} disabled={isEmpty(user.locations)} />
                         </div>
-                        {isCustomer ?
+                        {role === 'customer' ?
                             <div className="orders-pp">
                                 <div className="orders gray-pp">
                                     <h4> Active Orders </h4>

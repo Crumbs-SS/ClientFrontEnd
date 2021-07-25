@@ -28,5 +28,9 @@ export default class OrderService{
   static cancelOrder(id){
     return axios.delete(customersRoute + '/orders/' + id);
   }
+  static getAvailableOrders(){
+    return axios.get(customersRoute + '/available/orders');
+  }
+
 
 }
