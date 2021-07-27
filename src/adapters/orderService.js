@@ -29,7 +29,10 @@ export default class OrderService{
     return axios.delete(customersRoute + '/orders/' + id);
   }
   static getAvailableOrders(){
-    return axios.get(customersRoute + '/available/orders');
+    return axios.get(url + '/drivers/available/orders');
+  }
+  static acceptOrder(driver_id, order_id){
+    return axios.put(url + '/drivers/' + driver_id + '/order/' + order_id);
   }
 
 
