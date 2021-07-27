@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     seeMore: {
         marginTop: theme.spacing(3),
     },
+    title: {
+        flexGrow: 1,
+    }
 }));
 
 const AvailableOrders = (props) => {
@@ -54,7 +57,7 @@ const AvailableOrders = (props) => {
 
     return (
         <React.Fragment>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            <Typography component="h1" variant="h6" color="inherit"  className={classes.title}>
                 Available Orders:
             </Typography>
             <Table size="small">

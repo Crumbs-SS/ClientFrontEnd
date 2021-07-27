@@ -83,7 +83,7 @@ const DriverPage = () => {
     const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
     const openAcceptOrderModal = () => setShowAcceptOrderModal(true);
     const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
-    
+
     useEffect(() => {
         AccountService.getDriverStatus(id).then((res) => {
             setDriverStatus(res.data);
@@ -144,21 +144,21 @@ const DriverPage = () => {
                                             {viewDriverStatus[driverStatus]}
                                         </Typography>
                                         <br />
-                                        {driverStatus === "BUSY" || driverStatus === "UNVALIDATED" ? null : 
-                                        [driverStatus === "AVAILABLE"  ? 
-                                        <>
-                                        <br />
-                                            <Button variant="contained" color="secondary" onClick={() => { checkOut(id) }}>
-                                                Check-Out
-                                            </Button > 
-                                            </>
-                                                : 
-                                            <ColorButton variant="contained" color="primary" onClick={() => { checkIn(id) }}>
-                                                Check-In
-                                            </ColorButton> 
-                                        ]}
-                                        
-                                       
+                                        {driverStatus === "BUSY" || driverStatus === "UNVALIDATED" ? null :
+                                            [driverStatus === "AVAILABLE" ?
+                                                <>
+                                                    <br />
+                                                    <Button variant="contained" color="secondary" onClick={() => { checkOut(id) }}>
+                                                        Check-Out
+                                                    </Button >
+                                                </>
+                                                :
+                                                <ColorButton variant="contained" color="primary" onClick={() => { checkIn(id) }}>
+                                                    Check-In
+                                                </ColorButton>
+                                            ]}
+
+
                                     </React.Fragment>
 
                                 </Paper>
@@ -174,13 +174,13 @@ const DriverPage = () => {
 
                                 </Paper>
                             </Grid>
-                        { driverStatus !== "AVAILABLE" ? null : 
-                            <Grid item xs={12}>
-                                <Paper className={fixedHeightPaper}>
-                                        <AvailableOrders modalShow={openAcceptOrderModal}/>
-                                </Paper>
-                            </Grid>
-                        }
+                            {driverStatus !== "AVAILABLE" ? null :
+                                <Grid item xs={12}>
+                                    <Paper className={fixedHeightPaper}>
+                                        <AvailableOrders modalShow={openAcceptOrderModal} />
+                                    </Paper>
+                                </Grid>
+                            }
                         </Grid>
                     </Container>
                 </main>
