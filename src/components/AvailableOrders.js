@@ -50,7 +50,7 @@ const AvailableOrders = (props) => {
             <TableCell>40 minutes</TableCell>
             <TableCell>5$</TableCell>
             <TableCell>
-                <Button size="small" color="primary" variant="contained" onClick= {() => props.modalShow()}>Accept</Button>
+                <Button size="small" color="primary" variant="contained" onClick= {()=> {props.order(order); props.modalShow();}}>Accept</Button>
             </TableCell>
         </TableRow>
     });

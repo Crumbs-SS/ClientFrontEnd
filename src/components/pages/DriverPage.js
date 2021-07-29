@@ -62,6 +62,10 @@ const useStyles = makeStyles((theme) => (
         },
         title: {
             flexGrow: 1,
+        },
+        issueButton: {
+            width: '300px',
+            height: '30px'
         }
     }));
 
@@ -83,6 +87,8 @@ const DriverPage = () => {
     const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
     const openAcceptOrderModal = () => setShowAcceptOrderModal(true);
     const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
+    const [choosenOrder, setChoosenOrder] = useState(null);
+    const [acceptedOrder, setAcceptedOrder] = useState(null);
 
     useEffect(() => {
         AccountService.getDriverStatus(id).then((res) => {
@@ -150,7 +156,7 @@ const DriverPage = () => {
                                                     <br />
                                                     <Button variant="contained" color="secondary" onClick={() => { checkOut(id) }}>
                                                         Check-Out
-                                                    </Button >
+                                                    </Button>
                                                 </>
                                                 :
                                                 <ColorButton variant="contained" color="primary" onClick={() => { checkIn(id) }}>
@@ -177,15 +183,40 @@ const DriverPage = () => {
                             {driverStatus !== "AVAILABLE" ? null :
                                 <Grid item xs={12}>
                                     <Paper className={fixedHeightPaper}>
-                                        <AvailableOrders modalShow={openAcceptOrderModal} />
+                                        <AvailableOrders modalShow={openAcceptOrderModal} order={setChoosenOrder}/>
                                     </Paper>
                                 </Grid>
+                            }
+                            {driverStatus === "BUSY" ? 
+                                <Grid item xs={12}>
+                                    <Paper className={fixedHeightPaper}>
+                                        <React.Fragment>
+                                        <Typography component="h2" variant="h6" color="inherit" gutterBottom>
+                                            Your Order Delivery Details and Instructions:
+                                        </Typography>
+                                        <Typography>
+                                            {/* 1. Pick-up food order at restaurant: {choosenOrder.restaurant.location.street}, {choosenOrder.restaurant.location.city}, {choosenOrder.restaurant.location.state} */}
+                                            <Button>yyy</Button>
+                                        </Typography>
+                                        <Typography>
+                                            {/* 2. Deliver food order to customer:{choosenOrder.deliveryLocation.street}, {choosenOrder.deliveryLocation.city}, {choosenOrder.deliveryLocation.state} */}
+                                        </Typography>
+                                        <Button variant="contained" color="primary" className={classes.issueButton}>
+                                            3. Confirm order delivery
+                                        </Button>
+                                        <br/><br/><br/>
+                                        <Button variant="contained" color="secondary" className={classes.issueButton}>
+                                            Report an Issue.
+                                        </Button>
+                                        </React.Fragment>
+                                    </Paper>
+                                </Grid> : null
                             }
                         </Grid>
                     </Container>
                 </main>
             </div>
-            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} ></AcceptOrderModal>
+            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={choosenOrder} driver_id={id} acceptedOrder={setAcceptedOrder}></AcceptOrderModal>
         </>
     );
 }
