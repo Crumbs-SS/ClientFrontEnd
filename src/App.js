@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 //import {useEffect} from 'react';
 import {loadUser} from './actions/authActions'
 import RestaurantOwnerPage from './components/pages/RestaurantOwnerPage';
-import DriverPage from './components/pages/DriverPage';
+import DriverPage from './components/DriverPage/DriverPage';
 import UpdateRestaurantForm from './components/forms/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
 

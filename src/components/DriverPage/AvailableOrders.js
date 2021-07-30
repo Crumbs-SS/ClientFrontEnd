@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { alpha, makeStyles, withStyles } from '@material-ui/core/styles';
-import OrderService from '../adapters/orderService';
+import {makeStyles} from '@material-ui/core/styles';
+import OrderService from '../../adapters/orderService';
 import {
     Button,
-    ButtonGroup,
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableRow,
     TableHead,
-    AppBar,
-    IconButton,
-    Toolbar,
     Typography,
-    Container,
-    Grid,
-    Paper,
-    Link,
-    Nav,
-    Badge
 } from "@material-ui/core";
-import AcceptOrderModal from "./modals/AcceptOrderModal";
+import AcceptOrderModal from "./AcceptOrderModal";
 const useStyles = makeStyles((theme) => ({
     seeMore: {
         marginTop: theme.spacing(3),
@@ -31,10 +20,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const AvailableOrders = (props) => {
+const AvailableOrders = ({driver_id, setAcceptedOrder}) => {
     
     const [availableOrders, setAvailableOrders] = useState([]);
     const classes = useStyles();
+    
+    const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
+    const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
+    const[selectedOrder, setSelectedOrder] = useState(null);
+    
 
     useEffect(() => {
         OrderService.getAvailableOrders().then(res => {
@@ -45,18 +39,17 @@ const AvailableOrders = (props) => {
     const orderList = availableOrders.map((order, index) => {
         return <TableRow key={order.id}>
             <TableCell>{index}</TableCell>
-            <TableCell>{order.restaurant.location.street}, {order.restaurant.location.city}, {order.restaurant.location.state}</TableCell>
-            <TableCell>{order.deliveryLocation.street}, {order.deliveryLocation.city}, {order.deliveryLocation.state}</TableCell>
             <TableCell>40 minutes</TableCell>
             <TableCell>5$</TableCell>
             <TableCell>
-                <Button size="small" color="primary" variant="contained" onClick= {()=> {props.order(order); props.modalShow();}}>Accept</Button>
+                <Button size="small" color="primary" variant="contained" onClick= {()=> {setSelectedOrder(order); setShowAcceptOrderModal(true)}}>View</Button>
             </TableCell>
         </TableRow>
     });
 
     return (
         <React.Fragment>
+             <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setAcceptedOrder={setAcceptedOrder}></AcceptOrderModal>
             <Typography component="h1" variant="h6" color="inherit"  className={classes.title}>
                 Available Orders:
             </Typography>
@@ -64,11 +57,9 @@ const AvailableOrders = (props) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Order #</TableCell>
-                        <TableCell>Restaurant Location</TableCell>
-                        <TableCell>Customer Location</TableCell>
                         <TableCell>Estimated delivery time</TableCell>
-                        <TableCell>Pay</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell>Delivery Pay</TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
