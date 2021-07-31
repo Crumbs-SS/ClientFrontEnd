@@ -26,7 +26,6 @@ const DriverStatus = ({ id, driverStatus, setDriverStatus }) => {
     }
 
     return (
-        <>
             <React.Fragment>
                 <Typography component="h2" variant="h6" color="inherit" gutterBottom>
                     Account Status:
@@ -35,19 +34,17 @@ const DriverStatus = ({ id, driverStatus, setDriverStatus }) => {
                     {viewDriverStatus[driverStatus]}
                 </Typography>
                 <br />
-                {driverStatus === "BUSY" || driverStatus === "UNVALIDATED" ? null :
-                    [driverStatus === "AVAILABLE" ?
-                        <Button variant="contained" color="secondary" onClick={() => { checkOut(id) }}>
-                            Check-Out
-                        </Button>
-                        :
-                        <Button variant="contained" color="primary" onClick={() => { checkIn(id) }}>
-                            Check-In
-                        </Button>
-                    ]
+                {driverStatus === "AVAILABLE" ? 
+                    <Button variant="contained" color="secondary" onClick={() => { checkOut(id) }}>
+                        Check-Out
+                    </Button> : null
+                }
+                {driverStatus === "CHECKED_OUT" ? 
+                    <Button variant="contained" color="primary" onClick={() => { checkIn(id) }}>
+                        Check-In
+                    </Button> : null
                 }
             </React.Fragment>
-        </>
     )
 }
 export default DriverStatus;

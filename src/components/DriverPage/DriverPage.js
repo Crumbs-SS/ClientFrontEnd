@@ -1,7 +1,7 @@
 //React Imports
 import React , { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 //Material-UI Imports
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => (
         appBarSpacer: theme.mixins.toolbar, 
         container: {
             paddingTop: theme.spacing(4),
-            paddingBottom: theme.spacing(8)
+            paddingBottom: theme.spacing(8),
         },
         topLeftPaper: {
             height: 200,
@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => (
         rightHeight: {
             height : '100%',
             padding: theme.spacing(2),
-            overflow: 'clip',
         },
     }));
 
@@ -66,7 +65,7 @@ const DriverPage = () => {
     const [acceptedOrder, setAcceptedOrder] = useState(null);
     
     useEffect(() => {
-        AccountService.getDriverStatus(id).then((res) => {
+        AccountService.getDriverStatus(window.location.pathname.split('/driver/')[1].split('/homePage')[0]).then((res) => {
             setDriverStatus(res.data);
         })
     }, [driverStatus, acceptedOrder])
@@ -81,8 +80,8 @@ const DriverPage = () => {
                             Dashboard
                         </Typography>
                         <Button color="inherit" onClick={() => dispatch(logout())} >Logout</Button>
-                        <IconButton color="inherit" onClick={() => <Redirect to='/search' />}>
-                            <AccountCircle />
+                        <IconButton>
+                            <Link to={`/profile`}><AccountCircle /></Link>
                         </IconButton>
                     </Toolbar>
                 </AppBar>

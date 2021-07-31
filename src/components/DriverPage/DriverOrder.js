@@ -72,7 +72,13 @@ const DriverOrder = ({order}) => {
                     <br/><br/>
                     2. Pick up Order #{order.id}
                     <br/><br/>
-                    3. Deliver order to customer's address:
+                    3.Once order is picked-up, press the confirm button below:
+                    <br/><br/>
+                    <Button variant="contained" color="primary" className={classes.issueButton}>
+                    Confirm Order Pick-up
+                    </Button>
+                    <br/><br/>
+                    4. Deliver order to customer's address:
                     <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     {order.deliveryLocation.street}, {order.deliveryLocation.city}, {order.deliveryLocation.state}
                     <br/><br/>
@@ -80,13 +86,12 @@ const DriverOrder = ({order}) => {
                     <br/>
                     Contact Details: {order.phone}
                     <br/><br/>
-                    4. Once order is delivered to customer, press the confirm button below:
-                </Typography>
-                
-                <Button variant="contained" color="primary" className={classes.issueButton}>
+                    5. Once order is delivered to customer, press the confirm button below:
+                    <br/><br/>
+                    <Button variant="contained" color="primary" className={classes.issueButton}>
                     Confirm Order Delivery
                 </Button>
-                
+                </Typography>   
             </React.Fragment>
 
         </>

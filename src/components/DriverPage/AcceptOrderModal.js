@@ -21,13 +21,13 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, setAcceptedOrder}) =>
     }
     
     return (
-        <>
-            <Modal show={show} onHide={() => onHide()}size="md"
-      aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal show={show} onHide={() => onHide()}size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+                
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Order Delivery</Modal.Title>
                     {error ? <p>Unable to accept this order at this time.</p> : null}
                 </Modal.Header>
+                
                 <Modal.Body>
                 
                     {order === null ? null : 
@@ -47,13 +47,13 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, setAcceptedOrder}) =>
                     ]}
 
                 </Modal.Body>
+                
                 <Modal.Footer>
                     <Button variant="contained" color="secondary" onClick={() => onHide()}>Cancel</Button>
                     &nbsp;&nbsp;
                     <Button variant="contained" color="primary" onClick={() => { acceptOrder() }}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
-        </>
     )
 }
 
