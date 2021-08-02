@@ -7,7 +7,7 @@ import {
 import AcceptOrderModal from "./AcceptOrderModal";
 import { DataGrid } from '@material-ui/data-grid';
 
-const AvailableOrders = ({ driver_id, setAcceptedOrder }) => {
+const AvailableOrders = ({ driver_id, setDriverStatus }) => {
 
     const [availableOrders, setAvailableOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -94,7 +94,7 @@ const AvailableOrders = ({ driver_id, setAcceptedOrder }) => {
 
     return (
         <React.Fragment>
-            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setAcceptedOrder={setAcceptedOrder}></AcceptOrderModal>
+            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setDriverStatus={setDriverStatus}></AcceptOrderModal>
             <Typography component="h1" variant="h6" color="inherit" >
                 Available Orders:
             </Typography>
@@ -103,7 +103,8 @@ const AvailableOrders = ({ driver_id, setAcceptedOrder }) => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    pageSize={9}
+                    pageSize= {9}
+                    rowsPerPageOptions={[9]}
                     
                 />
             </div>

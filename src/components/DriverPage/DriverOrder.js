@@ -14,9 +14,10 @@ const useStyles = makeStyles((theme) => (
     }
 ));
 
-const DriverOrder = ({order}) => {
+const DriverOrder = () => {
     
     const classes = useStyles();
+    const order = JSON.parse(localStorage.getItem('accepted_order'));
     
     return (
         <>

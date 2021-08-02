@@ -62,14 +62,13 @@ const DriverPage = () => {
     const classes = useStyles();
     const [driverStatus, setDriverStatus] = useState(null);
     const id = window.location.pathname.split('/driver/')[1].split('/homePage')[0];
-    const [acceptedOrder, setAcceptedOrder] = useState(null);
     
     useEffect(() => {
         AccountService.getDriverStatus(window.location.pathname.split('/driver/')[1].split('/homePage')[0]).then((res) => {
             setDriverStatus(res.data);
         })
-    }, [driverStatus, acceptedOrder])
-  
+    }, [driverStatus])
+
     return (
         <>
             <div className={classes.root}>
@@ -112,8 +111,8 @@ const DriverPage = () => {
                             <Grid item xs={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
-                                        {driverStatus === "AVAILABLE" ? <AvailableOrders driver_id={id} setAcceptedOrder={setAcceptedOrder}/> : null}
-                                        {driverStatus === "BUSY" ? <DriverOrder order = {acceptedOrder}/> : null}
+                                        {driverStatus === "AVAILABLE" ? <AvailableOrders driver_id={id} setDriverStatus={setDriverStatus}/> : null}
+                                        {driverStatus === "BUSY" ? <DriverOrder/> : null}
                                     </Paper>
                                 </Grid>
 
