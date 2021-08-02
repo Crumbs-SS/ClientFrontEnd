@@ -31,28 +31,6 @@ const DriverOrder = () => {
                     - Estimated total delivery time: 40 minutes
                     <br/>
                     - Total pay for this delivery: 5$
-                </Typography>
-
-                <Typography variant="h6" color="inherit" gutterBottom>
-                    Customer Details:
-                </Typography>
-
-                <Typography variant="body1" gutterBottom>
-                    - Name: {order.customer.userDetails.firstName} {order.customer.userDetails.lastName}
-                    <br/>
-                    - Location: {order.deliveryLocation.street}, {order.deliveryLocation.city}, {order.deliveryLocation.state}
-                    <br/>
-                    - Contact Details: {order.phone}
-                </Typography>
-
-                <Typography variant="h6" color="inherit" gutterBottom>
-                    Restaurant Information : 
-                </Typography>
-
-                <Typography variant="body1" gutterBottom>
-                    - Name: {order.restaurant.name}
-                    <br/>
-                    - Location: {order.restaurant.location.street}, {order.restaurant.location.city}, {order.restaurant.location.state}
                 </Typography> */}
 
                 <Typography  variant="h5" color="inherit" gutterBottom>

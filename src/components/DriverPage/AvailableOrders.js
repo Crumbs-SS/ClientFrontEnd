@@ -108,7 +108,6 @@ const AvailableOrders = ({ driver_id, setDriverStatus }) => {
                     
                 />
             </div>
-
         </React.Fragment>
     );
 }

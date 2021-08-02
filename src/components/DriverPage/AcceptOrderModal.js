@@ -12,8 +12,8 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, setDriverStatus}) => 
     const acceptOrder = () => {
         OrderService.acceptOrder(driver_id, order.id)
         .then( (res) => {
-            setDriverStatus('');
             localStorage.setItem('accepted_order', JSON.stringify(res.data));
+            setDriverStatus('');
             onHide();
         })
         .catch(() => {
