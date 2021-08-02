@@ -1,34 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {makeStyles} from '@material-ui/core/styles';
 import OrderService from '../../adapters/orderService';
 import {
     Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    TableHead,
     Typography,
 } from "@material-ui/core";
 import AcceptOrderModal from "./AcceptOrderModal";
-const useStyles = makeStyles((theme) => ({
-    seeMore: {
-        marginTop: theme.spacing(3),
-    },
-    title: {
-        flexGrow: 1,
-    }
-}));
+import { DataGrid } from '@material-ui/data-grid';
 
-const AvailableOrders = ({driver_id, setAcceptedOrder}) => {
-    
+const AvailableOrders = ({ driver_id, setAcceptedOrder }) => {
+
     const [availableOrders, setAvailableOrders] = useState([]);
-    const classes = useStyles();
-    
+    const [selectedOrder, setSelectedOrder] = useState(null);
+
     const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
     const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
-    const[selectedOrder, setSelectedOrder] = useState(null);
-    
+
 
     useEffect(() => {
         OrderService.getAvailableOrders().then(res => {
@@ -36,36 +22,92 @@ const AvailableOrders = ({driver_id, setAcceptedOrder}) => {
         })
     }, [])
 
-    const orderList = availableOrders.map((order, index) => {
-        return <TableRow key={order.id}>
-            <TableCell>{index}</TableCell>
-            <TableCell>40 minutes</TableCell>
-            <TableCell>5$</TableCell>
-            <TableCell>
-                <Button size="small" color="primary" variant="contained" onClick= {()=> {setSelectedOrder(order); setShowAcceptOrderModal(true)}}>View</Button>
-            </TableCell>
-        </TableRow>
-    });
+    const rows = availableOrders.map((order, index) => 
+     { return {id: index, time: Math.floor(Math.random() * 120) + 1, pay: Math.floor(Math.random() * 50) + 1, deliver: order.deliveryTime, order: order } }
+    );
+
+    const columns = [
+        { 
+            field: 'id', 
+            hide: true
+        },
+        {
+            field: 'time',
+            headerName: 'Time To Deliver',
+            width: 185,
+            editable: false,
+            disableColumnFilter: true,
+            disableColumnMenu:true,
+            disableColumnSelector: true,
+            disableSelectionOnClick: true,
+            valueFormatter: (params) => {
+                return `${params.value} minutes`;
+              },
+        },
+        {
+            field: 'pay',
+            headerName: 'Pay',
+            width: 102,
+            editable: false,
+            disableColumnFilter: true,
+            disableColumnMenu:true,
+            disableColumnSelector: true,
+            disableSelectionOnClick: true,
+            valueFormatter: (params) => {
+                return `${params.value} $`;
+              },
+        },
+        {
+            field: 'deliver',
+            headerName: 'Delivery Slot',
+            width: 180,
+            editable: false,
+            disableColumnFilter: true,
+            disableColumnMenu:true,
+            disableColumnSelector: true,
+            disableSelectionOnClick: true,
+            valueFormatter: (params) => {
+                const valueFormatted = params.value.split('T')[1].split('.')[0]
+                return `${valueFormatted} `;
+              },
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 95,
+            disableClickEventBubbling: true,
+            disableColumnSelector: true,
+            disableColumnFilter: true,
+            disableColumnMenu: true,
+            sortable: false,
+            disableSelectionOnClick: true,
+            renderCell: (params) => {
+                return  <Button size="small" color="primary" variant="contained" onClick= {()=> { setSelectedOrder(params.row.order); setShowAcceptOrderModal(true)}}>View</Button>;
+            }
+            
+        },
+        {
+            field: 'order',
+            hide: true
+        }
+    ];
 
     return (
         <React.Fragment>
-             <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setAcceptedOrder={setAcceptedOrder}></AcceptOrderModal>
-            <Typography component="h1" variant="h6" color="inherit"  className={classes.title}>
+            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setAcceptedOrder={setAcceptedOrder}></AcceptOrderModal>
+            <Typography component="h1" variant="h6" color="inherit" >
                 Available Orders:
             </Typography>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Order #</TableCell>
-                        <TableCell>Estimated delivery time</TableCell>
-                        <TableCell>Delivery Pay</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {orderList}
-                </TableBody>
-            </Table>
+            <br/>
+            <div style={{ height: 595, width: '100%' }}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    pageSize={9}
+                    
+                />
+            </div>
+
         </React.Fragment>
     );
 }
