@@ -1,6 +1,7 @@
 import { SET_CART, CLEAR_CART } from './types';
 import { loadOrders } from './orderActions';
 import CartService from '../adapters/cartService';
+import EmailService from '../adapters/emailService';
 
 export const addToCart = (id, menuItem) => (dispatch) => {
   CartService.addToCart(id, menuItem)
@@ -39,10 +40,11 @@ export const checkoutCart = (id, cartItems, {phone, address, preferences}) => (d
     cartItems
   }
   CartService.checkoutCart(id, body)
-  .then(({ data }) => {
+  .then((resp) => {
+    const orders = resp.data;
     dispatch(loadOrders(id));
-  })
-  .catch();
+    orders.forEach((order) => EmailService.sendOrderDetailsEmail(order.id));
+  }).catch();
 }
 
 export const deleteItem = (userId, menuItemId) => dispatch => {
