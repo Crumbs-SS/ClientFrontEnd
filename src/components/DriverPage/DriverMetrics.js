@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Typography
 } from "@material-ui/core";
+import AccountService from '../../adapters/accountService';
 
-const DriverMetrics = () => {
+const DriverMetrics = ({id}) => {
+
+    const [driverPay, setDriverPay] = useState(null);
+    useEffect(() => {
+        AccountService.getDriverPay(id)
+        .then((res) => {
+            setDriverPay(res.data);
+        })
+        .catch();
+    })
+
 
     return (
         <>
@@ -11,7 +22,11 @@ const DriverMetrics = () => {
                 <Typography component="h2" variant="h6" color="inherit" gutterBottom>
                     Your Metrics:
                 </Typography>
-               {/* Add driver statistics, rating and payment information */}
+                <Typography component="h2" variant="h6" color="inherit" gutterBottom>
+                    {JSON.stringify(driverPay) === '""' ? "Please make your first delivery" :
+                    ["Pay to this day: ", driverPay]
+                    }
+                </Typography>
             </React.Fragment>
         </>
     )

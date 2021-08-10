@@ -13,4 +13,7 @@ export default class AccountService{
     static getDriverStatus(id){
         return axios.get(url + '/drivers/status/' + id);
     }
+    static getDriverPay(id){
+        return axios.get(url + '/drivers/pay/' + id);
+    }
 }

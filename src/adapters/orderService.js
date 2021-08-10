@@ -34,6 +34,13 @@ export default class OrderService{
   static acceptOrder(driver_id, order_id){
     return axios.put(url + '/drivers/' + driver_id + '/order/' + order_id);
   }
+  static setPickedUpAt(order_id){
+    return axios.put(url + '/drivers/order/' + order_id + '/pickUp');
+  }
+  static fulfilOrder(order_id){
+    return axios.put(url + '/drivers/order/' + order_id);
+  }
+
 
 
 }

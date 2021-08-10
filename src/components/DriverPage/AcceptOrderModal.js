@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core";
 import OrderService from '../../adapters/orderService';
 
-const AcceptOrderModal = ({driver_id, order, show, onHide, setDriverStatus}) => {
+const AcceptOrderModal = ({driver_id, order, show, onHide, rerender}) => {
 
     const [error, setError] = useState(false);
 
@@ -13,7 +13,7 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, setDriverStatus}) => 
         OrderService.acceptOrder(driver_id, order.id)
         .then( (res) => {
             localStorage.setItem('accepted_order', JSON.stringify(res.data));
-            setDriverStatus('');
+            rerender(false);
             onHide();
         })
         .catch(() => {

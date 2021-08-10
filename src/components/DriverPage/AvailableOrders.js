@@ -7,7 +7,7 @@ import {
 import AcceptOrderModal from "./AcceptOrderModal";
 import { DataGrid } from '@material-ui/data-grid';
 
-const AvailableOrders = ({ driver_id, setDriverStatus }) => {
+const AvailableOrders = ({ driver_id, rerender }) => {
 
     const [availableOrders, setAvailableOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -23,7 +23,7 @@ const AvailableOrders = ({ driver_id, setDriverStatus }) => {
     }, [])
 
     const rows = availableOrders.map((order, index) => 
-     { return {id: index, time: Math.floor(Math.random() * 120) + 1, pay: Math.floor(Math.random() * 50) + 1, deliver: order.deliveryTime, order: order } }
+     { return {id: index, time: Math.floor(Math.random() * 120) + 1, pay: Math.floor(Math.random() * 50) + 1, deliver: order.deliverySlot, order: order } }
     );
 
     const columns = [
@@ -94,7 +94,7 @@ const AvailableOrders = ({ driver_id, setDriverStatus }) => {
 
     return (
         <React.Fragment>
-            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} setDriverStatus={setDriverStatus}></AcceptOrderModal>
+            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} rerender={rerender}></AcceptOrderModal>
             <Typography component="h1" variant="h6" color="inherit" >
                 Available Orders:
             </Typography>
