@@ -7,7 +7,7 @@ import {
 import AcceptOrderModal from "./AcceptOrderModal";
 import { DataGrid } from '@material-ui/data-grid';
 
-const AvailableOrders = ({ driver_id, rerender }) => {
+const AvailableOrders = ({ id, rerender }) => {
 
     const [availableOrders, setAvailableOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -15,20 +15,18 @@ const AvailableOrders = ({ driver_id, rerender }) => {
     const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
     const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
 
-
     useEffect(() => {
         OrderService.getAvailableOrders().then(res => {
             setAvailableOrders(res.data);
         })
     }, [])
 
-    const rows = availableOrders.map((order, index) => 
-     { return {id: index, time: Math.floor(Math.random() * 120) + 1, pay: Math.floor(Math.random() * 50) + 1, deliver: order.deliverySlot, order: order } }
+    const rows = availableOrders.map((order, index) => { return { id: index, time: order.deliveryTime, pay: order.deliveryPay, deliver: order.deliverySlot, order: order } }
     );
 
     const columns = [
-        { 
-            field: 'id', 
+        {
+            field: 'id',
             hide: true
         },
         {
@@ -37,12 +35,12 @@ const AvailableOrders = ({ driver_id, rerender }) => {
             width: 185,
             editable: false,
             disableColumnFilter: true,
-            disableColumnMenu:true,
+            disableColumnMenu: true,
             disableColumnSelector: true,
             disableSelectionOnClick: true,
             valueFormatter: (params) => {
-                return `${params.value} minutes`;
-              },
+                return `${params.value}`;
+            },
         },
         {
             field: 'pay',
@@ -50,12 +48,12 @@ const AvailableOrders = ({ driver_id, rerender }) => {
             width: 102,
             editable: false,
             disableColumnFilter: true,
-            disableColumnMenu:true,
+            disableColumnMenu: true,
             disableColumnSelector: true,
             disableSelectionOnClick: true,
             valueFormatter: (params) => {
                 return `${params.value} $`;
-              },
+            },
         },
         {
             field: 'deliver',
@@ -63,13 +61,13 @@ const AvailableOrders = ({ driver_id, rerender }) => {
             width: 180,
             editable: false,
             disableColumnFilter: true,
-            disableColumnMenu:true,
+            disableColumnMenu: true,
             disableColumnSelector: true,
             disableSelectionOnClick: true,
             valueFormatter: (params) => {
                 const valueFormatted = params.value.split('T')[1].split('.')[0]
                 return `${valueFormatted} `;
-              },
+            },
         },
         {
             field: 'action',
@@ -82,9 +80,9 @@ const AvailableOrders = ({ driver_id, rerender }) => {
             sortable: false,
             disableSelectionOnClick: true,
             renderCell: (params) => {
-                return  <Button size="small" color="primary" variant="contained" onClick= {()=> { setSelectedOrder(params.row.order); setShowAcceptOrderModal(true)}}>View</Button>;
+                return <Button size="small" color="primary" variant="contained" onClick={() => { setSelectedOrder(params.row.order); setShowAcceptOrderModal(true) }}>View</Button>;
             }
-            
+
         },
         {
             field: 'order',
@@ -92,23 +90,35 @@ const AvailableOrders = ({ driver_id, rerender }) => {
         }
     ];
 
-    return (
-        <React.Fragment>
-            <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={driver_id} rerender={rerender}></AcceptOrderModal>
-            <Typography component="h1" variant="h6" color="inherit" >
-                Available Orders:
-            </Typography>
-            <br/>
-            <div style={{ height: 595, width: '100%' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pageSize= {9}
-                    rowsPerPageOptions={[9]}
-                    
-                />
-            </div>
-        </React.Fragment>
-    );
+    if (availableOrders.length === 0) {
+        return (
+            <React.Fragment>
+                <br />
+                <Typography component="h1" variant="h6" color="inherit" style={{ fontWeight: 600 }}>
+                    No Available Orders at this time! We will notify you once an order is available.
+                </Typography>
+            </React.Fragment>
+        )
+    }
+    else {
+        return (
+            <React.Fragment>
+                <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} driver_id={id} rerender={rerender}></AcceptOrderModal>
+                <Typography component="h1" variant="h6" color="inherit" >
+                    Available Orders:
+                </Typography>
+                <br />
+                <div style={{ height: 595, width: '100%' }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSize={9}
+                        rowsPerPageOptions={[9]}
+
+                    />
+                </div>
+            </React.Fragment>
+        );
+    }
 }
 export default AvailableOrders;

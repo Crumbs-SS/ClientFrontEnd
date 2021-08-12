@@ -68,7 +68,7 @@ const DriverPage = () => {
         AccountService.getDriverStatus(id).then((res) => {
             setDriverStatus(res.data);
         })
-    }, [dummyState])
+    }, [dummyState, id])
 
     return (
         <>
@@ -112,8 +112,8 @@ const DriverPage = () => {
                             <Grid item xs={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
-                                        {driverStatus === "AVAILABLE" ? <AvailableOrders driver_id={id} rerender={rerender}/> : null}
-                                        {driverStatus === "BUSY" ? <DriverOrder rerender={rerender}/> : null}
+                                        {driverStatus === "AVAILABLE" ? <AvailableOrders id={id} rerender={rerender}/> : null}
+                                        {driverStatus === "BUSY" ? <DriverOrder id={id} rerender={rerender}/> : null}
                                     </Paper>
                                 </Grid>
 

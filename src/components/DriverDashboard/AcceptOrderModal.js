@@ -11,8 +11,7 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, rerender}) => {
 
     const acceptOrder = () => {
         OrderService.acceptOrder(driver_id, order.id)
-        .then( (res) => {
-            localStorage.setItem('accepted_order', JSON.stringify(res.data));
+        .then( () => {
             rerender(false);
             onHide();
         })
@@ -34,13 +33,13 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, rerender}) => {
                     {order === null ? null : 
                     [
                         <h5 key={1}>Order Details:</h5>,
-                        <h6 key={2}>Estimated total delivery time: 40 minutes</h6>,
-                        <h6 key={3}>Total pay for this delivery: 5$</h6>,
+                        <h6 key={2}>Estimated total delivery time: {order.deliveryTime}</h6>,
+                        <h6 key={3}>Total pay for this delivery: {order.deliveryPay}$</h6>,
                         <br key={4}/>,
                         <h5 key={5}>Customer Information</h5>, 
                         <h6 key={6}>Name: {order.customer.userDetails.firstName} {order.customer.userDetails.lastName}</h6>, 
                         <h6 key={7}>Location: {order.deliveryLocation.street}, {order.deliveryLocation.city}, {order.deliveryLocation.state}</h6>, 
-                        <h6 key={8}>Contact Details: {order.phone}</h6>,
+                        <h6 key={8}>Contact Details: {formatPhoneNumber(order.phone)}</h6>,
                         <br key={9}/>,
                         <h5 key={10}>Restaurant Information : </h5>, 
                         <h6 key={11}>Name: {order.restaurant.name}</h6>,
@@ -56,6 +55,16 @@ const AcceptOrderModal = ({driver_id, order, show, onHide, rerender}) => {
                 </Modal.Footer>
             </Modal>
     )
+
 }
+const formatPhoneNumber = number => {
+    const cleaned = ('' + number).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match)
+        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+
+    return number;
+}
+
 
 export default AcceptOrderModal;

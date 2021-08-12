@@ -5,11 +5,10 @@ import SearchPage from './components/pages/SearchPage';
 import LoginPage from './components/pages/LoginPage';
 import ProfilePage from './components/pages/ProfilePage';
 import {useDispatch, useSelector} from 'react-redux';
-//import {useEffect} from 'react';
 import {loadUser} from './actions/authActions'
-import RestaurantOwnerPage from './components/pages/RestaurantOwnerPage';
-import DriverPage from './components/DriverPage/DriverPage';
-import UpdateRestaurantForm from './components/forms/UpdateRestaurantForm';
+import RestaurantOwnerPage from './components/OwnerDashboard/RestaurantOwnerPage';
+import DriverPage from './components/DriverDashboard/DriverPage';
+import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
 
 const App = () => {

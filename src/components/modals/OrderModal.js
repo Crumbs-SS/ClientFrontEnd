@@ -5,13 +5,11 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
+const OrderModal = ({show, order, onHide, onEdit, onSelectCancel, orderType}) => {
 
     //900000 milliseconds = 15minutes
     const canUpdate = order ? (Date.now() - new Date(order.createdAt).getTime()) < 900000 : null
     const canCancel = order ? (Date.now() - new Date(order.createdAt).getTime()) < 300000 : null
-    //for demo purposes
-    //const canCancel = true;
     const cancelAt = order ? 5 - (new Date().getMinutes() - new Date(order.createdAt).getMinutes() ): null;
 
   return(
@@ -21,7 +19,8 @@ const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
           <Modal.Title> Order from {order ? order.restaurant.name : null} </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{canCancel ? 'You have ' + cancelAt + ' minutes left to cancel your order.' : 'You can no longer cancel your order'}</p>
+
+          <p>{canCancel && orderType === "active" ? 'You have ' + cancelAt + ' minutes left to cancel your order.' : null}</p>
           <b> Delivery Location </b>
           <p> { order ? order.deliveryLocation.street : null } </p>
 
@@ -45,7 +44,7 @@ const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
 
         <Modal.Footer>
         {
-            canCancel ? 
+            canCancel && orderType === "active" ? 
           <Button
             onClick={onSelectCancel}
             variant='danger'
@@ -54,7 +53,7 @@ const OrderModal = ({show, order, onHide, onEdit, onSelectCancel}) => {
           </Button> : null
           }
           {
-            canUpdate ? 
+            canUpdate && orderType === "active"? 
           <Button
             onClick={onEdit}
             variant='secondary'

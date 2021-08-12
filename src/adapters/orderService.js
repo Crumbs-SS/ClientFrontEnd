@@ -40,6 +40,9 @@ export default class OrderService{
   static fulfilOrder(order_id){
     return axios.put(url + '/drivers/order/' + order_id);
   }
+  static getDriverAcceptedOrder(driver_id){
+    return axios.get(url + '/drivers/order/' + driver_id);
+  }
 
 
 
