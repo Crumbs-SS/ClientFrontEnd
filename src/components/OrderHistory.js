@@ -90,7 +90,7 @@ const OrderHistory = ( { orderType }) => {
                 : null
                }
             </div>
-            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} onSelectCancel={onSelectCancel}/>
+            <OrderModal show={showModal} onHide={onHide} order={chosenOrder} onEdit={onEdit} onSelectCancel={onSelectCancel} orderType={orderType}/>
             <UpdateModal show={showEditModal} onHide={hideEditModal} order={chosenOrder} onUpdate={onUpdate} />
             <CancelModal show={showCancelModal} onHide={hideCancelModal} order={chosenOrder} onCancel={onCancel}></CancelModal>
         </>

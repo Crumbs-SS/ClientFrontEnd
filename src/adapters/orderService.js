@@ -28,5 +28,22 @@ export default class OrderService{
   static cancelOrder(id){
     return axios.delete(customersRoute + '/orders/' + id);
   }
+  static getAvailableOrders(){
+    return axios.get(url + '/drivers/available/orders');
+  }
+  static acceptOrder(driver_id, order_id){
+    return axios.put(url + '/drivers/' + driver_id + '/order/' + order_id);
+  }
+  static setPickedUpAt(order_id){
+    return axios.put(url + '/drivers/order/' + order_id + '/pickUp');
+  }
+  static fulfilOrder(order_id){
+    return axios.put(url + '/drivers/order/' + order_id);
+  }
+  static getDriverAcceptedOrder(driver_id){
+    return axios.get(url + '/drivers/order/' + driver_id);
+  }
+
+
 
 }
