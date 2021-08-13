@@ -10,6 +10,8 @@ import RestaurantOwnerPage from './components/OwnerDashboard/RestaurantOwnerPage
 import DriverPage from './components/DriverDashboard/DriverPage';
 import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
+import CheckoutForm from './components/Payment/CheckoutForm';
+import Base from './components/Payment/Base';
 
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
@@ -40,6 +42,7 @@ const App = () => {
                     <Route exact path='/driver/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
                     <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
                     <Route exact path='/email/verification/:token' component={EmailConfirmationPage}/>
+                    <Route exact path='/checkOut' component={Base}/>
                 </Switch>
             </Router>
         </div>
