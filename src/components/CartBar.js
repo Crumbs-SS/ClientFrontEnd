@@ -72,7 +72,7 @@ const CartBar = ({ active, setCartBar }) => {
     if(values.phone && values.address){
       onHide();
 
-      dispatch(checkoutCart(user.id, cart.shoppingCart, values));
+      // dispatch(checkoutCart(user.id, cart.shoppingCart, values));
       setRedirect('/profile');
     }
   }

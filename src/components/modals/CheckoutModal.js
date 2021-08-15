@@ -4,8 +4,13 @@ import { useState } from 'react';
 import * as yup from 'yup';
 import RestaurantComponent from '../RestaurantComponent';
 import '../../style/checkout-modal.css';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../Payment/CheckoutForm";
+import "../../style/checkoutForm.css";
 
 
+const promise = loadStripe("pk_test_51JNmSeBoRXU1dvNXVuxS9tBZUvQ7M1ljZt34Xa3LHyN3B4zVvr87mpwQXAoEYGjA8xX5ddqjRbXzv7AOI35cjXUw00NTjXVC09");
 
 const CheckoutModal = props => {
 
@@ -14,7 +19,7 @@ const CheckoutModal = props => {
   const [ address, setAddress ] = useState('');
 
   return(
-    <Modal show={props.show} onHide={() => props.onHide()} centered scrollable>
+    <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
     <Modal.Header closeButton>
         <Modal.Title> Your Order </Modal.Title>
     </Modal.Header>
@@ -58,8 +63,14 @@ const CheckoutModal = props => {
       </Formik>
 
       { /* Payment Options Here */ }
-
       <br />
+      <div >
+          <Elements stripe={promise}>
+            <CheckoutForm />
+          </Elements>
+        </div>
+      <br />
+
       <div className='preferences'>
         <div className='extra-instructions'>
           <b> Extra instructions </b>
