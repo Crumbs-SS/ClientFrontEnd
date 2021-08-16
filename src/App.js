@@ -10,6 +10,7 @@ import RestaurantOwnerPage from './components/OwnerDashboard/RestaurantOwnerPage
 import DriverPage from './components/DriverDashboard/DriverPage';
 import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
+import {useEffect} from "react";
 
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
@@ -17,7 +18,12 @@ const App = () => {
     const id = useSelector(state => state.auth.id);
     const dispatch = useDispatch();
 
-    dispatch(loadUser());
+    useEffect(() => {
+        if (loggedIn) {
+            dispatch(loadUser());
+        }
+    }, [loggedIn, dispatch])
+    //dispatch(loadUser());
 
     const isCustomer = (role) => 'customer' === role;
     const isOwner = (role) => 'owner' === role;
