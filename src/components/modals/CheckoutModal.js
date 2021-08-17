@@ -42,7 +42,6 @@ const CheckoutModal = props => {
         billing_details: {
           email: props.user.email,
           name: props.user.firstName + props.user.lastName,
-          
         }
       }
     });
@@ -61,9 +60,6 @@ const CheckoutModal = props => {
 
     return (
       <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
-        {succeeded ? <React.Fragment><p>Your payment was successful and your order has been placed!</p>
-        <p>Thank you for ordering at Curmbs Food Service</p>
-        <p>Go to your profile page to view your order:</p></React.Fragment> : <React.Fragment>
         <Modal.Header closeButton>
           <Modal.Title> Your Order </Modal.Title>
         </Modal.Header>
@@ -163,9 +159,6 @@ const CheckoutModal = props => {
             {formatter.format(props.total)}
           </Button>
         </Modal.Footer>
-        </React.Fragment>
-  }
-
       </Modal>
 
     );
