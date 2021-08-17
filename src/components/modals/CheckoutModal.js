@@ -1,116 +1,175 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { useState } from 'react';
 import * as yup from 'yup';
 import RestaurantComponent from '../RestaurantComponent';
 import '../../style/checkout-modal.css';
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../Payment/CheckoutForm";
 import "../../style/checkoutForm.css";
-
-
-const promise = loadStripe("pk_test_51JNmSeBoRXU1dvNXVuxS9tBZUvQ7M1ljZt34Xa3LHyN3B4zVvr87mpwQXAoEYGjA8xX5ddqjRbXzv7AOI35cjXUw00NTjXVC09");
+import React, { useEffect, useState} from "react";
+import {
+  CardElement,
+  useStripe,
+  useElements
+} from "@stripe/react-stripe-js";
+import cardStyle from '../../style/cardStyle';
 
 const CheckoutModal = props => {
 
-  const [ preferences, setPreferences ] = useState('');
-  const [ phone, setPhone ] = useState('');
-  const [ address, setAddress ] = useState('');
+  const [preferences, setPreferences] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
 
-  return(
-    <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
-    <Modal.Header closeButton>
-        <Modal.Title> Your Order </Modal.Title>
-    </Modal.Header>
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const stripe = useStripe();
+  const elements = useElements();
 
-    <Modal.Body>
-      <Formik validationSchema={schema} initialValues={{phone: '', address: ''}} >
-      {({errors, handleChange, values}) => {
-          return (
-            <Form noValidate>
-              <b> Address </b>
-              <Form.Control
-                type='text'
-                name='address'
-                placeholder='Enter your address'
-                className='input-cm'
-                value={address}
-                onChange={(e) => {handleChange(e); setAddress(e.target.value)}}
-                isInvalid={errors.address}
-              />
-              <Form.Control.Feedback type='invalid'>
-                  {errors.address}
-              </Form.Control.Feedback>
-              <br />
-              <b> Phone Number </b>
-                <Form.Control
-                  type='text'
-                  name='phone'
-                  placeholder='Enter your phone number'
-                  className='input-cm'
-                  value={phone}
-                  onChange={(e) => {handleChange(e); setPhone(e.target.value)}}
-                  isInvalid={errors.phone}
-                />
-                <Form.Control.Feedback type='invalid'>
-                    {errors.phone}
-                </Form.Control.Feedback>
-            </Form>
-          )
+
+  const handleChange = async (event) => {
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  const handleSubmit = async () => {
+
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(props.clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          email: props.user.email,
+          name: props.user.firstName + props.user.lastName,
+          
         }
       }
-      </Formik>
+    });
+    if (payload.error) {
+      setError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      props.onSubmit({ phone, preferences, address })
+      setSucceeded(true);
+    }
+  };
 
-      { /* Payment Options Here */ }
-      <br />
-      <div >
-          <Elements stripe={promise}>
-            <CheckoutForm />
-          </Elements>
-        </div>
-      <br />
+  
 
-      <div className='preferences'>
-        <div className='extra-instructions'>
-          <b> Extra instructions </b>
-          <span> List any special requests </span>
-        </div>
-        <textarea
-          onChange={e => setPreferences(e.target.value)}
-          value={preferences}
-          className='preferences-textbox'
-        />
-      </div>
+    return (
+      <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
+        {succeeded ? <React.Fragment><p>Your payment was successful and your order has been placed!</p>
+        <p>Thank you for ordering at Curmbs Food Service</p>
+        <p>Go to your profile page to view your order:</p></React.Fragment> : <React.Fragment>
+        <Modal.Header closeButton>
+          <Modal.Title> Your Order </Modal.Title>
+        </Modal.Header>
 
-      <br />
-      <b> Items Ordered </b>
+        <Modal.Body>
+          <Formik validationSchema={schema} initialValues={{ phone: '', address: '' }} >
+            {({ errors, handleChange, values }) => {
+              return (
+                <Form noValidate>
+                  <b> Address </b>
+                  <Form.Control
+                    type='text'
+                    name='address'
+                    placeholder='Enter your address'
+                    className='input-cm'
+                    value={address}
+                    onChange={(e) => { handleChange(e); setAddress(e.target.value) }}
+                    isInvalid={errors.address}
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {errors.address}
+                  </Form.Control.Feedback>
+                  <br />
+                  <b> Phone Number </b>
+                  <Form.Control
+                    type='text'
+                    name='phone'
+                    placeholder='Enter your phone number'
+                    className='input-cm'
+                    value={phone}
+                    onChange={(e) => { handleChange(e); setPhone(e.target.value) }}
+                    isInvalid={errors.phone}
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {errors.phone}
+                  </Form.Control.Feedback>
+                </Form>
+              )
+            }
+            }
+          </Formik>
 
-      <div id='restaurant-components-cm'>
-        { Object.keys(props.restaurants).map(restaurant =>{
-          const restaurantObj = props.restaurants[restaurant];
-          return <RestaurantComponent
-                    key={restaurantObj.id}
-                    restaurant={restaurantObj}
-                   />
-          })}
-      </div>
+          { /* Payment Options Here */}
+          <br />
+          <div >
+            <b> Payment Inforatiom </b>
+            <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+            {/* Show any error that happens when processing the payment */}
+            {error && (
+              <div className="card-error" role="alert">
+                {error}
+              </div>
+            )}
+          </div>
+          <br />
 
-    </Modal.Body>
+          <div className='preferences'>
+            <div className='extra-instructions'>
+              <b> Extra instructions </b>
+              <span> List any special requests </span>
+            </div>
+            <textarea
+              onChange={e => setPreferences(e.target.value)}
+              value={preferences}
+              className='preferences-textbox'
+            />
+          </div>
 
+          <br />
+          <b> Items Ordered </b>
 
-    <Modal.Footer>
-      <Button
-        onClick={() => props.onSubmit({phone, preferences, address})}
-        variant='danger'
-        className='add-to-cart'
-      >
-        Checkout - {formatter.format(props.total)}
-      </Button>
+          <div id='restaurant-components-cm'>
+            {Object.keys(props.restaurants).map(restaurant => {
+              const restaurantObj = props.restaurants[restaurant];
+              return <RestaurantComponent
+                key={restaurantObj.id}
+                restaurant={restaurantObj}
+              />
+            })}
+          </div>
 
-    </Modal.Footer>
-    </Modal>
-  )
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            disabled={processing || disabled || succeeded}
+            onClick={() => handleSubmit()}
+            className='payButton'
+          >
+            <span >
+              {processing ? (
+                <div className="spinner" id="spinner"></div>
+              ) : (
+                "Pay now   "
+              )}
+            </span>
+            {formatter.format(props.total)}
+          </Button>
+        </Modal.Footer>
+        </React.Fragment>
+  }
+
+      </Modal>
+
+    );
+  
 }
 
 export default CheckoutModal;
@@ -124,6 +183,6 @@ const formatter = new Intl.NumberFormat('en-US', {
 const schema = yup.object({
   address: yup.string().ensure().trim().required().max(30),
   phone: yup.string().ensure().trim().required().min(7).max(15)
-      .matches(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
-          "Phone number must be valid.")
+    .matches(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+      "Phone number must be valid.")
 })
