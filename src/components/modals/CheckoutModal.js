@@ -46,7 +46,7 @@ const CheckoutModal = props => {
       }
     });
     if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
+      setError(`Payment failed: ${payload.error.message}`);
       setProcessing(false);
     } else {
       setError(null);
@@ -109,7 +109,7 @@ const CheckoutModal = props => {
             <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
             {/* Show any error that happens when processing the payment */}
             {error && (
-              <div className="card-error" role="alert">
+              <div className="card-error" role="alert" >
                 {error}
               </div>
             )}
