@@ -2,7 +2,6 @@ import '../style/pagination.css';
 import { Pagination } from '@material-ui/lab';
 
 const PaginationComp = ({ totalPages, setCurrentPage, currentPage }) => {
-  console.log(currentPage);
   return(
     <Pagination 
       className = "pagination-comp"

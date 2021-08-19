@@ -51,7 +51,6 @@ const DriverOrder = ({ id, rerender }) => {
 
         return (
             <React.Fragment>
-
                 <Typography variant="h5" color="inherit" gutterBottom>
                     Order Details:
                 </Typography >

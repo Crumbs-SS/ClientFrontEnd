@@ -6,6 +6,7 @@ const customersRoute = url +'/customers';
 const config = {
   headers: {
       'Content-Type': 'application/json',
+      'Authentication': localStorage.getItem('token')
   }
 }
 
@@ -15,14 +16,13 @@ export default class OrderService{
     return axios.get(customersRoute + `/${id}/orders?page=${page}`);
   }
 
-  static updateOrders(id, orderId, {phone, address, preferences, foodOrders}){
+  static updateOrders(orderId, {phone, address, preferences, foodOrders}){
     const body = {
       phone, address, preferences, cartItems: foodOrders
     }
 
-    return axios.put(customersRoute + `/${id}/order/${orderId}`,
-      JSON.stringify(body),
-       config);
+    return axios.put(url + `/orders/${orderId}`,
+      JSON.stringify(body), config);
   }
 
   static cancelOrder(id){
