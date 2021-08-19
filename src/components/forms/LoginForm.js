@@ -17,6 +17,7 @@ const LoginForm = (props) => {
 
     const dispatch = useDispatch();
     const loggedIn = useSelector(state => state.auth.loginSuccess);
+    const error = useSelector(state => state.error.msg);
     const onSuccess = (values) => {
         dispatch(clearErrors());
         dispatch(login(values));
@@ -29,8 +30,22 @@ const LoginForm = (props) => {
         }
     }, [loggedIn, props, dispatch])
 
+    const showError = (error) => {
+        if (!error) {
+            return null;
+        }
+        else if (Object.keys(error).length < 1) {
+            return null;
+        }
+        else {
+            return <div style={{ color: 'red' }}>{error}</div>;
+        }
+    };
+
 
     return (
+        <>
+        {showError(error)}
         <Formik
             validationSchema={schema}
             onSubmit={onSuccess}
@@ -71,6 +86,7 @@ const LoginForm = (props) => {
                 );
             }}
         </Formik>
+        </>
     );
 }
 
