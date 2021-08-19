@@ -18,6 +18,9 @@ const schema = yup.object({
         .matches(/^[A-Za-z']*$/, "Name can only contain letters and apostrophes."),
     lastName: yup.string().ensure().trim().required().min(1).max(50)
         .matches(/^[A-Za-z']*$/, "Name can only contain letters and apostrophes."),
+    phone: yup.string().ensure().trim().required().min(7).max(15)
+    .matches(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+        "Phone number must be valid."),
     licenseId: yup.string().ensure().trim().required().min(7).max(30)
 });
 
@@ -139,6 +142,15 @@ const DriverRegistrationForm = (props) => {
                                           onChange={handleChange} value={values.lastName} isInvalid={errors.lastName}/>
                             <Form.Control.Feedback type='invalid'>
                                 {errors.lastName}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group controlId="formPhone">
+                            <Form.Label>Phone Number</Form.Label>
+                            <Form.Control type="text" name="phone" autoComplete="off" placeholder="Enter Phone Number"
+                                          onChange={handleChange} value={values.phone} isInvalid={errors.phone}/>
+                            <Form.Control.Feedback type='invalid'>
+                                {errors.phone}
                             </Form.Control.Feedback>
                         </Form.Group>
 

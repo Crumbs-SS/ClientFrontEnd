@@ -74,13 +74,13 @@ export const registerCustomer = ({username, password, email, firstName, lastName
         });
 };
 
-export const registerDriver = ({username, password, email, firstName, lastName, licenseId}) => dispatch => {
+export const registerDriver = ({username, password, email, firstName, lastName, licenseId, phone}) => dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
         }
     };
-    const body = JSON.stringify({username, password, email, firstName, lastName, licenseId});
+    const body = JSON.stringify({username, password, email, firstName, lastName, licenseId, phone});
 
     dispatch({ type: REGISTER_PENDING });
 

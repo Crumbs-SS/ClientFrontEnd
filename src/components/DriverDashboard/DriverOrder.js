@@ -44,7 +44,7 @@ const DriverOrder = ({ id, rerender }) => {
             .catch();
 
     }
-    if (order === null) {
+    if (order === null || !order.customer ) {
         return null
     }
     else {

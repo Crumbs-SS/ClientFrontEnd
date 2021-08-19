@@ -5,7 +5,7 @@ import OrderModal from './modals/OrderModal';
 import UpdateModal from './modals/UpdateModal';
 import CancelModal from './modals/CancelModal';
 import { updateOrder, loadOrders, cancelOrder } from '../actions/orderActions';
-import  Pagination  from './Pagination';
+import  PaginationComp  from './Pagination';
 const OrderHistory = ( { orderType }) => {
 
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ const OrderHistory = ( { orderType }) => {
                    : "You don't have any orders"
               }
               { orders[orderType+"Orders"].totalPages > 1 ? 
-                <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+                <PaginationComp totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
                 : null
                }
             </div>

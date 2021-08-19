@@ -10,12 +10,14 @@ import RestaurantOwnerPage from './components/OwnerDashboard/RestaurantOwnerPage
 import DriverPage from './components/DriverDashboard/DriverPage';
 import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
+import OrderAcceptancePage from './components/pages/OrderAcceptancePage';
 
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
     const currentRole = useSelector(state => state.auth.role);
     const id = useSelector(state => state.auth.id);
     const dispatch = useDispatch();
+
 
     dispatch(loadUser());
 
@@ -40,6 +42,12 @@ const App = () => {
                     <Route exact path='/driver/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
                     <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
                     <Route exact path='/email/verification/:token' component={EmailConfirmationPage}/>
+                    <Route 
+                        exact 
+                        path='/orders/:id/drivers/:id'> 
+                        {localStorage.getItem("token") && localStorage.getItem("role") === "driver" ? <OrderAcceptancePage /> 
+                            : <Redirect to='/'/>} 
+                    </Route>
                 </Switch>
             </Router>
         </div>
