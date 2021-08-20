@@ -17,7 +17,7 @@ export const loadOrders = (id, page=0) => dispatch => {
 }
 
 export const updateOrder = (userId, orderId, fields, page) => dispatch => {
-  OrderService.updateOrders(userId, orderId, fields)
+  OrderService.updateOrders(orderId, fields)
   .then(() => dispatch(loadOrders(userId, page)))
   .catch();
 }

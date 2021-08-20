@@ -1,23 +1,15 @@
 import '../style/pagination.css';
+import { Pagination } from '@material-ui/lab';
 
-const Pagination = ({ totalPages, setCurrentPage, currentPage }) => {
-  const links = [];
-
-  for (let i = 0; i < (totalPages + 1); i++) {
-    links.push(<li key={i} className="page-item">
-      <button style={ currentPage===i ? {"color": "rgb(255, 0, 0)"} : null} onClick={() => setCurrentPage(i)} className="page-link">{i+1}</button>
-    </li>)
-  }
-
+const PaginationComp = ({ totalPages, setCurrentPage, currentPage }) => {
   return(
-    <div className='pagination-comp'>
-        <ul className="pagination">
-          <li className="page-item"><button onClick={() => setCurrentPage(currentPage<=0 ? 0 : currentPage - 1)} className="page-link">Previous</button></li>
-          {links}
-          <li className="page-item"><button onClick={() => setCurrentPage(currentPage>=totalPages ? totalPages : currentPage + 1)} className="page-link">Next</button></li>
-        </ul>
-    </div>
+    <Pagination 
+      className = "pagination-comp"
+      count={totalPages + 1} 
+      page={parseInt(currentPage) + 1} 
+      onChange={(_, page) => setCurrentPage(page - 1)}
+     />
   )
 }
 
-export default Pagination;
+export default PaginationComp;

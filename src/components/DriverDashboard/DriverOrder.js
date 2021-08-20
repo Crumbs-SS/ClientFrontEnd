@@ -44,14 +44,13 @@ const DriverOrder = ({ id, rerender }) => {
             .catch();
 
     }
-    if (order === null) {
+    if (order === null || !order.customer ) {
         return null
     }
     else {
 
         return (
             <React.Fragment>
-
                 <Typography variant="h5" color="inherit" gutterBottom>
                     Order Details:
                 </Typography >

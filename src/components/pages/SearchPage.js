@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import SearchResult from '../SearchResult';
-import Pagination from '../Pagination';
+import PaginationComp from '../Pagination';
 import RestaurantService from '../../adapters/restaurantService';
 import { setFoodSearchOption } from '../../actions/queryActions';
 
@@ -157,7 +157,7 @@ const SearchPage = () => {
                   : <h3 id='result-status'> No Results Found </h3>
             }
           </div>
-          <Pagination
+          <PaginationComp
             totalPages={totalPages}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

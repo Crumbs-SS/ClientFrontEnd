@@ -10,6 +10,7 @@ import RestaurantOwnerPage from './components/OwnerDashboard/RestaurantOwnerPage
 import DriverPage from './components/DriverDashboard/DriverPage';
 import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantForm';
 import EmailConfirmationPage from './components/EmailConfirmation';
+import OrderAcceptancePage from './components/pages/OrderAcceptancePage';
 import {useEffect} from "react";
 
 const App = () => {
@@ -23,7 +24,6 @@ const App = () => {
             dispatch(loadUser());
         }
     }, [loggedIn, dispatch])
-    //dispatch(loadUser());
 
     const isCustomer = (role) => 'customer' === role;
     const isOwner = (role) => 'owner' === role;
@@ -46,6 +46,12 @@ const App = () => {
                     <Route exact path='/driver/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
                     <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
                     <Route exact path='/email/verification/:token' component={EmailConfirmationPage}/>
+                    <Route 
+                        exact 
+                        path='/orders/:id/drivers/:id'> 
+                        {localStorage.getItem("token") && localStorage.getItem("role") === "driver" ? <OrderAcceptancePage /> 
+                            : <Redirect to='/'/>} 
+                    </Route>
                 </Switch>
             </Router>
         </div>

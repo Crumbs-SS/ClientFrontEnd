@@ -17,7 +17,7 @@ it('calls updateOrder and returns orders', async () => {
     data: {order: {name: "Order - 1"}}
   }))
 
-  const { data:{order} } = await OrderService.updateOrders(null, null, {});
+  const { data:{order} } = await OrderService.updateOrders(null, {});
 
   expect(order).toEqual({name: "Order - 1"});
   expect(mockAxios.put).toHaveBeenCalledTimes(1);
