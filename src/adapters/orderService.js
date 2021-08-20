@@ -6,7 +6,7 @@ const customersRoute = url +'/customers';
 const config = {
   headers: {
       'Content-Type': 'application/json',
-      'Authentication': localStorage.getItem('token')
+      'Authorization': localStorage.getItem('token')
   }
 }
 
