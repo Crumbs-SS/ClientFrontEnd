@@ -16,7 +16,7 @@ const ForgotPasswordForm = (props) => {
 
     const dispatch = useDispatch();
     const onSuccess = (values) => {
-        AccountService.forgotPassword(values.email);
+        AccountService.forgotPassword(values.email).then();
         props.close();
         window.alert('Please check your email inbox for a recovery email.');
     };

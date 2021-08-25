@@ -16,4 +16,7 @@ export default class AccountService{
     static getDriverPay(id){
         return axios.get(url + '/drivers/pay/' + id);
     }
+    static forgotPassword(email){
+        return axios.get(url + '/users/email/' + email);
+    }
 }

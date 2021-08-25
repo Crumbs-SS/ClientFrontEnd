@@ -12,6 +12,7 @@ import UpdateRestaurantForm from './components/OwnerDashboard/UpdateRestaurantFo
 import EmailConfirmationPage from './components/EmailConfirmation';
 import OrderAcceptancePage from './components/pages/OrderAcceptancePage';
 import {useEffect} from "react";
+import RecoverPasswordPage from "./components/pages/RecoverPasswordPage";
 
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
@@ -46,11 +47,12 @@ const App = () => {
                     <Route exact path='/driver/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
                     <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
                     <Route exact path='/email/verification/:token' component={EmailConfirmationPage}/>
-                    <Route 
-                        exact 
-                        path='/orders/:id/drivers/:id'> 
-                        {localStorage.getItem("token") && localStorage.getItem("role") === "driver" ? <OrderAcceptancePage /> 
-                            : <Redirect to='/'/>} 
+                    <Route exact path='/passwordRecovery/:token' component={RecoverPasswordPage}/>
+                    <Route
+                        exact
+                        path='/orders/:id/drivers/:id'>
+                        {localStorage.getItem("token") && localStorage.getItem("role") === "driver" ? <OrderAcceptancePage />
+                            : <Redirect to='/'/>}
                     </Route>
                 </Switch>
             </Router>

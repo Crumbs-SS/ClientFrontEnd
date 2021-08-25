@@ -210,7 +210,31 @@ export const updateProfile = ({username, email, firstName, lastName}) => (dispat
                 type: ACCOUNT_UPDATE_FAIL,
             });
         });
-};
+}
+
+export const changePassword = (password, confirmationToken) => (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+
+    const body = JSON.stringify({password, confirmationToken});
+
+    axios.post(accountURL + '/users/password/recover', body, config)
+        .then(res => {
+            dispatch({
+                type: ACCOUNT_UPDATE_SUCCESS,
+                payload: null,
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status, 'ACCOUNT_UPDATE_FAIL'));
+            dispatch({
+                type: ACCOUNT_UPDATE_FAIL,
+            });
+        });
+}
 
 export const clearRegistrationStatus = () => (dispatch) => {
     dispatch({ type: CLEAR_REGISTRATION_STATUS });
