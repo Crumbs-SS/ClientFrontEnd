@@ -4,17 +4,41 @@ const url = 'http://localhost:8080';
 
 export default class AccountService{
 
-    static checkInDriver(id){
-        return axios.put(url + '/drivers/checkIn/' + id);
+    static checkInDriver = (username) => (getState) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getState().auth.token,
+            }
+        };
+        return axios.put(url + '/drivers/checkIn/' + username, config);
     }
-    static checkOutDriver(id){
-        return axios.put(url + '/drivers/checkOut/' + id);
+    static checkOutDriver = (username) => (getState) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getState().auth.token,
+            }
+        };
+        return axios.put(url + '/drivers/checkOut/' + username, config);
     }
-    static getDriverStatus(id){
-        return axios.get(url + '/drivers/status/' + id);
+    static getDriverStatus = (username) => (getState) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getState().auth.token,
+            }
+        };
+        return axios.get(url + '/drivers/status/' + username, config);
     }
-    static getDriverPay(id){
-        return axios.get(url + '/drivers/pay/' + id);
+    static getDriverPay = (username) => (getState) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getState().auth.token,
+            }
+        };
+        return axios.get(url + '/drivers/pay/' + username, config);
     }
     static forgotPassword(email){
         return axios.get(url + '/users/email/' + email);
