@@ -1,5 +1,4 @@
 import {Modal} from "react-bootstrap";
-import LoginForm from "../forms/LoginForm";
 import ForgotPasswordForm from "../forms/ForgotPasswordForm";
 
 const ForgotPasswordModal = (props) => {

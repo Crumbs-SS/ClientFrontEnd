@@ -1,4 +1,3 @@
-//import '../style/login-page.css';
 import {Modal} from 'react-bootstrap';
 import React from 'react';
 
