@@ -1,11 +1,7 @@
 import '../../style/forms.css';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch, useSelector} from 'react-redux';
 import {Button, Form} from 'react-bootstrap';
-import {clearLoginStatus, login} from '../../actions/authActions'
-import {clearErrors} from "../../actions/errorActions";
-import {useEffect} from "react";
 import AccountService from "../../adapters/accountService";
 
 const schema = yup.object({
@@ -14,7 +10,6 @@ const schema = yup.object({
 
 const ForgotPasswordForm = (props) => {
 
-    const dispatch = useDispatch();
     const onSuccess = (values) => {
         AccountService.forgotPassword(values.email).then();
         props.close();
