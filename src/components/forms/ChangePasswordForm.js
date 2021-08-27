@@ -3,10 +3,8 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Form} from 'react-bootstrap';
-import {changePassword, clearLoginStatus, login} from '../../actions/authActions'
+import {changePassword} from '../../actions/authActions'
 import {clearErrors} from "../../actions/errorActions";
-import {useEffect} from "react";
-import AccountService from "../../adapters/accountService";
 
 const schema = yup.object({
     password: yup.string().ensure().trim().required().min(6).max(200),
