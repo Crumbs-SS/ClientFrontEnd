@@ -31,12 +31,13 @@ export const loadCart = (id) => dispatch => {
   .catch();
 }
 
-export const checkoutCart = (id, cartItems, {phone, address, preferences}) => (dispatch) => {
+export const checkoutCart = (id, cartItems, {phone, address, preferences, stripeID}) => (dispatch) => {
   dispatch(clearCart(id));
   const body = {
     phone,
     address,
     preferences,
+    stripeID,
     cartItems
   }
   CartService.checkoutCart(id, body)

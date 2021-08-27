@@ -11,6 +11,8 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import cardStyle from '../../style/cardStyle';
+import PaymentService from '../../adapters/paymentService';
+
 
 const CheckoutModal = props => {
 
@@ -51,7 +53,8 @@ const CheckoutModal = props => {
     } else {
       setError(null);
       setProcessing(false);
-      props.onSubmit({ phone, preferences, address })
+      const stripeID = payload.paymentIntent.id;
+      props.onSubmit({ phone, preferences, address, stripeID });
       setSucceeded(true);
     }
   };

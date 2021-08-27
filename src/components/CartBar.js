@@ -9,6 +9,7 @@ import '../style/cart-bar.css';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentService from '../adapters/paymentService';
+
 const promise = loadStripe("pk_test_51JNmSeBoRXU1dvNXVuxS9tBZUvQ7M1ljZt34Xa3LHyN3B4zVvr87mpwQXAoEYGjA8xX5ddqjRbXzv7AOI35cjXUw00NTjXVC09");
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -27,6 +28,7 @@ const CartBar = ({ active, setCartBar }) => {
 
   const [displayModal, setDisplayModal] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  
   const [clientSecret, setClientSecret] = useState('');
  
   const createPaymentIntent = () => {
