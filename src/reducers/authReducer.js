@@ -17,7 +17,7 @@ import {
 
 const initialState = {
     token: localStorage.getItem('token'),
-    id: localStorage.getItem('id'),
+    username: localStorage.getItem('username'),
     user: null,
     role: localStorage.getItem('role'),
     isAuthenticated: null,
@@ -50,7 +50,7 @@ const authReducer = (state = initialState, action) => {
             };
         case LOGIN_SUCCESS:
             localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('id', action.payload.id);
+            localStorage.setItem('username', action.payload.username);
             localStorage.setItem('role', action.payload.role);
             return {
                 ...state,
@@ -62,7 +62,6 @@ const authReducer = (state = initialState, action) => {
         case REGISTER_SUCCESS:
             return {
                 ...state,
-                ...action.payload,
                 isLoading: false,
                 registerSuccess: true,
             };
@@ -83,12 +82,12 @@ const authReducer = (state = initialState, action) => {
         case CLEAR_REGISTRATION_STATUS:
         case ACCOUNT_DELETE_SUCCESS:
             localStorage.removeItem('token');
-            localStorage.removeItem('id');
+            localStorage.removeItem('username');
             localStorage.removeItem('role');
             return {
                 ...state,
                 token: null,
-                id: null,
+                username: null,
                 user: null,
                 role: null,
                 isAuthenticated: false,

@@ -30,13 +30,19 @@ const accountURL = 'http://localhost:8080'
 export const loadUser = () => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
 
-    const id = getState().auth.id;
+    const username = getState().auth.username;
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getState().auth.token,
+        }
+    };
 
-    axios.get(authURL + '/users/' + id)
+    axios.get(authURL + '/users/' + username, config)
         .then(res => {
           dispatch({type: USER_LOADED, payload: res.data});
-          dispatch(loadCart(id));
-          dispatch(loadOrders(id));
+          dispatch(loadCart(username));
+          dispatch(loadOrders(username));
       })
         .catch(err => {
             // dispatch(returnErrors(err.response.data, err.response.status));
@@ -58,12 +64,8 @@ export const registerCustomer = ({username, password, email, firstName, lastName
 
     axios.post(accountURL + '/customers/register', body, config)
         .then(res => {
-            const id = res.headers['location'].split("/").slice(-1).pop();
             dispatch({
                 type: REGISTER_SUCCESS,
-                payload: {
-                    id: id,
-                },
             });
         })
         .catch(err => {
@@ -86,12 +88,8 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
 
     axios.post(accountURL + '/drivers/register', body, config)
         .then(res => {
-            const id = res.headers['location'].split("/").slice(-1).pop();
             dispatch({
                 type: REGISTER_SUCCESS,
-                payload: {
-                    id: id,
-                },
             });
         })
         .catch(err => {
@@ -112,12 +110,8 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
 
     axios.post(accountURL + '/owners/register', body, config)
         .then(res => {
-            const id = res.headers['location'].split("/").slice(-1).pop();
             dispatch({
                 type: REGISTER_SUCCESS,
-                payload: {
-                    id: id,
-                },
             });
         })
         .catch(err => {
@@ -145,7 +139,7 @@ export const login = ({username, password, role}) => dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: {
                     token: res.headers['authorization'],
-                    id: res.headers['userid'],
+                    username: res.headers['username'],
                     role: role,
                 },
             });
@@ -165,12 +159,13 @@ export const logout = () => dispatch => {
     dispatch({type: CLEAR_ORDERS});
 };
 
-export const deleteAccount = (username, password) => (dispatch) => {
+export const deleteAccount = (username, password) => (dispatch, getState) => {
     const body = JSON.stringify({username, password});
     const config = {
         data: body,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': getState().auth.token,
         },
     };
 
@@ -188,10 +183,11 @@ export const deleteAccount = (username, password) => (dispatch) => {
         });
 }
 
-export const updateProfile = ({username, email, firstName, lastName}) => (dispatch) => {
+export const updateProfile = ({username, email, firstName, lastName}) => (dispatch, getState) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': getState().auth.token,
         }
     };
 

@@ -1,7 +1,5 @@
 import '../../style/login-page.css';
 import {useState} from 'react';
-import SideBar from '../SideBar';
-import LoginModal from '../modals/LoginModal';
 import {clearErrors} from "../../actions/errorActions";
 import {useDispatch} from "react-redux";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
