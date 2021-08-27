@@ -89,9 +89,10 @@ const CartBar = ({ active, setCartBar }) => {
 
   const onSubmit = (values) => {
     if (values.phone && values.address) {
-      //onHide();
+      onHide();
       dispatch(checkoutCart(user.id, cart.shoppingCart, values));
-      //setRedirect('/profile');
+      window.alert("Your payment was successful and your order has been placed. Please check your profile page to view, update or cancel your order.");
+      setRedirect('/profile');
     }
   }
 
@@ -128,9 +129,8 @@ const CartBar = ({ active, setCartBar }) => {
           onSubmit={onSubmit}
           restaurants={restaurants}
           total={cart.total}
-          user={user}
-          cart={cart}
           clientSecret={clientSecret}
+          user={user}
         />
       </Elements>
       {redirect ? <Redirect push to={redirect} /> : null}

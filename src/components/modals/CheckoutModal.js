@@ -4,14 +4,13 @@ import * as yup from 'yup';
 import RestaurantComponent from '../RestaurantComponent';
 import '../../style/checkout-modal.css';
 import "../../style/checkoutForm.css";
-import React, { useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
   CardElement,
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
 import cardStyle from '../../style/cardStyle';
-import PaymentService from '../../adapters/paymentService';
 
 
 const CheckoutModal = props => {
@@ -20,7 +19,6 @@ const CheckoutModal = props => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
 
-  const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -55,7 +53,6 @@ const CheckoutModal = props => {
       setProcessing(false);
       const stripeID = payload.paymentIntent.id;
       props.onSubmit({ phone, preferences, address, stripeID });
-      setSucceeded(true);
     }
   };
 
@@ -148,7 +145,7 @@ const CheckoutModal = props => {
 
         <Modal.Footer>
           <Button
-            disabled={processing || disabled || succeeded}
+            disabled={processing || disabled}
             onClick={() => handleSubmit()}
             className='payButton'
           >
