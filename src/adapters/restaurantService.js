@@ -1,12 +1,14 @@
 import axios from 'axios';
-const url = 'http://localhost:8070';
-const restaurantsRoute = url + '/restaurants';
-const categoriesRoute = url + '/categories';
+
+const url = 'http://localhost:8070/';
+const restaurantsRoute = url + 'restaurants';
+const categoriesRoute = url + 'categories';
 const restaurantsQueryRoute = restaurantsRoute + '/search';
 const menuItemsRoute = restaurantsRoute + '/menuitems';
 
-class RestaurantService{
+export default class RestaurantService{
 
+  
   static getRestaurants(foodOption, {query, currentPage=0, sortOrder, filters}){
     const sortBy = sortOrder ? sortOrder.sortBy : '';
     const order = sortOrder ? sortOrder.order : '';
@@ -16,22 +18,55 @@ class RestaurantService{
     :  axios.get(restaurantsQueryRoute + path);
   }
 
-  static getCategories(){
-    return axios.get(categoriesRoute);
+  static getCategories(token){
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
+    return axios.get(categoriesRoute, config);
   }
-  static getOwnerRestaurants(id){
-    return axios.get(url+'/owner/'+id+'/restaurants');
+  static findRestaurant(restaurantId, token ){
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
+    return axios.get(restaurantsRoute + `/${restaurantId}`, config);
   }
-  static requestDeleteRestaurant(id){
-    return axios.delete(url + '/owner/restaurant/' + id);
+  
+  static getOwnerRestaurants(username, token)  {
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
+    return axios.get(url + 'owner/' + username + '/restaurants', config);
   }
-  static updateRestaurant(id, values,config){
-    return axios.put(restaurantsRoute +'/'+id,values, config);
+  static requestDeleteRestaurant (username, id, token)  {
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
+    return axios.delete(url + 'owner/' + username + '/restaurant/' + id, config);
   }
-  static findRestaurant(restaurantId){
-    return axios.get(restaurantsRoute + `/${restaurantId}`);
+  static updateRestaurant  (username, id, body, token) {
+    
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
+    return axios.put(url + 'owner/' + username + '/restaurant/' + id,JSON.stringify(body), config);
   }
 
+ 
 }
 
-export default RestaurantService;
+

@@ -3,7 +3,7 @@ import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Header';
-
+import {useSelector} from 'react-redux';
 import {
   Button,
   ButtonGroup,
@@ -18,19 +18,17 @@ import {
 const RestaurantOwnerPage = () => {
 
   const [restaurants, setRestaurants] = useState([]);
-
+  const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
+  const token = useSelector(state => state.auth.token);
+ 
   useEffect(() => {
-    const id = window.location.pathname.split('/owner/')[1].split('/homePage')[0];
-    
-    RestaurantService.getOwnerRestaurants(id).then(res => {
+    RestaurantService.getOwnerRestaurants(username, token).then(res => {
       setRestaurants(res.data);
     })
-  },[restaurants])
+  },[username, token])
 
   const deleteRestaurant = (id) => {
-    RestaurantService.requestDeleteRestaurant(id).then(() => {
-
-    })
+    RestaurantService.requestDeleteRestaurant(username, id, token).then(() => {username = username})
   }
 
   const restaurantList = restaurants.map(restaurant => {
@@ -41,7 +39,7 @@ const RestaurantOwnerPage = () => {
       <TableCell>
         <ButtonGroup>
           <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
-          <Button size="small" color="primary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
+          <Button size="small" color="primary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/${username}/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
           <Button size="small" color="secondary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
         </ButtonGroup>
       </TableCell>
