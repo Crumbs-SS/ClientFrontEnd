@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
 const ProfilePage = () => {
     const user = useSelector(state => state.auth.user);
     const role = useSelector(state => state.auth.role);
-    const id = useSelector(state => state.auth.id);
+    const username = useSelector(state => state.auth.username);
     const { customer } = user;
     const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
@@ -46,8 +46,8 @@ const ProfilePage = () => {
                         onClick={() => openModal(<AccountDeleteForm username={user.username} close={closeModal} />)}>
                         Delete Account
                     </div>
-                    {role === 'owner' ? <div className="button-pp"><Link to={`/owner/${id}/homePage`}>Go to Restaurant Page</Link></div> : null}
-                    {role === 'driver' ? <div className="button-pp"><Link to={`/driver/${id}/homePage`}>Back</Link></div> : null}
+                    {role === 'owner' ? <div className="button-pp"><Link to={`/owner/${username}/dashboard`}>Go to Restaurant Page</Link></div> : null}
+                    {role === 'driver' ? <div className="button-pp"><Link to={`/driver/${username}/dashboard`}>Back</Link></div> : null}
                 </div>
 
                 <div className="inner-content-pp">
@@ -58,7 +58,7 @@ const ProfilePage = () => {
                             </div>
                             <div className="loyalty-points-counter">
                                 <h4> Loyal Points </h4>
-                                <h4><b> {customer.loyaltyPoints} </b></h4>
+                                <h4><b> {customer ? customer.loyaltyPoints : null} </b></h4>
                             </div>
                         </div>
                         <div className="payment-information gray-pp">

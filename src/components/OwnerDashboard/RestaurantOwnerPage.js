@@ -28,7 +28,7 @@ const RestaurantOwnerPage = () => {
   },[username, token])
 
   const deleteRestaurant = (id) => {
-    RestaurantService.requestDeleteRestaurant(username, id, token).then(() => {username = username})
+    RestaurantService.requestDeleteRestaurant(username, id, token).then(() => {})
   }
 
   const restaurantList = restaurants.map(restaurant => {
