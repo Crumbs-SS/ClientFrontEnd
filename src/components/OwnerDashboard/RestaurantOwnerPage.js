@@ -1,78 +1,119 @@
-import { useEffect, useState } from 'react';
-import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Header from '../Header';
 import {useSelector} from 'react-redux';
+import { logout } from "../../actions/authActions";
+import {makeStyles} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import {
-  Button,
-  ButtonGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TableHead
+    Button,
+    AppBar,
+    IconButton,
+    Toolbar,
+    Typography,
+    Container,
+    Grid,
+    Paper,
 } from "@material-ui/core";
+import OwnerRestaurants from './OwnerRestaurants';
+import Chart from './Chart';
+import RecentOrders from './RecentOrders';
+
+const useStyles = makeStyles((theme) => (
+  {
+      root: {
+          display: 'flex',
+      },
+      flexGrow: {
+          flexGrow: 1,
+      },
+      appBarSpacer: theme.mixins.toolbar, 
+      container: {
+          paddingTop: theme.spacing(4),
+          paddingBottom: theme.spacing(3),
+          
+      },
+      topLeftPaper: {
+          height: 360,
+          padding: theme.spacing(2),
+          display: 'flex',
+          flexDirection: 'column',
+      },
+      bottomLeftPaper: {
+          height: 310,
+          padding: theme.spacing(2),
+          display: 'flex',
+          flexDirection: 'column',
+      },
+      rightHeight: {
+          height : '100%',
+          width : 500,
+          padding: theme.spacing(2),
+      },
+  }));
 
 const RestaurantOwnerPage = () => {
-
-  const [restaurants, setRestaurants] = useState([]);
+  
+  const dispatch = useDispatch();
+  const classes = useStyles();
   const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
   const token = useSelector(state => state.auth.token);
  
-  useEffect(() => {
-    RestaurantService.getOwnerRestaurants(username, token).then(res => {
-      setRestaurants(res.data);
-    })
-  },[username, token])
-
-  const deleteRestaurant = (id) => {
-    RestaurantService.requestDeleteRestaurant(username, id, token).then(() => {})
-  }
-
-  const restaurantList = restaurants.map(restaurant => {
-    return <TableRow key={restaurant.id}>
-      <TableCell>{restaurant.name}</TableCell>
-      <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</TableCell>
-      <TableCell>{restaurant.restaurantStatus.status}</TableCell>
-      <TableCell>
-        <ButtonGroup>
-          <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
-          <Button size="small" color="primary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/${username}/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
-          <Button size="small" color="secondary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
-        </ButtonGroup>
-      </TableCell>
-    </TableRow>
-  });
-
   return (
     <>
-    <Header />
-      <div className="container p-3 my-3 ">
-        <div>
-          <h1>Welcome to your dashboard</h1>
-          <h2>You have: {restaurants.length} restaurants</h2>
-          
-        </div>
-        <div>
-          <TableContainer aria-label="simple table" style={{ maxWidth: 900, border: '1px solid black' }}>
-            <Table >
-              <TableHead>
-                <TableRow  >
-                  <TableCell>Name</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {restaurantList}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </div>
+          <div className={classes.root}>
+                <CssBaseline />
+                <AppBar position="fixed">
+                    <Toolbar >
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.flexGrow}>
+                            Dashboard
+                        </Typography>
+                        <Button color="inherit" onClick={() => dispatch(logout())} >Logout</Button>
+                        <IconButton>
+                            <Link to={`/profile`}><AccountCircle /></Link>
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+
+                <main className={classes.flexGrow}>
+                    <div className={classes.appBarSpacer} />
+                    <Container className={classes.container}>
+
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={7}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12}>
+                                        <Paper className={classes.topLeftPaper}>
+                                        <OwnerRestaurants username={username} token={token}></OwnerRestaurants>
+                                        </Paper>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Paper className={classes.bottomLeftPaper} >
+                                            <Chart></Chart>
+                                        </Paper>
+                                    </Grid>
+                                    
+                                </Grid>
+
+                            </Grid>
+
+                            <Grid item xs={5}>
+                                <Grid style={{ height: "100%" }}>
+                                    <Paper className={classes.rightHeight}>
+                                      <RecentOrders></RecentOrders>
+                                    </Paper>
+                                </Grid>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Container>
+                </main>
+
+            </div>
       
     </>
   )
