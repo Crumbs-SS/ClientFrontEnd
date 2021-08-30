@@ -9,13 +9,19 @@ const menuItemsRoute = restaurantsRoute + '/menuitems';
 export default class RestaurantService{
 
   
-  static getRestaurants(foodOption, {query, currentPage=0, sortOrder, filters}){
+  static getRestaurants(foodOption, {query, currentPage=0, sortOrder, filters}, token){
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+      }
+    };
     const sortBy = sortOrder ? sortOrder.sortBy : '';
     const order = sortOrder ? sortOrder.order : '';
     const path = `?query=${query}&page=${currentPage}&sortBy=${sortBy}&order=${order}&filter=${filters.join(',')}`;
 
     return foodOption ? axios.get(menuItemsRoute + path)
-    :  axios.get(restaurantsQueryRoute + path);
+    :  axios.get(restaurantsQueryRoute + path, config);
   }
 
   static getCategories(token){
