@@ -9,3 +9,33 @@
 #restaurant-components-cm{
   width: 70%;
 }
+
+.suggestion {
+  border-radius: .5em;
+  padding: .2em .5em;
+  transition: background .1s;
+}
+
+.suggestion:hover{
+  cursor: pointer;
+  background: rgba(200, 200, 200);
+}
+
+.suggestions{
+  padding: .4em;
+  border-radius: .3em;
+  position: absolute;
+  width: 95%;
+  background: rgb(255, 255, 255);
+  z-index: 5;
+  box-shadow: 5px 10px 10px rgb(200, 200, 200);
+}
+
+.payButton{
+  background: rgb(255, 0, 0);
+  transition: background .2s;
+}
+
+.payButton:hover{
+  background: rgb(220, 0, 0);
+}
