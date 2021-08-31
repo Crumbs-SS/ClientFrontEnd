@@ -4,14 +4,14 @@ const url = 'http://localhost:8090';
 
 export default class PaymentService{
   
-  static createPaymentIntent(cartTotal){
+  static createPaymentIntent(cartTotal, token){
     
     const body = {cartTotal};
     
     const config = {
-      
       headers: {
           'Content-Type': 'application/json',
+          'Authorization': token,
       }
     }
     
