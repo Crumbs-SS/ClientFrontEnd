@@ -4,7 +4,9 @@ import * as yup from 'yup';
 import RestaurantComponent from '../RestaurantComponent';
 import '../../style/checkout-modal.css';
 import "../../style/checkoutForm.css";
-import React, {useState} from "react";
+import React, { useState } from "react";
+import PlacesAutocomplete from 'react-places-autocomplete';
+
 import {
   CardElement,
   useStripe,
@@ -18,8 +20,11 @@ const CheckoutModal = props => {
   const [preferences, setPreferences] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [validatedAddress, setValidatedAddress] = useState('');
 
-  const [error, setError] = useState(null);
+  const [serverErrors, setServerErrors] = useState([]);
+  const [stripeError, setStripeError] = useState(''); 
+
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
   const stripe = useStripe();
@@ -30,10 +35,13 @@ const CheckoutModal = props => {
     // Listen for changes in the CardElement
     // and display any errors as the customer types their card details
     setDisabled(event.empty);
-    setError(event.error ? event.error.message : "");
+    setStripeError(event.error ? event.error.message :  "");
   };
 
   const handleSubmit = async () => {
+    setServerErrors([]);
+    if (!validatedAddress){ setServerErrors(['Please input a valid address.']);  return}
+    if (stripeError) return;
 
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(props.clientSecret, {
@@ -46,123 +54,146 @@ const CheckoutModal = props => {
       }
     });
     if (payload.error) {
-      setError(`Payment failed: ${payload.error.message}`);
+      setServerErrors([...serverErrors, `Payment failed: ${payload.error.message}`]);
       setProcessing(false);
     } else {
-      setError(null);
+      setServerErrors([]);
       setProcessing(false);
       const stripeID = payload.paymentIntent.id;
       props.onSubmit({ phone, preferences, address, stripeID });
     }
   };
 
-  
+  const onAddressSelectionClicked = (suggestionDescription) => {
+    setAddress(suggestionDescription);
+    setValidatedAddress(suggestionDescription);
+  }
 
-    return (
-      <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
-        <Modal.Header closeButton>
-          <Modal.Title> Your Order </Modal.Title>
-        </Modal.Header>
+  const onAddressFieldChanged = (inputText) => {
+    setValidatedAddress('');
+    setAddress(inputText);
+  }
 
-        <Modal.Body>
-          <Formik validationSchema={schema} initialValues={{ phone: '', address: '' }} >
-            {({ errors, handleChange, values }) => {
-              return (
-                <Form noValidate>
-                  <b> Address </b>
-                  <Form.Control
-                    type='text'
-                    name='address'
-                    placeholder='Enter your address'
-                    className='input-cm'
-                    value={address}
-                    onChange={(e) => { handleChange(e); setAddress(e.target.value) }}
-                    isInvalid={errors.address}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {errors.address}
-                  </Form.Control.Feedback>
-                  <br />
-                  <b> Phone Number </b>
-                  <Form.Control
-                    type='text'
-                    name='phone'
-                    placeholder='Enter your phone number'
-                    className='input-cm'
-                    value={phone}
-                    onChange={(e) => { handleChange(e); setPhone(e.target.value) }}
-                    isInvalid={errors.phone}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {errors.phone}
-                  </Form.Control.Feedback>
-                </Form>
-              )
-            }
-            }
-          </Formik>
 
-          { /* Payment Options Here */}
-          <br />
-          <div >
-            <b> Payment Inforatiom </b>
-            <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-            {/* Show any error that happens when processing the payment */}
-            {error && (
-              <div className="card-error" role="alert" >
-                {error}
-              </div>
-            )}
-          </div>
-          <br />
+  return (
+    <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
+      <Modal.Header closeButton>
+        <Modal.Title> Your Order </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        { serverErrors.map((err, index) => <div key={index} className='error'>{err}</div>)}
+        <Formik validationSchema={schema} initialValues={{ phone: '', address: '' }} >
+          {({ errors, handleChange }) => {
+            return (
+              <Form noValidate>
+                <b> Address </b>
+                <PlacesAutocomplete value={address} onChange={onAddressFieldChanged} onSelect={onAddressSelectionClicked}>
+                  {({ getInputProps, suggestions, getSuggestionItemProps}) => (
+                    <div>
+                      <Form.Control
+                        {...getInputProps({ 
+                          placeholder: 'Enter Address',
+                          className: 'input-cm',
+                          type: 'text',
+                          name: 'address'
+                        })}
+                      />
+                    
+                    { suggestions.length > 0 && 
+                      <div className='suggestions'>
+                        {suggestions.map((suggestion) => {
+                          return (
+                            <div key={suggestion.index} className='suggestion' {...getSuggestionItemProps(suggestion)}>
+                              {suggestion.description}
+                            </div>
+                          )
+                        })}
+                      </div>}
+                    </div>
+                  )}
+                </PlacesAutocomplete>
 
-          <div className='preferences'>
-            <div className='extra-instructions'>
-              <b> Extra instructions </b>
-              <span> List any special requests </span>
+                <br />
+                <b> Phone Number </b>
+                <Form.Control
+                  type='text'
+                  name='phone'
+                  placeholder='Enter your phone number'
+                  className='input-cm'
+                  value={phone}
+                  onChange={(e) => { handleChange(e); setPhone(e.target.value) }}
+                  isInvalid={errors.phone}
+                />
+                <Form.Control.Feedback type='invalid'>
+                  {errors.phone}
+                </Form.Control.Feedback>
+              </Form>
+            )
+          }
+          }
+        </Formik>
+
+        { /* Payment Options Here */}
+        <br />
+        <div >
+          <b> Payment Inforatiom </b>
+          <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+          {/* Show any error that happens when processing the payment */}
+          {stripeError && (
+            <div className="card-error error" role="alert" >
+              {stripeError}
             </div>
-            <textarea
-              onChange={e => setPreferences(e.target.value)}
-              value={preferences}
-              className='preferences-textbox'
+          )}
+        </div>
+        <br />
+
+        <div className='preferences'>
+          <div className='extra-instructions'>
+            <b> Extra instructions </b>
+            <span> List any special requests </span>
+          </div>
+          <textarea
+            onChange={e => setPreferences(e.target.value)}
+            value={preferences}
+            className='preferences-textbox'
+          />
+        </div>
+
+        <br />
+        <b> Items Ordered </b>
+
+        <div id='restaurant-components-cm'>
+          {Object.keys(props.restaurants).map(restaurant => {
+            const restaurantObj = props.restaurants[restaurant];
+            return <RestaurantComponent
+              key={restaurantObj.id}
+              restaurant={restaurantObj}
             />
-          </div>
+          })}
+        </div>
 
-          <br />
-          <b> Items Ordered </b>
+      </Modal.Body>
 
-          <div id='restaurant-components-cm'>
-            {Object.keys(props.restaurants).map(restaurant => {
-              const restaurantObj = props.restaurants[restaurant];
-              return <RestaurantComponent
-                key={restaurantObj.id}
-                restaurant={restaurantObj}
-              />
-            })}
-          </div>
+      <Modal.Footer>
+        <Button
+          disabled={processing || disabled}
+          onClick={() => handleSubmit()}
+          className='payButton'
+        >
+          <span >
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now   "
+            )}
+          </span>
+          {formatter.format(props.total)}
+        </Button>
+      </Modal.Footer>
+    </Modal>
 
-        </Modal.Body>
+  );
 
-        <Modal.Footer>
-          <Button
-            disabled={processing || disabled}
-            onClick={() => handleSubmit()}
-            className='payButton'
-          >
-            <span >
-              {processing ? (
-                <div className="spinner" id="spinner"></div>
-              ) : (
-                "Pay now   "
-              )}
-            </span>
-            {formatter.format(props.total)}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-    );
-  
 }
 
 export default CheckoutModal;
