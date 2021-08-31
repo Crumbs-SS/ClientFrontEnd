@@ -42,12 +42,14 @@ const useStyles = makeStyles((theme) => (
             padding: theme.spacing(2),
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'auto'
         },
         bottomLeftPaper: {
             height: 460,
             padding: theme.spacing(2),
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'auto'
         },
         rightHeight: {
             height : '100%',
@@ -93,7 +95,7 @@ const DriverPage = () => {
 
                         <Grid container spacing={3}>
 
-                            <Grid item xs={6}>
+                            <Grid item xs={12} md ={4} lg={6}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
@@ -110,7 +112,7 @@ const DriverPage = () => {
 
                             </Grid>
 
-                            <Grid item xs={6}>
+                            <Grid item xs={12} md ={8} lg={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
                                         {driverStatus === "AVAILABLE" ? <AvailableOrders username={username} rerender={rerender} token={token}/> : null}
