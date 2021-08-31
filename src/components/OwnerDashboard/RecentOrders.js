@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import OrderService from '../../adapters/orderService';
+import React from "react";
 import {
     Button,
     Typography,
@@ -8,20 +7,9 @@ import { DataGrid } from '@material-ui/data-grid';
 
 const RecentOrders = ({ id, rerender }) => {
 
-    const [availableOrders, setAvailableOrders] = useState([]);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-
-    const [showAcceptOrderModal, setShowAcceptOrderModal] = useState(false);
-    const hideAcceptOrderModal = () => setShowAcceptOrderModal(false);
-
-    useEffect(() => {
-        OrderService.getAvailableOrders().then(res => {
-            setAvailableOrders(res.data);
-        })
-    }, [])
-
-    const rows = availableOrders.map((order, index) => { return { id: index, time: order.deliveryTime, pay: order.deliveryPay, deliver: order.deliverySlot, order: order } }
-    );
+ 
+    const rows =  [ {id: '0', time: '18:00', amount: '2', status: 'Done', order: null } ] 
+    
 
     const columns = [
         {
@@ -30,8 +18,8 @@ const RecentOrders = ({ id, rerender }) => {
         },
         {
             field: 'time',
-            headerName: 'Time To Deliver',
-            width: 185,
+            headerName: 'Order Placed At',
+            width: 165,
             editable: false,
             disableColumnFilter: true,
             disableColumnMenu: true,
@@ -42,9 +30,9 @@ const RecentOrders = ({ id, rerender }) => {
             },
         },
         {
-            field: 'pay',
-            headerName: 'Pay',
-            width: 102,
+            field: 'amount',
+            headerName: 'Amount',
+            width: 111,
             editable: false,
             disableColumnFilter: true,
             disableColumnMenu: true,
@@ -55,18 +43,14 @@ const RecentOrders = ({ id, rerender }) => {
             },
         },
         {
-            field: 'deliver',
-            headerName: 'Delivery Slot',
+            field: 'status',
+            headerName: 'Status',
             width: 180,
             editable: false,
             disableColumnFilter: true,
             disableColumnMenu: true,
             disableColumnSelector: true,
             disableSelectionOnClick: true,
-            valueFormatter: (params) => {
-                const valueFormatted = params.value.split('T')[1].split('.')[0]
-                return `${valueFormatted} `;
-            },
         },
         {
             field: 'action',
@@ -79,7 +63,7 @@ const RecentOrders = ({ id, rerender }) => {
             sortable: false,
             disableSelectionOnClick: true,
             renderCell: (params) => {
-                return <Button size="small" color="primary" variant="contained" onClick={() => { setSelectedOrder(params.row.order); setShowAcceptOrderModal(true) }}>View</Button>;
+                return <Button size="small" color="primary" variant="contained" onClick={() => {}}>View</Button>;
             }
 
         },
@@ -89,22 +73,12 @@ const RecentOrders = ({ id, rerender }) => {
         }
     ];
 
-    if (availableOrders.length === 0) {
-        return (
-            <React.Fragment>
-                <br />
-                <Typography component="h1" variant="h6" color="inherit" style={{ fontWeight: 600 }}>
-                    No Available Orders at this time! We will notify you once an order is available.
-                </Typography>
-            </React.Fragment>
-        )
-    }
-    else {
+    
         return (
             <React.Fragment>
                 
                 <Typography component="h1" variant="h6" color="inherit" >
-                    Available Orders:
+                    Recent Orders:
                 </Typography>
                 <br />
                 <div style={{ height: 595, width: '100%' }}>
@@ -113,11 +87,10 @@ const RecentOrders = ({ id, rerender }) => {
                         columns={columns}
                         pageSize={9}
                         rowsPerPageOptions={[9]}
-
                     />
                 </div>
             </React.Fragment>
         );
-    }
+    
 }
 export default RecentOrders;

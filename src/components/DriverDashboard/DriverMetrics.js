@@ -4,11 +4,11 @@ import {
 } from "@material-ui/core";
 import AccountService from '../../adapters/accountService';
 
-const DriverMetrics = ({id}) => {
+const DriverMetrics = ({username, token}) => {
 
     const [driverPay, setDriverPay] = useState(null);
     useEffect(() => {
-        AccountService.getDriverPay(id)
+        AccountService.getDriverPay(username, token)
         .then((res) => {
             setDriverPay(res.data);
         })

@@ -41,8 +41,10 @@ export const loadUser = () => (dispatch, getState) => {
     axios.get(authURL + '/users/' + username, config)
         .then(res => {
           dispatch({type: USER_LOADED, payload: res.data});
-          dispatch(loadCart(username));
-          dispatch(loadOrders(username));
+          if(getState().auth.role === 'customer'){
+            dispatch(loadCart(username));
+            dispatch(loadOrders(username));
+          }
       })
         .catch(err => {
             // dispatch(returnErrors(err.response.data, err.response.status));

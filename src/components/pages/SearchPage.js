@@ -44,7 +44,7 @@ const SearchPage = () => {
     .catch(() => {
     })
 
-  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption])
+  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption, token])
 
   useEffect(() => {
     RestaurantService.getCategories(token)
@@ -54,7 +54,7 @@ const SearchPage = () => {
     .catch(() => {
     })
 
-  }, [])
+  }, [token])
 
   const sort = (text, timesClicked) => {
     let name = text.toString().toLowerCase();

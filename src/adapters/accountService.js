@@ -4,38 +4,38 @@ const url = 'http://localhost:8080';
 
 export default class AccountService{
 
-    static checkInDriver = (username) => (getState) => {
+    static checkInDriver(username, token)  {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getState().auth.token,
+                'Authorization': token,
             }
         };
         return axios.put(url + '/drivers/checkIn/' + username, config);
     }
-    static checkOutDriver = (username) => (getState) => {
+    static checkOutDriver (username, token) {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getState().auth.token,
+                'Authorization': token,
             }
         };
         return axios.put(url + '/drivers/checkOut/' + username, config);
     }
-    static getDriverStatus = (username) => (getState) => {
+    static getDriverStatus  (username, token){
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getState().auth.token,
+                'Authorization': token,
             }
         };
         return axios.get(url + '/drivers/status/' + username, config);
     }
-    static getDriverPay = (username) => (getState) => {
+    static getDriverPay (username, token) {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getState().auth.token,
+                'Authorization': token,
             }
         };
         return axios.get(url + '/drivers/pay/' + username, config);

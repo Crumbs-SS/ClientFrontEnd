@@ -15,18 +15,18 @@ const useStyles = makeStyles((theme) => (
     }
 ));
 
-const DriverOrder = ({ id, rerender }) => {
+const DriverOrder = ({ username, rerender }) => {
 
     const classes = useStyles();
     const [order, setAcceptedOrder] = useState(null);
     const [pickedUp, setPickedUp] = useState(false);
 
     useEffect(() => {
-        OrderService.getDriverAcceptedOrder(id).then((res) => {
+        OrderService.getDriverAcceptedOrder(username).then((res) => {
             setAcceptedOrder(res.data);
         })
 
-    }, [id])
+    }, [username])
 
 
     const pickUp = () => {
