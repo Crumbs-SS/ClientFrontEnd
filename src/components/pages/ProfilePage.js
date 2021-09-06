@@ -47,7 +47,7 @@ const ProfilePage = () => {
                         Delete Account
                     </div>
                     {role === 'owner' ? <div className="button-pp"><Link to={`/owner/${username}/dashboard`}>Dashboard</Link></div> : null}
-                    {role === 'driver' ? <div className="button-pp"><Link to={`/driver/${username}/dashboard`}>Back</Link></div> : null}
+                    {role === 'driver' ? <div className="button-pp"><Link to={`/driver/${username}/dashboard`}>Dashboard</Link></div> : null}
                 </div>
 
                 <div className="inner-content-pp">
