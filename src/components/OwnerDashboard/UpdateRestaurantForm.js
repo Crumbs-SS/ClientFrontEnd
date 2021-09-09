@@ -28,11 +28,6 @@ const schema = yup.object({
         .matches(/^[a-zA-Z ]*$/, "City name can only contain letters"),
     state: yup.string().ensure().trim().min(2).max(2)
         .matches(/^[a-zA-Z ]*$/, ' State can only contain letters'),
-    zip: yup.number("Must be a number").test(
-        "maxDigits",
-        "zip code must have exactly 5 digits",
-        (number) => String(number).length === 5
-    ),
     menu: yup.array().of(
         yup.object(
             {
@@ -74,13 +69,13 @@ const UpdateRestaurantForm = () => {
     }, [])
 
 
-    const onSuccess = ({ name, street, city, state, zip, categories, menu }) => {
+    const onSuccess = ({ name, street, city, state, categories, menu }) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
             }
         }
-        const body = JSON.stringify({ name, street, city, state, zip, categories, menu });
+        const body = JSON.stringify({ name, street, city, state, categories, menu });
         RestaurantService.updateRestaurant(restaurant.id, body, config)
             .then(res => {
                 setRedirect(true);
@@ -108,7 +103,6 @@ const UpdateRestaurantForm = () => {
                         street: restaurant.location.street,
                         city: restaurant.location.city,
                         state: restaurant.location.state,
-                        zip: restaurant.location.zipCode,
                         categories: [],
                         menu: restaurant.menuItems
                     }}>
@@ -186,15 +180,6 @@ const UpdateRestaurantForm = () => {
                                             onChange={handleChange} value={values.state} isInvalid={errors.state} />
                                         <Form.Control.Feedback type='invalid'>
                                             {errors.state}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Group controlId="formName">
-                                        <Form.Label>Enter new restaurant zip code</Form.Label>
-                                        <Form.Control type="text" name="zip" autoComplete="off" placeholder={values.zip}
-                                            onChange={handleChange} value={values.zip} isInvalid={errors.zip} />
-                                        <Form.Control.Feedback type='invalid'>
-                                            {errors.zip}
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
