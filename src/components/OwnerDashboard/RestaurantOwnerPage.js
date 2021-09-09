@@ -24,20 +24,15 @@ const useStyles = makeStyles((theme) => (
   {
       root: {
           display: 'flex',
-          height : '100%',
-          width : '100%'
       },
       flexGrow: {
-          flexGrow: 2,
-          padding: '20px'
+          flexGrow: 1,
       },
       appBarSpacer: theme.mixins.toolbar, 
       container: {
           paddingTop: theme.spacing(4),
-        //   paddingBottom: theme.spacing(3),
-          margin: '10px 10px 10px 10px',
-          height : '100%',
-          width : '100%'
+          paddingBottom: theme.spacing(3),
+          
       },
       topLeftPaper: {
           height: 360,
@@ -83,38 +78,30 @@ const RestaurantOwnerPage = () => {
 
                 <main className={classes.flexGrow}>
                     <div className={classes.appBarSpacer} />
-                    
+                    <Container className={classes.container}>
 
                         <Grid container spacing={3}>
 
-                            <Grid item xs={6} container spacing={3}>
-                                
+                            <Grid item xs={7}>
+                                <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
                                         <OwnerRestaurants username={username} token={token}></OwnerRestaurants>
                                         </Paper>
                                     </Grid>
-
                                     <Grid item xs={12}>
                                         <Paper className={classes.bottomLeftPaper} >
                                             <Chart></Chart>
                                         </Paper>
                                     </Grid>
                                     
-                                
+                                </Grid>
 
                             </Grid>
 
-                            <Grid item xs={6} container spacing={3}>
-                                
-                                <Grid item xs={12}>
-                                    <Paper className={classes.topLeftPaper}>
-                                      <RecentOrders></RecentOrders>
-                                    </Paper>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <Paper className={classes.bottomLeftPaper}>
+                            <Grid item xs={5}>
+                                <Grid style={{ height: "100%" }}>
+                                    <Paper className={classes.rightHeight}>
                                       <RecentOrders></RecentOrders>
                                     </Paper>
                                 </Grid>
@@ -123,7 +110,7 @@ const RestaurantOwnerPage = () => {
 
                         </Grid>
 
-                   
+                    </Container>
                 </main>
 
             </div>
