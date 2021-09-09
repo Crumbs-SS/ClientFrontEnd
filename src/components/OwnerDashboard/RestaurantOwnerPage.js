@@ -36,7 +36,7 @@ const RestaurantOwnerPage = () => {
   const restaurantList = restaurants.map(restaurant => {
     return <TableRow key={restaurant.id}>
       <TableCell>{restaurant.name}</TableCell>
-      <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</TableCell>
+      <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</TableCell>
       <TableCell>{restaurant.restaurantStatus.status}</TableCell>
       <TableCell>
         <ButtonGroup>

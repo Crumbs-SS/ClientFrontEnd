@@ -105,13 +105,12 @@ const orderStatus = {
   "DELIVERING": "On the way"
 }
 
-
 const OrderComponent = ({order, onClick}) => {
   return(
     <div onClick={() => onClick(order)} className='order-component'>
       <div className='first-oc/'> 
         <p className='restaurant-name'> <b>{order.restaurant.name}</b></p>
-        <p className='order-location'> { order.deliveryLocation.street } </p>
+        <p className='order-location'>{order.deliveryLocation.street}, {order.deliveryLocation.city}, {order.deliveryLocation.state} </p>
       </div>
       <p className='restaurant-name'> {orderStatus[order.orderStatus.status]}</p>
     </div>
