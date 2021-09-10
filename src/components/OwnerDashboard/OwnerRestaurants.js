@@ -14,18 +14,18 @@ import { Link } from 'react-router-dom';
 import RestaurantService from '../../adapters/restaurantService';
 import { useEffect, useState } from 'react';
 
-const OwnerRestaurants = ({ username, token }) => {
+const OwnerRestaurants = ({ username}) => {
 
     const [restaurants, setRestaurants] = useState([]);
 
     useEffect(() => {
-        RestaurantService.getOwnerRestaurants(username, token).then(res => {
+        RestaurantService.getOwnerRestaurants(username).then(res => {
             setRestaurants(res.data);
         })
-    }, [username, token])
+    }, [username])
 
     const deleteRestaurant = (id) => {
-        RestaurantService.requestDeleteRestaurant(username, id, token).then(() => { })
+        RestaurantService.requestDeleteRestaurant(username, id).then(() => { })
     }
 
     const restaurantList = restaurants.map(restaurant => {

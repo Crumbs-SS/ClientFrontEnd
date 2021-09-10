@@ -28,10 +28,9 @@ const SearchPage = () => {
   const state = useSelector(state => state.search);
   const query = state.query;
   const foodSearchOption = state.foodSearchOption;
-  const token = useSelector(state => state.auth.token);
 
   useEffect(() => {
-    RestaurantService.getRestaurants(foodSearchOption, {query, currentPage, sortOrder, filters}, token)
+    RestaurantService.getRestaurants(foodSearchOption, {query, currentPage, sortOrder, filters})
     .then(({ data }) => {
       if(filters.length > 0){
         setSearchResults(data.content.slice(currentPage * data.size, data.size * (currentPage + 1)));
@@ -44,17 +43,17 @@ const SearchPage = () => {
     .catch(() => {
     })
 
-  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption, token])
+  }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption])
 
   useEffect(() => {
-    RestaurantService.getCategories(token)
+    RestaurantService.getCategories()
     .then(({data}) => {
       setCategories(data);
     })
     .catch(() => {
     })
 
-  }, [token])
+  }, [])
 
   const sort = (text, timesClicked) => {
     let name = text.toString().toLowerCase();

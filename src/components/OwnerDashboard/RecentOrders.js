@@ -78,7 +78,7 @@ const RecentOrders = ({ id, rerender }) => {
             <React.Fragment>
                 
                 <Typography component="h1" variant="h6" color="inherit" >
-                    Recent Orders:
+                    Pending Orders:
                 </Typography>
                 <br />
                 <div style={{ height: 595, width: '100%' }}>

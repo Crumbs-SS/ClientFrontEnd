@@ -1,6 +1,6 @@
 //React Imports
 import React , { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
 //Material-UI Imports
 import {makeStyles} from '@material-ui/core/styles';
@@ -65,13 +65,12 @@ const DriverPage = () => {
     const [driverStatus, setDriverStatus] = useState(null);
     const username = window.location.pathname.split('/driver/')[1].split('/dashboard')[0];
     const [dummyState, rerender] = useState(null);
-    const token = useSelector(state => state.auth.token);
  
     useEffect(() => {
-        AccountService.getDriverStatus(username, token).then((res) => {
+        AccountService.getDriverStatus(username).then((res) => {
             setDriverStatus(res.data);
         })
-    }, [dummyState, username, token])
+    }, [dummyState, username])
 
     return (
         <>
@@ -99,12 +98,12 @@ const DriverPage = () => {
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
-                                            <DriverStatus username={username} driverStatus={driverStatus} rerender={rerender} token={token}></DriverStatus>
+                                            <DriverStatus username={username} driverStatus={driverStatus} rerender={rerender}></DriverStatus>
                                         </Paper>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Paper className={classes.bottomLeftPaper} >
-                                            <DriverMetrics username={username} token={token}/>
+                                            <DriverMetrics username={username}/>
                                         </Paper>
                                     </Grid>
                                     
@@ -115,8 +114,8 @@ const DriverPage = () => {
                             <Grid item xs={12} md ={8} lg={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
-                                        {driverStatus === "AVAILABLE" ? <AvailableOrders username={username} rerender={rerender} token={token}/> : null}
-                                        {driverStatus === "BUSY" ? <DriverOrder username={username} rerender={rerender} token={token}/> : null}
+                                        {driverStatus === "AVAILABLE" ? <AvailableOrders username={username} rerender={rerender}/> : null}
+                                        {driverStatus === "BUSY" ? <DriverOrder username={username} rerender={rerender}/> : null}
                                     </Paper>
                                 </Grid>
 

@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import '../../style/updateRestaurant.css';
-import {useSelector} from 'react-redux';
+
 
 const schema = yup.object({
     name: yup.string().ensure().trim().min(1, "Cannot be blank").max(50),
@@ -50,7 +50,6 @@ const UpdateRestaurantForm = () => {
     const [categories, setCategories] = useState([]);
     const [httpError, setHttpError] = useState([]);
     const [redirectUser, setRedirect] = useState(false);
-    const token = useSelector(state => state.auth.token);
     const username = window.location.pathname.split('/owner/')[1].split('/updateRestaurant')[0];
     const id = window.location.pathname.split('/updateRestaurant/')[1];
         
@@ -58,7 +57,7 @@ const UpdateRestaurantForm = () => {
 
     useEffect(() => {
 
-        RestaurantService.findRestaurant(id,token)
+        RestaurantService.findRestaurant(id)
             .then(({ data }) => {
                 setRestaurant(data);
             })
@@ -66,26 +65,24 @@ const UpdateRestaurantForm = () => {
                 console.log(error)
             }, [])
 
-        RestaurantService.getCategories(token)
+        RestaurantService.getCategories()
             .then(({ data }) => {
                 setCategories(data);
             })
             .catch((error) => {
                 console.log(error)
             })
-    }, [id, token])
+    }, [id])
 
 
     const onSuccess = ({ name, street, city, state, zip, categories, menu }) => {
        
         
-        RestaurantService.updateRestaurant(username, id, { name, street, city, state, zip, categories, menu }, token)
+        RestaurantService.updateRestaurant(username, id, { name, street, city, state, categories, menu })
             .then(res => {
                 setRedirect(true);
-                console.log(res);
             })
             .catch(err => {
-                console.log(err.response);
                 setHttpError(err.response);
             });
     }
@@ -94,7 +91,6 @@ const UpdateRestaurantForm = () => {
         return (
             <>
                 <h1 className="title">Update your restaurant: {restaurant.name} </h1>
-                {/* <h2>Your are updating restaurant with name: {restaurant.name} at location: {restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</h2> */}
                 <br />
 
                 <Formik
@@ -106,7 +102,6 @@ const UpdateRestaurantForm = () => {
                         street: restaurant.location.street,
                         city: restaurant.location.city,
                         state: restaurant.location.state,
-                        zip: restaurant.location.zipCode,
                         categories: [],
                         menu: restaurant.menuItems
                     }}>
@@ -187,15 +182,6 @@ const UpdateRestaurantForm = () => {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="formName">
-                                        <Form.Label>Enter new restaurant zip code</Form.Label>
-                                        <Form.Control type="text" name="zip" autoComplete="off" placeholder={values.zip}
-                                            onChange={handleChange} value={values.zip} isInvalid={errors.zip} />
-                                        <Form.Control.Feedback type='invalid'>
-                                            {errors.zip}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
                                     <h4>Update Restaurant Menu</h4>
                                     <h6>Your Menu is listed below. Modify any field to make an update.</h6><br/>
 
@@ -244,17 +230,10 @@ const UpdateRestaurantForm = () => {
                                 {/* <pre>{JSON.stringify(values, null, 2)}</pre>
                                 <pre>{JSON.stringify(errors, null, 2)}</pre> */}
                             </Form>
-
                         );
                     }}
-
-
                 </Formik>
                 { redirectUser ? <Redirect push to={`/owner/${username}/dashboard`} /> : null }
-
-
-
-
             </>
         )
     }

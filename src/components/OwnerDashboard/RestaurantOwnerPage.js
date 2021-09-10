@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import { logout } from "../../actions/authActions";
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +11,6 @@ import {
     IconButton,
     Toolbar,
     Typography,
-    Container,
     Grid,
     Paper,
 } from "@material-ui/core";
@@ -27,11 +25,13 @@ const useStyles = makeStyles((theme) => (
       },
       flexGrow: {
           flexGrow: 1,
+          padding: '25px'
       },
       appBarSpacer: theme.mixins.toolbar, 
       container: {
           paddingTop: theme.spacing(4),
           paddingBottom: theme.spacing(3),
+          margin:'0px 0px 0px 0px',
           
       },
       topLeftPaper: {
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => (
       },
       rightHeight: {
           height : '100%',
-          width : 500,
+          width: '100%',
           padding: theme.spacing(2),
       },
   }));
@@ -58,7 +58,6 @@ const RestaurantOwnerPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
-  const token = useSelector(state => state.auth.token);
  
   return (
     <>
@@ -78,15 +77,14 @@ const RestaurantOwnerPage = () => {
 
                 <main className={classes.flexGrow}>
                     <div className={classes.appBarSpacer} />
-                    <Container className={classes.container}>
-
+                    
                         <Grid container spacing={3}>
 
-                            <Grid item xs={7}>
+                            <Grid item xs={6}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
-                                        <OwnerRestaurants username={username} token={token}></OwnerRestaurants>
+                                        <OwnerRestaurants username={username}></OwnerRestaurants>
                                         </Paper>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -99,8 +97,8 @@ const RestaurantOwnerPage = () => {
 
                             </Grid>
 
-                            <Grid item xs={5}>
-                                <Grid style={{ height: "100%" }}>
+                            <Grid item xs={6}>
+                                <Grid style={{ height: "100%"}}>
                                     <Paper className={classes.rightHeight}>
                                       <RecentOrders></RecentOrders>
                                     </Paper>
@@ -109,8 +107,6 @@ const RestaurantOwnerPage = () => {
                             </Grid>
 
                         </Grid>
-
-                    </Container>
                 </main>
 
             </div>
