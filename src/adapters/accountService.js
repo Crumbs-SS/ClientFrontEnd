@@ -1,71 +1,36 @@
 import axios from 'axios';
+import store from '../store';
 
 const url = 'http://localhost:8080';
 
 export default class AccountService{
 
+    static get config(){
+        return { headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : store.getState().auth.token}
+        }
+      }
 
     static checkInDriver (username) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.put(url + '/drivers/checkIn/' + username, null, config);
+        return axios.put(url + '/drivers/checkIn/' + username, null, this.config);
     }
     static checkOutDriver (username) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.put(url + '/drivers/checkOut/' + username, null, config);
+        return axios.put(url + '/drivers/checkOut/' + username, null, this.config);
     }
     static getDriverStatus  (username){
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.get(url + '/drivers/status/' + username, config);
+        return axios.get(url + '/drivers/status/' + username, this.config);
     }
     static getDriverPay (username) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.get(url + '/drivers/pay/' + username, config);
+        return axios.get(url + '/drivers/pay/' + username, this.config);
     }
     static getDriverRating (username) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.get(url + '/drivers/rating/' + username, config);
+        return axios.get(url + '/drivers/rating/' + username, this.config);
     }
     static getDriverRatings (username) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.get(url + '/drivers/ratings/' + username, config);
+        return axios.get(url + '/drivers/ratings/' + username, this.config);
     }
     static forgotPassword(email){
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token'),
-            }
-          };
-        return axios.get(url + '/users/email/' + email, config);
+        return axios.get(url + '/users/email/' + email, this.config);
     }
 }
