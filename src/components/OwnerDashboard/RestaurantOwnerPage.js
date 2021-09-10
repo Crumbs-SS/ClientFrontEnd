@@ -1,80 +1,115 @@
-import { useEffect, useState } from 'react';
-import RestaurantService from '../../adapters/restaurantService';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Header from '../Header';
-
+import { logout } from "../../actions/authActions";
+import {makeStyles} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import {
-  Button,
-  ButtonGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TableHead
+    Button,
+    AppBar,
+    IconButton,
+    Toolbar,
+    Typography,
+    Grid,
+    Paper,
 } from "@material-ui/core";
+import OwnerRestaurants from './OwnerRestaurants';
+import Chart from './Chart';
+import RecentOrders from './RecentOrders';
+
+const useStyles = makeStyles((theme) => (
+  {
+      root: {
+          display: 'flex',
+      },
+      flexGrow: {
+          flexGrow: 1,
+          padding: '25px'
+      },
+      appBarSpacer: theme.mixins.toolbar, 
+      container: {
+          paddingTop: theme.spacing(4),
+          paddingBottom: theme.spacing(3),
+          margin:'0px 0px 0px 0px',
+          
+      },
+      topLeftPaper: {
+          height: 360,
+          padding: theme.spacing(2),
+          display: 'flex',
+          flexDirection: 'column',
+      },
+      bottomLeftPaper: {
+          height: 310,
+          padding: theme.spacing(2),
+          display: 'flex',
+          flexDirection: 'column',
+      },
+      rightHeight: {
+          height : '100%',
+          width: '100%',
+          padding: theme.spacing(2),
+      },
+  }));
 
 const RestaurantOwnerPage = () => {
-
-  const [restaurants, setRestaurants] = useState([]);
-
-  useEffect(() => {
-    const id = window.location.pathname.split('/owner/')[1].split('/homePage')[0];
-    
-    RestaurantService.getOwnerRestaurants(id).then(res => {
-      setRestaurants(res.data);
-    })
-  },[restaurants])
-
-  const deleteRestaurant = (id) => {
-    RestaurantService.requestDeleteRestaurant(id).then(() => {
-
-    })
-  }
-
-  const restaurantList = restaurants.map(restaurant => {
-    return <TableRow key={restaurant.id}>
-      <TableCell>{restaurant.name}</TableCell>
-      <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</TableCell>
-      <TableCell>{restaurant.restaurantStatus.status}</TableCell>
-      <TableCell>
-        <ButtonGroup>
-          <Button size="small" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
-          <Button size="small" color="primary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
-          <Button size="small" color="secondary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
-        </ButtonGroup>
-      </TableCell>
-    </TableRow>
-  });
-
+  
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
+ 
   return (
     <>
-    <Header />
-      <div className="container p-3 my-3 ">
-        <div>
-          <h1>Welcome to your dashboard</h1>
-          <h2>You have: {restaurants.length} restaurants</h2>
-          
-        </div>
-        <div>
-          <TableContainer aria-label="simple table" style={{ maxWidth: 900, border: '1px solid black' }}>
-            <Table >
-              <TableHead>
-                <TableRow  >
-                  <TableCell>Name</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {restaurantList}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </div>
+          <div className={classes.root}>
+                <CssBaseline />
+                <AppBar position="fixed">
+                    <Toolbar >
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.flexGrow}>
+                            Dashboard
+                        </Typography>
+                        <Button color="inherit" onClick={() => dispatch(logout())} >Logout</Button>
+                        <IconButton>
+                            <Link to={`/profile`}><AccountCircle /></Link>
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+
+                <main className={classes.flexGrow}>
+                    <div className={classes.appBarSpacer} />
+                    
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={6}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12}>
+                                        <Paper className={classes.topLeftPaper}>
+                                        <OwnerRestaurants username={username}></OwnerRestaurants>
+                                        </Paper>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Paper className={classes.bottomLeftPaper} >
+                                            <Chart></Chart>
+                                        </Paper>
+                                    </Grid>
+                                    
+                                </Grid>
+
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <Grid style={{ height: "100%"}}>
+                                    <Paper className={classes.rightHeight}>
+                                      <RecentOrders></RecentOrders>
+                                    </Paper>
+                                </Grid>
+
+                            </Grid>
+
+                        </Grid>
+                </main>
+
+            </div>
       
     </>
   )

@@ -43,6 +43,14 @@ export default class OrderService{
   static getDriverAcceptedOrder(driver_id){
     return axios.get(url + '/drivers/order/' + driver_id);
   }
+  static getDriverRating(order_id){
+    return axios.get(url + '/orders/' + order_id + '/driver/rating');
+  }
+  static submitRating(order_id, rating, description){
+    const body = {rating, description};
+    return axios.post(url + '/orders/' + order_id + '/driver/rating', JSON.stringify(body), config);
+    
+  }
 
 
 

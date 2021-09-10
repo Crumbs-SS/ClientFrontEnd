@@ -1,24 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Typography
+    Typography,
+    Button
 } from "@material-ui/core";
 import AccountService from '../../adapters/accountService';
+import DriverRatingsModal from './DriverRatingsModal';
 
-const DriverMetrics = ({id}) => {
+const DriverMetrics = ({username}) => {
 
     const [driverPay, setDriverPay] = useState(null);
+    const[driverRating, setDriverRating] = useState(null);
+    const [driverRatings, setDriverRatings] = useState(null);
+
+    const [showDriverRatinsModal, setShowDriverRatingsModal] = useState(false);
+    const hideDriverRatingsModal = () => setShowDriverRatingsModal(false);
+
+
     useEffect(() => {
-        AccountService.getDriverPay(id)
+        AccountService.getDriverPay(username)
         .then((res) => {
             setDriverPay(res.data);
         })
         .catch();
-    })
 
+        AccountService.getDriverRatings(username)
+        .then((res) => {
+            setDriverRatings(res.data);
+        })
 
+        AccountService.getDriverRating(username)
+        .then((res) => {
+            setDriverRating(res.data);
+        })
+
+    },[username])
+    
     return (
         <>
             <React.Fragment>
+                <DriverRatingsModal show={showDriverRatinsModal} onHide={hideDriverRatingsModal} driverRatings={driverRatings}></DriverRatingsModal>
                 <Typography component="h2" variant="h6" color="inherit" gutterBottom>
                     Your Metrics:
                 </Typography>
@@ -27,6 +47,13 @@ const DriverMetrics = ({id}) => {
                     ["Pay to this day: ", driverPay]
                     }
                 </Typography>
+                <Typography component="h2" variant="h6" color="inherit" gutterBottom>
+                    {driverRating === -1 ? "No ratings yet." : ["Your average rating: " , driverRating]}
+                </Typography>
+                <Button variant="contained" color="primary" onClick={() => { setShowDriverRatingsModal(true) }}>
+                    View your ratings
+                </Button>
+                
             </React.Fragment>
         </>
     )

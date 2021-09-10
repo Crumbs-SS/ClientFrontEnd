@@ -45,11 +45,12 @@ const UpdateRestaurantForm = () => {
     const [categories, setCategories] = useState([]);
     const [httpError, setHttpError] = useState([]);
     const [redirectUser, setRedirect] = useState(false);
+    const username = window.location.pathname.split('/owner/')[1].split('/updateRestaurant')[0];
+    const id = window.location.pathname.split('/updateRestaurant/')[1];
+        
 
 
     useEffect(() => {
-
-        const id = window.location.pathname.split('/owner/updateRestaurant/')[1];
 
         RestaurantService.findRestaurant(id)
             .then(({ data }) => {
@@ -66,23 +67,17 @@ const UpdateRestaurantForm = () => {
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, [id])
 
 
     const onSuccess = ({ name, street, city, state, categories, menu }) => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
-        const body = JSON.stringify({ name, street, city, state, categories, menu });
-        RestaurantService.updateRestaurant(restaurant.id, body, config)
+       
+        
+        RestaurantService.updateRestaurant(username, id, { name, street, city, state, categories, menu })
             .then(res => {
                 setRedirect(true);
-                console.log(res);
             })
             .catch(err => {
-                console.log(err.response);
                 setHttpError(err.response);
             });
     }
@@ -91,7 +86,6 @@ const UpdateRestaurantForm = () => {
         return (
             <>
                 <h1 className="title">Update your restaurant: {restaurant.name} </h1>
-                {/* <h2>Your are updating restaurant with name: {restaurant.name} at location: {restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}</h2> */}
                 <br />
 
                 <Formik
@@ -231,17 +225,10 @@ const UpdateRestaurantForm = () => {
                                 {/* <pre>{JSON.stringify(values, null, 2)}</pre>
                                 <pre>{JSON.stringify(errors, null, 2)}</pre> */}
                             </Form>
-
                         );
                     }}
-
-
                 </Formik>
-                { redirectUser ? <Redirect push to={`/owner/${restaurant.restaurantOwner.id}/homePage`} /> : null }
-
-
-
-
+                { redirectUser ? <Redirect push to={`/owner/${username}/dashboard`} /> : null }
             </>
         )
     }

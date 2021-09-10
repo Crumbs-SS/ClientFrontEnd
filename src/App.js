@@ -17,7 +17,7 @@ import RecoverPasswordPage from "./components/pages/RecoverPasswordPage";
 const App = () => {
     const loggedIn = useSelector(state => state.auth.user !== null);
     const currentRole = useSelector(state => state.auth.role);
-    const id = useSelector(state => state.auth.id);
+    const username = useSelector(state => state.auth.username);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -36,16 +36,16 @@ const App = () => {
                 <Switch>
                     <Route exact path='/'>
                         {loggedIn && isCustomer(currentRole) ? <Redirect to='search'/> : <LandingPage/>}
-                        {loggedIn && isOwner(currentRole) ? <Redirect to={`/owner/${id}/homePage`}/> : <LandingPage/>}
-                        {loggedIn && isDriver(currentRole) ? <Redirect to={`/driver/${id}/homePage`}/> : <LandingPage/>}
+                        {loggedIn && isOwner(currentRole) ? <Redirect to={`/owner/${username}/dashboard`}/> : <LandingPage/>}
+                        {loggedIn && isDriver(currentRole) ? <Redirect to={`/driver/${username}/dashboard`}/> : <LandingPage/>}
                     </Route>
                     <Route exact path='/search' component={SearchPage}/>
                     <Route exact path='/login'> {loggedIn ? <Redirect to='/'/> : <LoginPage/>} </Route>
                     <Route exact path='/profile'> {!loggedIn ? <Redirect to='/'/> : <ProfilePage/>} </Route>
                     <Route exact path='/restaurants/:id' component={RestaurantPage}/>
-                    <Route exact path='/owner/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <RestaurantOwnerPage/>} </Route>
-                    <Route exact path='/driver/:id/homePage' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
-                    <Route exact path='/owner/updateRestaurant/:id' component={UpdateRestaurantForm}/>
+                    <Route exact path='/owner/:username/dashboard' >{!loggedIn ? <Redirect to='/'/> : <RestaurantOwnerPage/>} </Route>
+                    <Route exact path='/driver/:username/dashboard' >{!loggedIn ? <Redirect to='/'/> : <DriverPage/>} </Route>
+                    <Route exact path='/owner/:username/updateRestaurant/:id' component={UpdateRestaurantForm}/>
                     <Route exact path='/email/verification/:token' component={EmailConfirmationPage}/>
                     <Route exact path='/passwordRecovery/:token' component={RecoverPasswordPage}/>
                     <Route

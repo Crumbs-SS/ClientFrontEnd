@@ -7,7 +7,7 @@ import { setFoodSearchOption } from '../../actions/queryActions';
 import { useSelector, useDispatch } from 'react-redux';
 import MenuItemModal from '../modals/MenuItemModal';
 
-const RestaurantPage = ()  => {
+const RestaurantPage = () => {
   const defaultImage = 'https://media.istockphoto.com/photos/table-top-counter-with-blurred-people-and-restaurant-interior-picture-id1077538138?k=6&m=1077538138&s=170667a&w=0&h=fFWA2PnwCxXAeOnlB58rJiMqTDXy1-UZs7tHliD2f78=';
 
   const dispatch = useDispatch();
@@ -16,10 +16,11 @@ const RestaurantPage = ()  => {
   const query = state.query;
   const foodSearchOption = state.foodSearchOption;
 
-  const [ restaurant, setRestaurant ] = useState(null);
-  const [ foodQuery, setFoodQuery ] = useState('');
-  const [ isModalOpen, setModalOpen ] = useState(false);
-  const [ modalDetails, setModalDetails ] = useState({});
+  const [restaurant, setRestaurant] = useState(null);
+  const [location, setRestaurantLocation] = useState(null);
+  const [foodQuery, setFoodQuery] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalDetails, setModalDetails] = useState({});
 
   const {
     name,
@@ -29,11 +30,12 @@ const RestaurantPage = ()  => {
     priceRating
   } = restaurant ? restaurant : {};
 
-  const [ shownMenuItems, setShownMenuItems ] = useState(menuItems);
+  const [shownMenuItems, setShownMenuItems] = useState(menuItems);
 
   let categoryRow = '';
   let stars = [];
   let expenseRating = '$';
+  let restaurantLocation = '';
 
   for (let i = 0; i < 5; i++)
     stars = [...stars, <span key={i} className="far fa-star" />]
@@ -43,41 +45,45 @@ const RestaurantPage = ()  => {
       stars[i] = <span key={i} className="fa fa-star highlight" />
   }
 
-  if (categories){
-    categories.forEach(({id: {categoryId}}, i) => {
+  if (categories) {
+    categories.forEach(({ id: { categoryId } }, i) => {
       categoryRow += categoryId.replace(/^\w/, c => c.toUpperCase());
-      if(categories[i + 1])
-        categoryRow+= ', ';
+      if (categories[i + 1])
+        categoryRow += ', ';
     });
   }
 
-  if(priceRating){
-    for(let i = 1; i < priceRating; i++)
+  if (priceRating) {
+    for (let i = 1; i < priceRating; i++)
       expenseRating += '$';
+  }
+  if (location) {
+    restaurantLocation += location.street + ', ' + location.city + ', ' + location.state
   }
 
   useEffect(() => {
     const id = window.location.pathname.split('/restaurants/')[1];
-    if(foodSearchOption){
+    if (foodSearchOption) {
       setFoodQuery(query);
       dispatch(setFoodSearchOption());
     }
 
     RestaurantService.findRestaurant(id)
-    .then(({ data }) => {
-      setRestaurant(data);
-      setShownMenuItems(data.menuItems.filter(
-        ({name}) => name.toLowerCase().includes(foodQuery)
-      ));
-    })
-    .catch(() => {})
+      .then(({ data }) => {
+        setRestaurant(data);
+        setRestaurantLocation(data.location);
+        setShownMenuItems(data.menuItems.filter(
+          ({ name }) => name.toLowerCase().includes(foodQuery)
+        ));
+      })
+      .catch(() => { })
   }, [query, foodSearchOption, foodQuery, dispatch])
 
   const onChange = text => {
     text = text.toLowerCase();
     setFoodQuery(text);
     setShownMenuItems(menuItems.filter(
-      ({name}) => name.toLowerCase().includes(text)
+      ({ name }) => name.toLowerCase().includes(text)
     ));
   }
 
@@ -86,7 +92,7 @@ const RestaurantPage = ()  => {
     setModalDetails(menuItem);
   }
 
-  return(
+  return (
     <>
       <Header />
       <div id='restaurant-page'>
@@ -110,28 +116,33 @@ const RestaurantPage = ()  => {
               &nbsp;&nbsp;{stars}&nbsp;&nbsp;
             </div>
             •&nbsp;&nbsp;{expenseRating}
+
           </div>
+          <div className='location'>
+            {restaurantLocation}
+          </div>
+
           <div className="inline-header"></div>
 
           <div className='full-menu'>
             <div className='full-menu-header'>
               <h2> Menu </h2>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="search-input"
-                  value={foodQuery}
-                  onChange={e => onChange(e.target.value)}
-                />
+              <input
+                type="text"
+                placeholder="Search"
+                className="search-input"
+                value={foodQuery}
+                onChange={e => onChange(e.target.value)}
+              />
             </div>
             <div className="inline-header"></div>
 
             <div className='menu-items'>
               {shownMenuItems ? shownMenuItems.map(menuItem =>
-                  <MenuItem key={menuItem.id} menuItem={menuItem}
-                      openModal={openModal}
-                     />)
-                    : null}
+                <MenuItem key={menuItem.id} menuItem={menuItem}
+                  openModal={openModal}
+                />)
+                : null}
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 //React Imports
 import React , { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
 //Material-UI Imports
 import {makeStyles} from '@material-ui/core/styles';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => (
         appBarSpacer: theme.mixins.toolbar, 
         container: {
             paddingTop: theme.spacing(4),
-            paddingBottom: theme.spacing(8),
+            paddingBottom: theme.spacing(5),
         },
         topLeftPaper: {
             height: 200,
@@ -63,14 +63,14 @@ const DriverPage = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [driverStatus, setDriverStatus] = useState(null);
-    const id = window.location.pathname.split('/driver/')[1].split('/homePage')[0];
+    const username = window.location.pathname.split('/driver/')[1].split('/dashboard')[0];
     const [dummyState, rerender] = useState(null);
-    
+ 
     useEffect(() => {
-        AccountService.getDriverStatus(id).then((res) => {
+        AccountService.getDriverStatus(username).then((res) => {
             setDriverStatus(res.data);
         })
-    }, [dummyState, id])
+    }, [dummyState, username])
 
     return (
         <>
@@ -98,12 +98,12 @@ const DriverPage = () => {
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
-                                            <DriverStatus id={id} driverStatus={driverStatus} rerender={rerender}></DriverStatus>
+                                            <DriverStatus username={username} driverStatus={driverStatus} rerender={rerender}></DriverStatus>
                                         </Paper>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Paper className={classes.bottomLeftPaper} >
-                                            <DriverMetrics id={id}/>
+                                            <DriverMetrics username={username}/>
                                         </Paper>
                                     </Grid>
                                     
@@ -114,8 +114,8 @@ const DriverPage = () => {
                             <Grid item xs={12} md ={8} lg={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
-                                        {driverStatus === "AVAILABLE" ? <AvailableOrders id={id} rerender={rerender}/> : null}
-                                        {driverStatus === "BUSY" ? <DriverOrder id={id} rerender={rerender}/> : null}
+                                        {driverStatus === "AVAILABLE" ? <AvailableOrders username={username} rerender={rerender}/> : null}
+                                        {driverStatus === "BUSY" ? <DriverOrder username={username} rerender={rerender}/> : null}
                                     </Paper>
                                 </Grid>
 

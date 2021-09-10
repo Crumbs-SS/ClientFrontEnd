@@ -1,20 +1,19 @@
 import axios from 'axios';
+import store from '../store';
+
 const url = 'http://localhost:8090';
 
-
 export default class PaymentService{
-  
-  static createPaymentIntent(cartTotal){
-    
-    const body = {cartTotal};
-    
-    const config = {
-      
-      headers: {
-          'Content-Type': 'application/json',
-      }
+
+  static get config(){
+    return { headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : store.getState().auth.token}
     }
-    
-    return axios.post(url + '/create-payment-intent', body, config);
+  }
+  
+  static createPaymentIntent(username, cartTotal){
+    const body = {cartTotal};
+    return axios.post(url + '/create-payment-intent/' + username, body, this.config);
   }
 }

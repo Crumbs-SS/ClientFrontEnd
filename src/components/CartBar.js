@@ -30,9 +30,9 @@ const CartBar = ({ active, setCartBar }) => {
   const [redirect, setRedirect] = useState(false);
   
   const [clientSecret, setClientSecret] = useState('');
- 
+
   const createPaymentIntent = () => {
-    PaymentService.createPaymentIntent(cart.total)
+    PaymentService.createPaymentIntent(user.username, cart.total)
     .then((data) => {
       setClientSecret(data.data.clientSecret);
     })

@@ -9,7 +9,6 @@ const schema = yup.object({
 });
 
 const ForgotPasswordForm = (props) => {
-
     const onSuccess = (values) => {
         AccountService.forgotPassword(values.email).then();
         props.close();
