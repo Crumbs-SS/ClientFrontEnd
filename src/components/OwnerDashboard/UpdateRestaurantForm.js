@@ -70,7 +70,7 @@ const UpdateRestaurantForm = () => {
     }, [id])
 
 
-    const onSuccess = ({ name, street, city, state, zip, categories, menu }) => {
+    const onSuccess = ({ name, street, city, state, categories, menu }) => {
        
         
         RestaurantService.updateRestaurant(username, id, { name, street, city, state, categories, menu })
