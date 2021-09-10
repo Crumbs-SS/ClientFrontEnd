@@ -41,6 +41,24 @@ export default class AccountService{
           };
         return axios.get(url + '/drivers/pay/' + username, config);
     }
+    static getDriverRating (username) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
+            }
+          };
+        return axios.get(url + '/drivers/rating/' + username, config);
+    }
+    static getDriverRatings (username) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
+            }
+          };
+        return axios.get(url + '/drivers/ratings/' + username, config);
+    }
     static forgotPassword(email){
         const config = {
             headers: {
