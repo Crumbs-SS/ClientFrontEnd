@@ -55,10 +55,11 @@ const OrderModal = ({ show, order, onHide, onEdit, onSelectCancel, orderType }) 
 
           <p>{canCancel && !isFulfilled ? 'You have ' + cancelAt + ' minutes left to cancel your order.' : null}</p>
           <b> Delivery Location </b>
-          <p> {order ? order.deliveryLocation.street : null} </p>
+          <p> { order ? order.deliveryLocation.street + ', ' 
+              + order.deliveryLocation.city + ', ' + order.deliveryLocation.state : null } </p>
 
           <b> Phone Number </b>
-          <p> {order ? order.phone : null} </p>
+          <p> { order ? formatPhoneNumber(order.phone) : null } </p>
 
           <b> Order Status </b>
           <p> {order ? order.orderStatus.status.replace('_', ' ') : null} </p>
@@ -153,4 +154,13 @@ const FoodItemComponent = ({ foodItem }) => {
       <div className='inline-order-modal'> </div>
     </>
   )
+}
+
+const formatPhoneNumber = number => {
+  const cleaned = ('' + number).replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match)
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+
+  return null;
 }

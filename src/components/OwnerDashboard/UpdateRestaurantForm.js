@@ -28,11 +28,6 @@ const schema = yup.object({
         .matches(/^[a-zA-Z ]*$/, "City name can only contain letters"),
     state: yup.string().ensure().trim().min(2).max(2)
         .matches(/^[a-zA-Z ]*$/, ' State can only contain letters'),
-    zip: yup.number("Must be a number").test(
-        "maxDigits",
-        "zip code must have exactly 5 digits",
-        (number) => String(number).length === 5
-    ),
     menu: yup.array().of(
         yup.object(
             {
