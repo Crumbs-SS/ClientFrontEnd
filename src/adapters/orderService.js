@@ -49,7 +49,9 @@ export default class OrderService{
   static submitRating(order_id, rating, description){
     const body = {rating, description};
     return axios.post(url + '/orders/' + order_id + '/driver/rating', JSON.stringify(body), config);
-    
+  }
+  static getPendingOrders(username){
+    return axios.get(url + '/owners/' + username + '/restaurants/orders', config);
   }
 
 

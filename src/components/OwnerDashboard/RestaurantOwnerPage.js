@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from "../../actions/authActions";
@@ -13,10 +13,13 @@ import {
     Typography,
     Grid,
     Paper,
+    Container
 } from "@material-ui/core";
 import OwnerRestaurants from './OwnerRestaurants';
 import Chart from './Chart';
 import RecentOrders from './RecentOrders';
+import OrderService from "../../adapters/orderService";
+import React, { useEffect , useState} from "react";
 
 const useStyles = makeStyles((theme) => (
   {
@@ -25,15 +28,8 @@ const useStyles = makeStyles((theme) => (
       },
       flexGrow: {
           flexGrow: 1,
-          padding: '25px'
       },
       appBarSpacer: theme.mixins.toolbar, 
-      container: {
-          paddingTop: theme.spacing(4),
-          paddingBottom: theme.spacing(3),
-          margin:'0px 0px 0px 0px',
-          
-      },
       topLeftPaper: {
           height: 360,
           padding: theme.spacing(2),
@@ -48,9 +44,14 @@ const useStyles = makeStyles((theme) => (
       },
       rightHeight: {
           height : '100%',
-          width: '100%',
+          width: '120%',
           padding: theme.spacing(2),
       },
+      container: {
+          margin: '0px 0px 0px 0px',
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(5),
+    },
   }));
 
 const RestaurantOwnerPage = () => {
@@ -58,7 +59,14 @@ const RestaurantOwnerPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
- 
+  const [pendingOrders, setPendingOrders] = useState(null);
+
+  useEffect(() => {
+    OrderService.getPendingOrders(username).then((response) => {
+        setPendingOrders(response.data);
+    })
+}, [username])
+
   return (
     <>
           <div className={classes.root}>
@@ -77,7 +85,7 @@ const RestaurantOwnerPage = () => {
 
                 <main className={classes.flexGrow}>
                     <div className={classes.appBarSpacer} />
-                    
+                    <Container className={classes.container}>
                         <Grid container spacing={3}>
 
                             <Grid item xs={6}>
@@ -100,13 +108,14 @@ const RestaurantOwnerPage = () => {
                             <Grid item xs={6}>
                                 <Grid style={{ height: "100%"}}>
                                     <Paper className={classes.rightHeight}>
-                                      <RecentOrders></RecentOrders>
+                                      <RecentOrders username={username}></RecentOrders>
                                     </Paper>
                                 </Grid>
 
                             </Grid>
 
                         </Grid>
+                        </Container>
                 </main>
 
             </div>

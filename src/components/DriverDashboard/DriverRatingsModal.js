@@ -1,52 +1,22 @@
 import { Modal } from 'react-bootstrap';
 import React from 'react';
-import {
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    TableHead,
-} from "@material-ui/core";
+import {Button} from "@material-ui/core";
+import DriverRatingsTable from './DriverRatingsTable';
 
 const DriverRatingsModal = ({ driverRatings, show, onHide }) => {
 
-
-
     return (
         <>
-            <Modal show={show} onHide={() => onHide()} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal show={show} onHide={() => onHide()} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
 
                 <Modal.Header closeButton>
                     <Modal.Title>Your Driver Ratings</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <TableContainer aria-label="simple table" style={{}}>
-                        <Table >
-                            <TableHead>
-                                <TableRow  >
-                                    <TableCell>Delivered on</TableCell>
-                                    <TableCell>Rating</TableCell>
-                                    <TableCell>Description</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {driverRatings ? driverRatings.map(rating => {
-                                    return <TableRow key={rating.id}>
-                                        <TableCell>{rating.order.createdAt}</TableCell>
-                                        <TableCell>{rating.rating}</TableCell>
-                                        <TableCell>{rating.description}</TableCell>
-                                    </TableRow>
-                                }) : null}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-
+                    <DriverRatingsTable driverRatings={driverRatings}></DriverRatingsTable>
                 </Modal.Body>
-
+                
                 <Modal.Footer>
                     <Button variant="contained" color="secondary" onClick={() => onHide()}>Close</Button>
                 </Modal.Footer>
@@ -54,6 +24,5 @@ const DriverRatingsModal = ({ driverRatings, show, onHide }) => {
 
         </>
     );
-
 }
 export default DriverRatingsModal;
