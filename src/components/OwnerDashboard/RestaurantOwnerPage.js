@@ -18,8 +18,7 @@ import {
 import OwnerRestaurants from './OwnerRestaurants';
 import Chart from './Chart';
 import RecentOrders from './RecentOrders';
-import OrderService from "../../adapters/orderService";
-import React, { useEffect , useState} from "react";
+import React from "react";
 
 const useStyles = makeStyles((theme) => (
   {
@@ -59,13 +58,6 @@ const RestaurantOwnerPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const username = window.location.pathname.split('/owner/')[1].split('/dashboard')[0];
-  const [pendingOrders, setPendingOrders] = useState(null);
-
-  useEffect(() => {
-    OrderService.getPendingOrders(username).then((response) => {
-        setPendingOrders(response.data);
-    })
-}, [username])
 
   return (
     <>
