@@ -53,7 +53,7 @@ const MenuItemModal = ({ show, menuItem, onHide }) => {
     const menuItemObj = {...menuItem, preferences};
 
     for (let i = 0; i < quantity; i++)
-      dispatch(addToCart(user.id, menuItemObj));
+      dispatch(addToCart( menuItemObj));
 
     onHide();
     setPreferences('');
