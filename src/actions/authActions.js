@@ -42,11 +42,8 @@ export const loadUser = () => (dispatch, getState) => {
         .then(res => {
           dispatch({type: USER_LOADED, payload: res.data});
           if(getState().auth.role === 'customer'){
-            // dispatch(loadCart(username));
-            // dispatch(loadOrders(username));
-            //for demo purposes
-            dispatch(loadCart(getState().auth.user.id));
-            dispatch(loadOrders(getState().auth.user.id));
+            dispatch(loadCart());
+            dispatch(loadOrders());
           }
       })
         .catch(err => {

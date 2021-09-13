@@ -1,8 +1,8 @@
 import { SET_ORDERS } from './types';
 import OrderService from '../adapters/orderService';
 
-export const loadOrders = (id, page=0) => dispatch => {
-  OrderService.loadOrders(id, page)
+export const loadOrders = (page=0) => dispatch => {
+  OrderService.loadOrders(page)
   .then(({data}) => {
     dispatch({
       type: SET_ORDERS,
@@ -16,15 +16,15 @@ export const loadOrders = (id, page=0) => dispatch => {
   .catch();
 }
 
-export const updateOrder = (userId, orderId, fields, page) => dispatch => {
+export const updateOrder = (orderId, fields, page) => dispatch => {
   OrderService.updateOrders(orderId, fields)
-  .then(() => dispatch(loadOrders(userId, page)))
+  .then(() => dispatch(loadOrders(page)))
   .catch();
 }
 
-export const cancelOrder = (orderId, userId) => dispatch =>
+export const cancelOrder = (orderId) => dispatch =>
 {
   OrderService.cancelOrder(orderId)
-  .then(() => dispatch(loadOrders(userId)))
+  .then(() => dispatch(loadOrders()))
   .catch();
 }

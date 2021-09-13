@@ -90,7 +90,7 @@ const CartBar = ({ active, setCartBar }) => {
   const onSubmit = (values) => {
     if (values.phone && values.address) {
       onHide();
-      dispatch(checkoutCart(user.id, cart.shoppingCart, values));
+      dispatch(checkoutCart(cart.shoppingCart, values));
       window.alert("Your payment was successful and your order has been placed. Please check your profile page to view, update or cancel your order.");
       setRedirect('/profile');
     }
