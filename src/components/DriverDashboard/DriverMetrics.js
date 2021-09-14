@@ -44,11 +44,11 @@ const DriverMetrics = () => {
                 </Typography>
                 <Typography component="h2" variant="h6" color="inherit" gutterBottom>
                     {JSON.stringify(driverPay) === '""' ? "Please make your first delivery" :
-                    ["Pay to this day: ", driverPay]
+                    ["Pay to this day: ", driverPay, "$"]
                     }
                 </Typography>
                 <Typography component="h2" variant="h6" color="inherit" gutterBottom>
-                    {driverRating === -1 ? "No ratings yet." : ["Your average rating: " , driverRating]}
+                    {driverRating === -1 ? "No ratings yet." : ["Your average rating: " , driverRating, "/5"]}
                 </Typography>
                 <Button variant="contained" color="primary" onClick={() => { setShowDriverRatingsModal(true) }}>
                     View your ratings
