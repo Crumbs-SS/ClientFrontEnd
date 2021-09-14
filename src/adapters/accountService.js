@@ -11,24 +11,27 @@ export default class AccountService{
             'Authorization' : store.getState().auth.token}
         }
       }
-
-    static checkInDriver (username) {
-        return axios.put(url + '/drivers/checkIn/' + username, null, this.config);
+    
+      static get username(){
+        return store.getState().auth.username
+      }
+    static checkInDriver () {
+        return axios.put(url + `/drivers/checkIn/${this.username}`, null, this.config);
     }
-    static checkOutDriver (username) {
-        return axios.put(url + '/drivers/checkOut/' + username, null, this.config);
+    static checkOutDriver () {
+        return axios.put(url + `/drivers/checkOut/${this.username}`, null, this.config);
     }
-    static getDriverStatus  (username){
-        return axios.get(url + '/drivers/status/' + username, this.config);
+    static getDriverStatus  (){
+        return axios.get(url + `/drivers/status/${this.username}`, this.config);
     }
-    static getDriverPay (username) {
-        return axios.get(url + '/drivers/pay/' + username, this.config);
+    static getDriverPay () {
+        return axios.get(url + `/drivers/pay/${this.username}`, this.config);
     }
-    static getDriverRating (username) {
-        return axios.get(url + '/drivers/rating/' + username, this.config);
+    static getDriverRating () {
+        return axios.get(url + `/drivers/rating/${this.username}`, this.config);
     }
-    static getDriverRatings (username) {
-        return axios.get(url + '/drivers/ratings/' + username, this.config);
+    static getDriverRatings () {
+        return axios.get(url + `/drivers/ratings/${this.username}`, this.config);
     }
     static forgotPassword(email){
         return axios.get(url + '/users/email/' + email, this.config);

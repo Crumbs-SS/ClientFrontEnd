@@ -6,7 +6,7 @@ import {
 import AccountService from '../../adapters/accountService';
 import DriverRatingsModal from './DriverRatingsModal';
 
-const DriverMetrics = ({username}) => {
+const DriverMetrics = () => {
 
     const [driverPay, setDriverPay] = useState(null);
     const[driverRating, setDriverRating] = useState(null);
@@ -17,23 +17,23 @@ const DriverMetrics = ({username}) => {
 
 
     useEffect(() => {
-        AccountService.getDriverPay(username)
+        AccountService.getDriverPay()
         .then((res) => {
             setDriverPay(res.data);
         })
         .catch();
 
-        AccountService.getDriverRatings(username)
+        AccountService.getDriverRatings()
         .then((res) => {
             setDriverRatings(res.data);
         })
 
-        AccountService.getDriverRating(username)
+        AccountService.getDriverRating()
         .then((res) => {
             setDriverRating(res.data);
         })
 
-    },[username])
+    },[])
     
     return (
         <>

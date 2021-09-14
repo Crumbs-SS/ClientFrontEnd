@@ -63,14 +63,13 @@ const DriverPage = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [driverStatus, setDriverStatus] = useState(null);
-    const username = window.location.pathname.split('/driver/')[1].split('/dashboard')[0];
     const [dummyState, rerender] = useState(null);
  
     useEffect(() => {
-        AccountService.getDriverStatus(username).then((res) => {
+        AccountService.getDriverStatus().then((res) => {
             setDriverStatus(res.data);
         })
-    }, [dummyState, username])
+    }, [dummyState])
 
     return (
         <>
@@ -98,12 +97,12 @@ const DriverPage = () => {
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
                                         <Paper className={classes.topLeftPaper}>
-                                            <DriverStatus username={username} driverStatus={driverStatus} rerender={rerender}></DriverStatus>
+                                            <DriverStatus driverStatus={driverStatus} rerender={rerender}></DriverStatus>
                                         </Paper>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Paper className={classes.bottomLeftPaper} >
-                                            <DriverMetrics username={username}/>
+                                            <DriverMetrics/>
                                         </Paper>
                                     </Grid>
                                     
@@ -114,8 +113,8 @@ const DriverPage = () => {
                             <Grid item xs={12} md ={8} lg={6}>
                                 <Grid style={{ height: "100%" }}>
                                     <Paper className={classes.rightHeight}>
-                                        {driverStatus === "AVAILABLE" ? <AvailableOrders username={username} rerender={rerender}/> : null}
-                                        {driverStatus === "BUSY" ? <DriverOrder username={username} rerender={rerender}/> : null}
+                                        {driverStatus === "AVAILABLE" ? <AvailableOrders rerender={rerender}/> : null}
+                                        {driverStatus === "BUSY" ? <DriverOrder rerender={rerender}/> : null}
                                     </Paper>
                                 </Grid>
 

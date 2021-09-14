@@ -52,7 +52,7 @@ const DriverRatingsTable = ({driverRatings}) => {
                         rows={rows}
                         columns={columns}
                         pageSize={6}
-                        rowsPerPageOptions={[9]}
+                        rowsPerPageOptions={[6]}
 
                     />
                 </div>

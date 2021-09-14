@@ -43,7 +43,7 @@ export default class OrderService{
   }
 
   static acceptOrder(orderId){
-    return axios.post(url + `drivers/${this.username}/accepted-order`, JSON.stringify({orderId}), this.config);
+    return axios.post(url + `/drivers/${this.username}/accepted-order`, JSON.stringify(orderId), this.config);
   }
 
   static setPickedUpAt(orderId){
@@ -54,8 +54,8 @@ export default class OrderService{
     return axios.put(url + `/drivers/${this.username}/order/${orderId}`, null, this.config);
   }
 
-  static getDriverAcceptedOrder(driverId){
-    return axios.get(url + `/drivers/${this.username}/accepted-order` + driverId, this.config);
+  static getDriverAcceptedOrder(){
+    return axios.get(url + `/drivers/${this.username}/accepted-order`, this.config);
   }
 
   static getDriverRating(orderId){
