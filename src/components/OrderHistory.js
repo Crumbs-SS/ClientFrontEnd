@@ -41,12 +41,12 @@ const OrderHistory = ( { orderType }) => {
     
     if(fields.foodOrders.length <= 0){
       //delete order
-      dispatch(cancelOrder(chosenOrder.id, user.id));
+      dispatch(cancelOrder(chosenOrder.id));
       hideEditModal();
       return
     }
 
-    dispatch(updateOrder(user.id, chosenOrder.id, fields, currentPage));
+    dispatch(updateOrder(chosenOrder.id, fields, currentPage));
     hideEditModal();
     setShowModal(true);
   }
@@ -56,7 +56,7 @@ const OrderHistory = ( { orderType }) => {
     setShowCancelModal(true);
   }
   const onCancel = () => {
-    dispatch(cancelOrder(chosenOrder.id, user.id));
+    dispatch(cancelOrder(chosenOrder.id));
     hideCancelModal();
   }
 
@@ -72,7 +72,7 @@ const OrderHistory = ( { orderType }) => {
 
 
   useEffect(() => {
-    dispatch(loadOrders(user.id, currentPage))
+    dispatch(loadOrders(currentPage))
   }, [currentPage, dispatch, user])
 
     return (

@@ -5,12 +5,12 @@ import {
 } from "@material-ui/core";
 import OrderService from '../../adapters/orderService';
 
-const AcceptOrderModal = ({username, order, show, onHide, rerender}) => {
+const AcceptOrderModal = ({order, show, onHide, rerender}) => {
 
     const [error, setError] = useState(false);
 
     const acceptOrder = () => {
-        OrderService.acceptOrder(username, order.id)
+        OrderService.acceptOrder(order.id)
         .then( () => {
             rerender(false);
             onHide();

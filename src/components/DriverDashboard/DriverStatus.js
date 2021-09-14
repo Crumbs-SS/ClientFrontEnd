@@ -12,16 +12,16 @@ const viewDriverStatus = {
     "UNVALIDATED": "Your account has not yet been confirmed by our Crumbs Team. We will let you know once we have managed to confirm your account."
 }
 
-const DriverStatus = ({ username, driverStatus, rerender}) => {
+const DriverStatus = ({driverStatus, rerender}) => {
     
 
     const checkIn = () => {
-        AccountService.checkInDriver(username).then((res) => {
+        AccountService.checkInDriver().then((res) => {
             rerender(true);
         })
     }
     const checkOut = () => {
-        AccountService.checkOutDriver(username).then((res) => {
+        AccountService.checkOutDriver().then((res) => {
             rerender(false);
         })
     }

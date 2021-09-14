@@ -1,40 +1,43 @@
 import axios from 'axios';
-
+import store from '../store';
 
 const url = 'http://localhost:8010';
 const customersRoute = url + '/customers';
 
-const config = {
-  headers: {
-      'Content-Type': 'application/json',
-  }
-}
-
-
 export default class CartService {
 
-  static addToCart(id, menuItem){
-    return axios.post(customersRoute+`/${id}/cart`,
-      JSON.stringify(menuItem),
-      config);
+  static get config(){
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: store.getState().auth.token,
+      }
+    }
   }
 
-  static clearCart(id){
-    return axios.delete(customersRoute+`/${id}/cart`);
+  static get username(){
+    return store.getState().auth.username
   }
 
-  static loadCart(id){
-    return axios.get(customersRoute + `/${id}/cart`);
+  static addToCart(menuItem){
+    return axios.post(customersRoute+`/${this.username}/cart`, JSON.stringify(menuItem), this.config);
   }
 
-  static checkoutCart(id, body){
-    return axios.post(customersRoute + `/${id}/orders`,
-      JSON.stringify(body),
-      config);
+  static clearCart(){
+    return axios.delete(customersRoute+`/${this.username}/cart`, this.config);
   }
 
-  static deleteItem(userId, menuItemId){
-    return axios.delete(customersRoute + `/${userId}/cart/${menuItemId}`);
+  static loadCart(){
+    console.log(store.getState().auth);
+    return axios.get(customersRoute + `/${this.username}/cart`, this.config);
+  }
+
+  static checkoutCart(body){
+    return axios.post(customersRoute + `/${this.username}/orders`, JSON.stringify(body), this.config);
+  }
+
+  static deleteItem(menuItemId){
+    return axios.delete(customersRoute + `/${this.username}/cart/${menuItemId}`, this.config);
   }
 
 }

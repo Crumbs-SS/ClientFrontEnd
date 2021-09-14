@@ -37,7 +37,7 @@ const OrderModal = ({ show, order, onHide, onEdit, onSelectCancel, orderType }) 
   }
 
   useEffect(() => {
-    if (order !== null) {
+    if (order != null) {
       OrderService.getDriverRating(order.id).then((response) => {
         setDriverRating(response.data);
       })

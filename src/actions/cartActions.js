@@ -3,8 +3,8 @@ import { loadOrders } from './orderActions';
 import CartService from '../adapters/cartService';
 import EmailService from '../adapters/emailService';
 
-export const addToCart = (id, menuItem) => (dispatch) => {
-  CartService.addToCart(id, menuItem)
+export const addToCart = (menuItem) => (dispatch) => {
+  CartService.addToCart(menuItem)
   .then(({data}) => {
     dispatch({
         type: SET_CART,
@@ -14,14 +14,14 @@ export const addToCart = (id, menuItem) => (dispatch) => {
   .catch();
 }
 
-export const clearCart = id => dispatch =>  {
-  CartService.clearCart(id)
+export const clearCart = () => dispatch =>  {
+  CartService.clearCart()
   .then(() => dispatch({type: CLEAR_CART}))
   .catch();
 }
 
-export const loadCart = (id) => dispatch => {
-  CartService.loadCart(id)
+export const loadCart = () => dispatch => {
+  CartService.loadCart()
   .then(({data}) => {
     dispatch({
       type: SET_CART,
@@ -31,8 +31,8 @@ export const loadCart = (id) => dispatch => {
   .catch();
 }
 
-export const checkoutCart = (id, cartItems, {phone, address, preferences, stripeID}) => (dispatch) => {
-  dispatch(clearCart(id));
+export const checkoutCart = (cartItems, {phone, address, preferences, stripeID}) => (dispatch) => {
+  dispatch(clearCart());
   const body = {
     phone,
     address,
@@ -40,16 +40,16 @@ export const checkoutCart = (id, cartItems, {phone, address, preferences, stripe
     stripeID,
     cartItems
   }
-  CartService.checkoutCart(id, body)
+  CartService.checkoutCart(body)
   .then((resp) => {
     const orders = resp.data;
-    dispatch(loadOrders(id));
+    dispatch(loadOrders());
     orders.forEach((order) => EmailService.sendOrderDetailsEmail(order.id));
   }).catch();
 }
 
-export const deleteItem = (userId, menuItemId) => dispatch => {
-  CartService.deleteItem(userId, menuItemId)
+export const deleteItem = (menuItemId) => dispatch => {
+  CartService.deleteItem(menuItemId)
   .then(({data}) => dispatch({
     type: SET_CART,
     payload: {shoppingCart: data}

@@ -7,7 +7,7 @@ import {
 import AcceptOrderModal from "./AcceptOrderModal";
 import { DataGrid } from '@material-ui/data-grid';
 
-const AvailableOrders = ({ username, rerender }) => {
+const AvailableOrders = ({rerender }) => {
 
     const [availableOrders, setAvailableOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -103,7 +103,7 @@ const AvailableOrders = ({ username, rerender }) => {
     else {
         return (
             <React.Fragment>
-                <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} username={username} rerender={rerender}></AcceptOrderModal>
+                <AcceptOrderModal show={showAcceptOrderModal} onHide={hideAcceptOrderModal} order={selectedOrder} rerender={rerender}></AcceptOrderModal>
                 <Typography component="h1" variant="h6" color="inherit" >
                     Available Orders:
                 </Typography>

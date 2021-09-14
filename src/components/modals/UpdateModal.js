@@ -4,6 +4,7 @@ import { useState } from 'react';
 import * as yup from 'yup';
 import '../../style/checkout-modal.css';
 import { useEffect } from 'react';
+import PlacesAutocompleteForm from '../forms/PlacesAutocompleteForm';
 
 
 
@@ -12,8 +13,10 @@ const UpdateModal = props => {
   const [ preferences, setPreferences ] = useState('');
   const [ phone, setPhone ] = useState('');
   const [ address, setAddress ] = useState('');
+  const [error, setError] = useState('');
   const [foodOrders, setFoodOrders] = useState([]);
   const { order, onUpdate } = props;
+  const [validatedAddress, setValidatedAddress] = useState('');
 
 
   useEffect(() => {
@@ -30,6 +33,26 @@ const UpdateModal = props => {
     setFoodOrders(foodOrders.filter(foodOrder => foodOrder.id !== item.id));
   }
 
+  const onAddressSelectionClicked = (suggestionDescription) => {
+    setAddress(suggestionDescription);
+    setValidatedAddress(suggestionDescription);
+  }
+
+  const onAddressFieldChanged = (inputText) => {
+    setValidatedAddress('');
+    setAddress(inputText);
+  }
+
+  const onSubmit = (fields) => {
+    setError('');
+    if (!validatedAddress){
+      setError('Please input a valid address.') 
+      return
+    };
+
+    onUpdate(fields);
+  }
+
   return(
     <Modal show={props.show} onHide={() => props.onHide()} centered scrollable>
     <Modal.Header closeButton>
@@ -42,17 +65,13 @@ const UpdateModal = props => {
           return (
             <Form noValidate>
               <b> Address </b>
-              <Form.Control
-                type='text'
-                name='address'
-                placeholder='Enter your address'
-                className='input-cm'
-                value={address}
-                onChange={(e) => {handleChange(e); setAddress(e.target.value)}}
-                isInvalid={errors.address}
+              <PlacesAutocompleteForm 
+                address={address}
+                onAddressFieldChanged={onAddressFieldChanged}
+                onAddressSelectionClicked={onAddressSelectionClicked}
               />
               <Form.Control.Feedback type='invalid'>
-                  {errors.address}
+                  {error}
               </Form.Control.Feedback>
               <br />
               <b> Phone Number </b>
@@ -101,7 +120,7 @@ const UpdateModal = props => {
 
     <Modal.Footer>
       <Button
-        onClick={() => onUpdate({phone, preferences, address, foodOrders})}
+        onClick={() => onSubmit({phone, preferences, address, foodOrders})}
         variant='danger'
         className='add-to-cart'
       >

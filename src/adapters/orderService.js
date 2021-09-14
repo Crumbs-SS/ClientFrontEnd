@@ -1,57 +1,72 @@
 import axios from 'axios';
+import store from '../store';
 
 const url = 'http://localhost:8010';
 const customersRoute = url +'/customers';
 
-const config = {
-  headers: {
-      'Content-Type': 'application/json',
-      'Authorization': localStorage.getItem('token')
-  }
-}
-
-
 export default class OrderService{
-  static loadOrders(id, page){
-    return axios.get(customersRoute + `/${id}/orders?page=${page}`);
+
+  static get config(){
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: store.getState().auth.token,
+      }
+    }
+  }
+
+  static get configWithUsername(){
+    const config = {...this.config};
+    config.headers.Username = this.username;
+    return config;
+  }
+
+  static get username(){
+    return store.getState().auth.username
+  }
+
+  static loadOrders(page){
+    return axios.get(customersRoute + `/${this.username}/orders?page=${page}`, this.config);
   }
 
   static updateOrders(orderId, {phone, address, preferences, foodOrders}){
-    const body = {
-      phone, address, preferences, cartItems: foodOrders
-    }
-
-    return axios.put(url + `/orders/${orderId}`,
-      JSON.stringify(body), config);
+    const body = {phone, address, preferences, cartItems: foodOrders}
+    return axios.put(url + `/orders/${orderId}`, JSON.stringify(body), this.configWithUsername);
   }
 
   static cancelOrder(id){
-    return axios.delete(customersRoute + '/orders/' + id);
+    return axios.delete(url + '/orders/' + id, this.configWithUsername);
   }
+
   static getAvailableOrders(){
-    return axios.get(url + '/drivers/available/orders');
+    return axios.get(url + `/drivers/${this.username}/orders/available`, this.config);
   }
-  static acceptOrder(driver_id, order_id){
-    return axios.put(url + '/drivers/' + driver_id + '/order/' + order_id);
+
+  static acceptOrder(orderId){
+    return axios.post(url + `/drivers/${this.username}/accepted-order`, JSON.stringify(orderId), this.config);
   }
-  static setPickedUpAt(order_id){
-    return axios.put(url + '/drivers/order/' + order_id + '/pickUp');
+
+  static setPickedUpAt(orderId){
+    return axios.put(url + `/drivers/${this.username}/order/${orderId}/pickUp`, null, this.config);
   }
-  static fulfilOrder(order_id){
-    return axios.put(url + '/drivers/order/' + order_id);
+
+  static fulfilOrder(orderId){
+    return axios.put(url + `/drivers/${this.username}/order/${orderId}`, null, this.config);
   }
-  static getDriverAcceptedOrder(driver_id){
-    return axios.get(url + '/drivers/order/' + driver_id);
+
+  static getDriverAcceptedOrder(){
+    return axios.get(url + `/drivers/${this.username}/accepted-order`, this.config);
   }
-  static getDriverRating(order_id){
-    return axios.get(url + '/orders/' + order_id + '/driver/rating');
+
+  static getDriverRating(orderId){
+    return axios.get(url + '/orders/' + orderId + '/driver-rating', this.config);
   }
-  static submitRating(order_id, rating, description){
+
+  static submitRating(orderId, rating, description){
     const body = {rating, description};
-    return axios.post(url + '/orders/' + order_id + '/driver/rating', JSON.stringify(body), config);
-    
+    return axios.post(url + '/orders/' + orderId + '/driver-rating', JSON.stringify(body), this.configWithUsername);
   }
-
-
-
+  static getPendingOrders(username){
+    return axios.get(url + '/owners/' + username + '/restaurants/orders', this.config);
+  }
 }

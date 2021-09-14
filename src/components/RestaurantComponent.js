@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteItem } from '../actions/cartActions';
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -26,11 +26,9 @@ const RestaurantComponent = ({ restaurant }) => {
 }
 
 const QuantityItem = ({ item }) => {
-
-  const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
 
-  const deleteMenuItems = item => dispatch(deleteItem(user.id, item.menuItem.id));
+  const deleteMenuItems = item => dispatch(deleteItem(item.menuItem.id));
 
   return (
     <div className='quantity-item'>

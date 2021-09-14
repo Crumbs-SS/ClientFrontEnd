@@ -17,7 +17,10 @@ class EmailService{
     }
 
     static sendOrderDetailsEmail(orderId){
-        return axios.post(url + `/email/orders/${orderId}/details`, null, this.config);
+        const config = {...this.config};
+        config.headers.Username = store.getState().auth.username;
+
+        return axios.post(url + `/email/orders/${orderId}/details`, {}, config);
     }
 }
 export default EmailService;
