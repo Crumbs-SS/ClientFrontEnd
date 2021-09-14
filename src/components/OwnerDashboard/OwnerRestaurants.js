@@ -55,7 +55,7 @@ const OwnerRestaurants = ({ username}) => {
                         <TableRow  >
                             <TableCell>NAME</TableCell>
                             <TableCell>LOCATION</TableCell>
-                            <TableCell>SATUS</TableCell>
+                            <TableCell>STATUS</TableCell>
                             <TableCell>ACTIONS</TableCell>
                         </TableRow>
                     </TableHead>
