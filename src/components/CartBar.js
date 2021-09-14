@@ -1,9 +1,7 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { checkoutCart } from '../actions/cartActions';
 import RestaurantComponent from './RestaurantComponent';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import CheckoutModal from './modals/CheckoutModal';
 import '../style/cart-bar.css';
 import { loadStripe } from "@stripe/stripe-js";
@@ -19,7 +17,6 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 
 const CartBar = ({ active, setCartBar }) => {
-  const dispatch = useDispatch();
 
   const cart = useSelector(state => state.cart);
   const user = useSelector(state => state.auth.user);
@@ -27,8 +24,7 @@ const CartBar = ({ active, setCartBar }) => {
   const restaurants = {};
 
   const [displayModal, setDisplayModal] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-  
+
   const [clientSecret, setClientSecret] = useState('');
 
   const createPaymentIntent = () => {
@@ -40,8 +36,8 @@ const CartBar = ({ active, setCartBar }) => {
 
   let menuItems = [];
 
-  if (isEmpty && displayModal)
-    setDisplayModal(false);
+  // if (isEmpty && displayModal)
+  //   setDisplayModal(false);
 
   cart.shoppingCart.forEach((item) => {
     if (!menuItems.find(v => v.menuItem.id === item.menuItem.id)) {
@@ -87,15 +83,6 @@ const CartBar = ({ active, setCartBar }) => {
 
   const onHide = () => { setDisplayModal(false); return false; }
 
-  const onSubmit = (values) => {
-    if (values.phone && values.address) {
-      onHide();
-      dispatch(checkoutCart(cart.shoppingCart, values));
-      window.alert("Your payment was successful and your order has been placed. Please check your profile page to view, update or cancel your order.");
-      setRedirect('/profile');
-    }
-  }
-
   return (
     <div id='cart-bar' className={active ? 'active-cart-bar' : null}>
       <p className='title-sc'><b>Your Cart</b></p>
@@ -126,14 +113,13 @@ const CartBar = ({ active, setCartBar }) => {
         <CheckoutModal
           show={displayModal}
           onHide={onHide}
-          onSubmit={onSubmit}
           restaurants={restaurants}
           total={cart.total}
           clientSecret={clientSecret}
           user={user}
+          cart={cart}
         />
       </Elements>
-      {redirect ? <Redirect push to={redirect} /> : null}
     </div>
   )
 }

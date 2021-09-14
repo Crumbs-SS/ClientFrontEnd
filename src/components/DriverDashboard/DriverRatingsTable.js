@@ -38,6 +38,9 @@ const DriverRatingsTable = ({driverRatings}) => {
             headerName: 'Rating',
             width: 125,
             editable: false,
+            valueFormatter: (params) => {
+                return `${params.value}/5`;
+            },
         },
         {
             field: 'description',
