@@ -1,7 +1,8 @@
 import axios from 'axios';
 import store from '../store';
+import { EMAIL_SERVICE_URL } from '../globalVariables';
 
-const url = 'http://localhost:8100';
+const url = EMAIL_SERVICE_URL;
 
 class EmailService{
 

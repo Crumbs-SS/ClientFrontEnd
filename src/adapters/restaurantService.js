@@ -1,9 +1,10 @@
 import axios from 'axios';
 import store from '../store';
+import { RESTAURANT_SERVICE_URL } from '../globalVariables';
 
-const url = 'http://localhost:8070/';
-const restaurantsRoute = url + 'restaurants';
-const categoriesRoute = url + 'categories';
+const url = RESTAURANT_SERVICE_URL;
+const restaurantsRoute = url + '/restaurants';
+const categoriesRoute = url + '/categories';
 const restaurantsQueryRoute = restaurantsRoute + '/search';
 const menuItemsRoute = restaurantsRoute + '/menuitems';
 
@@ -35,15 +36,15 @@ export default class RestaurantService{
   }
   
   static getOwnerRestaurants(username)  {
-    return axios.get(url + 'owner/' + username + '/restaurants', this.config);
+    return axios.get(url + '/owner/' + username + '/restaurants', this.config);
   }
 
   static requestDeleteRestaurant (username, id)  {
-    return axios.delete(url + 'owner/' + username + '/restaurant/' + id, this.config);
+    return axios.delete(url + '/owner/' + username + '/restaurant/' + id, this.config);
   }
 
   static updateRestaurant  (username, id, body) {
-    return axios.put(url + 'owner/' + username + '/restaurant/' + id, JSON.stringify(body), this.config);
+    return axios.put(url + '/owner/' + username + '/restaurant/' + id, JSON.stringify(body), this.config);
   }
 
  

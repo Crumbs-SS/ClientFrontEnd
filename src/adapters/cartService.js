@@ -1,7 +1,8 @@
 import axios from 'axios';
 import store from '../store';
+import { ORDER_SERVICE_URL } from '../globalVariables';
 
-const url = 'http://localhost:8010';
+const url = ORDER_SERVICE_URL;
 const customersRoute = url + '/customers';
 
 export default class CartService {
