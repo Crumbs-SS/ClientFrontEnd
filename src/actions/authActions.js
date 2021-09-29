@@ -125,6 +125,7 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
 };
 
 export const login = ({username, password, role}) => dispatch => {
+    console.log("Logging in!")
     const config = {
         headers: {
             'Content-Type': 'application/json',

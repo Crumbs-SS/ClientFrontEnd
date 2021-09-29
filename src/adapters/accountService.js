@@ -13,9 +13,10 @@ export default class AccountService{
         }
       }
     
-      static get username(){
-        return store.getState().auth.username
-      }
+    static get username(){
+    return store.getState().auth.username
+    }
+    
     static checkInDriver () {
         return axios.put(url + `/drivers/checkIn/${this.username}`, null, this.config);
     }

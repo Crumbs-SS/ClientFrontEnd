@@ -29,7 +29,6 @@ export default class CartService {
   }
 
   static loadCart(){
-    console.log(store.getState().auth);
     return axios.get(customersRoute + `/${this.username}/cart`, this.config);
   }
 
