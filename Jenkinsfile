@@ -17,8 +17,8 @@ pipeline {
         stage('Deploy'){
             steps{
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    sh 'aws s3 mb s3://admin-bucket'
-                    sh 'aws s3 mv ./dist s3://admin-bucket'
+                    sh 'aws s3 mb s3://client-bucket'
+                    sh 'aws s3 mv ./dist s3://client-bucket'
               }
                 
 
