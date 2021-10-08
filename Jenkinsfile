@@ -15,12 +15,14 @@ pipeline {
         }
         
         stage('SonarQube Analysis') {
-            script {
-                scannerHome = tool 'sonarqube'
-            }
+            steps {
+                script {
+                    scannerHome = tool 'sonarqube'
+                }
             
-            withSonarQubeEnv('SonarQube Scanner') {
-                sh "${scannerHome}/bin/sonar-scanner"
+                withSonarQubeEnv('SonarQube Scanner') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
 
