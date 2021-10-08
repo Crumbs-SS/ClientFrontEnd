@@ -13,6 +13,13 @@ pipeline {
                 sh 'npm run build'
             }
         }
+        
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'sonarqube';
+            withSonarQubeEnv() {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
 
         stage('Deploy'){
             steps{
