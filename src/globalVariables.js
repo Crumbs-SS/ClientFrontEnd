@@ -1,5 +1,5 @@
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const prodURL = "Application-Load-Balancer-1415291833.us-east-1.elb.amazonaws.com"
+const prodURL = "application-load-balancer-2004143484.us-east-1.elb.amazonaws.com"
 
 
 export const ACCOUNT_SERVICE_URL = (isDevelopment ? "http://localhost:8080" : prodURL) + '/account-service';
