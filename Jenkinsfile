@@ -17,7 +17,7 @@ pipeline {
         stage('Deploy'){
             steps{
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    sh 'aws s3 cp ./build/ s3://crumbs-client-bucket --recursive --acl public-read'
+                    sh 'aws s3 cp ./build/ s3://crumbs-client --recursive --acl public-read'
               }
             }
         }
