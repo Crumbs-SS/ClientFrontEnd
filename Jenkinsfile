@@ -10,7 +10,9 @@ pipeline {
         stage('Build'){
             steps{
                 sh 'npm install --force'
-                sh 'npm run build'
+                withCredentials([file(credentialsId: 'react-env-variables', variable: 'env-variables')]) {
+                    sh 'npm run build'
+                 }
             }
         }
         
