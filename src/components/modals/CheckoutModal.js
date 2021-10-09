@@ -68,8 +68,6 @@ const CheckoutModal = props => {
       if (phone && address) {
         dispatch(checkoutCart(props.cart.shoppingCart, { phone, preferences, address, stripeID }));
         setSuccess(true);
-        // window.alert("Your payment was successful and your order has been placed. Please check your profile page to view, update or cancel your order.");
-        // setRedirect('/profile');
       }
     }
   };
