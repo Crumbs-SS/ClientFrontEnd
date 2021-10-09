@@ -1,25 +1,25 @@
-// pipeline {
-//     agent{
-//         docker{
-//             image 'node:6-alpine'
-//             args '-p 3000:3000'
-//         }
-//     }
+pipeline {
+    agent{
+        docker{
+            image 'node:6-alpine'
+            args '-p 3000:3000'
+        }
+    }
     
-//     stages{
+    stages{
 
-//         stage('Build'){
-//             steps{
-//                 sh 'npm install'
-//                 sh 'npm run build'
-//             }
-//         }
+        stage('Build'){
+            steps{
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
 
-//         stage('Deploy'){
-//             steps{
+        stage('Deploy'){
+            steps{
 
-//             }
-//         }
-//     }
+            }
+        }
+    }
 
-// }
+}
