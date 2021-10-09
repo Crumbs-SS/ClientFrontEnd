@@ -1,6 +1,9 @@
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const prodURL = process.env.REACT_APP_API_URL
 
+
+console.log(prodURL);
+
 export const RESTAURANT_SERVICE_URL = (isDevelopment ?
     process.env.REACT_APP_RESTAURANT_SERVICE_URL : prodURL) + '/restaurant-service';
     

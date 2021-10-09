@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'nodejs'
-        scanner 'SonarScanner'
+        // scanner 'SonarScanner'
     }
     
     stages{
@@ -16,18 +16,18 @@ pipeline {
             }
         }
         
-        stage('SonarQube Analysis') {
-            steps {
-//                script {
-//                    scannerHome = tool 'SonarScanner'
-//                }
+//         stage('SonarQube Analysis') {
+//             steps {
+// //                script {
+// //                    scannerHome = tool 'SonarScanner'
+// //                }
             
-                withSonarQubeEnv('SonarQube Scanner') {
-  //                  sh "${scannerHome}/bin/sonar-scanner"
-                      sh "${scanner}/bin/sonar-scanner"
-                }
-            }
-        }
+//                 withSonarQubeEnv('SonarQube Scanner') {
+//   //                  sh "${scannerHome}/bin/sonar-scanner"
+//                       sh "${scanner}/bin/sonar-scanner"
+//                 }
+//             }
+//         }
 
         stage('Deploy'){
             steps{
