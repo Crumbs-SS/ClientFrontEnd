@@ -64,7 +64,7 @@ export const registerCustomer = ({username, password, email, firstName, lastName
 
     dispatch({ type: REGISTER_PENDING });
 
-    axios.post(accountURL + '/customers/register', body, config)
+    axios.post(accountURL + '/register/customer', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -88,7 +88,7 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
 
     dispatch({ type: REGISTER_PENDING });
 
-    axios.post(accountURL + '/drivers/register', body, config)
+    axios.post(accountURL + '/register/driver', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -110,7 +110,7 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
     };
     const body = JSON.stringify({username, password, email, firstName, lastName, phone});
 
-    axios.post(accountURL + '/owners/register', body, config)
+    axios.post(accountURL + '/register/owner', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -125,7 +125,7 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
 };
 
 export const login = ({username, password, role}) => dispatch => {
-    console.log("Logging in!")
+
     const config = {
         headers: {
             'Content-Type': 'application/json',

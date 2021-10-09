@@ -14,7 +14,7 @@ class EmailService{
       }
     
     static confirmToken(token) {
-        return axios.put(url+'/email/token/'+ token, null, this.config);
+        return axios.put(url+'/confirmation/token/'+ token, null, this.config);
     }
 
     static sendOrderDetailsEmail(orderId){
