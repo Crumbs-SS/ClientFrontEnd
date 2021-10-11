@@ -12,7 +12,7 @@ pipeline {
                 sh 'npm install --force'
                 withCredentials([string(credentialsId: 'react-production-alb', variable: 'REACT_APP_API_URL')]) {
                     sh 'npm run build'
-                 }
+                }
             }
         }
         
