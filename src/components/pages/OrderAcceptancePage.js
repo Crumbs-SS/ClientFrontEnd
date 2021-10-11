@@ -11,12 +11,15 @@ const OrderAcceptancePage = () => {
 
     useEffect(() => {
         const ids = window.location.pathname.split("/orders/")[1].split("/drivers/");
-        const ordersId = ids[0];
-        const driverId = ids[1];
+        const ordersId = ids[1];
+        const driverId = ids[0];
 
         OrderService.acceptOrder(driverId, ordersId)
-            .then(() => setRedirect(`/driver/${id}/homePage`))
-            .catch(() =>  setResponse("This order is no longer available"))
+            .then(() => setRedirect(`/driver/${driverId}/homePage`))
+            .catch((e) =>  { 
+                console.log(e);
+                setResponse("This order is no longer available");
+            })
     }, [id]);
 
     return (
