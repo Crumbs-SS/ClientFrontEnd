@@ -7,7 +7,7 @@ const OrderAcceptancePage = () => {
 
     const [response, setResponse] = useState();
     const [doRedirect, setRedirect] = useState(null);
-    const id = useSelector(state => state.auth.id);
+    const username = useSelector(state => state.auth.username);
 
     useEffect(() => {
         const ids = window.location.pathname.split("/orders/")[1].split("/drivers/");
@@ -15,12 +15,12 @@ const OrderAcceptancePage = () => {
         const driverId = ids[0];
 
         OrderService.acceptOrder(driverId, ordersId)
-            .then(() => setRedirect(`/driver/${driverId}/homePage`))
+            .then(() => setRedirect(`/driver/${username}/dashboard`))
             .catch((e) =>  { 
                 console.log(e);
                 setResponse("This order is no longer available");
             })
-    }, [id]);
+    }, [username]);
 
     return (
         <>
