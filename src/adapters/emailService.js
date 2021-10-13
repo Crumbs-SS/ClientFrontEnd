@@ -1,7 +1,8 @@
 import axios from 'axios';
 import store from '../store';
+import { EMAIL_SERVICE_URL } from '../globalVariables';
 
-const url = 'http://localhost:8100';
+const url = EMAIL_SERVICE_URL;
 
 class EmailService{
 
@@ -13,14 +14,14 @@ class EmailService{
       }
     
     static confirmToken(token) {
-        return axios.put(url+'/email/token/'+ token, null, this.config);
+        return axios.put(url+'/confirmation/token/'+ token, null, this.config);
     }
 
     static sendOrderDetailsEmail(orderId){
         const config = {...this.config};
         config.headers.Username = store.getState().auth.username;
 
-        return axios.post(url + `/email/orders/${orderId}/details`, {}, config);
+        return axios.post(url + `/orders/${orderId}/details`, {}, config);
     }
 }
 export default EmailService;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '../store';
-
-const url = 'http://localhost:8090';
+import { PAYMENT_SERVICE_URL } from '../globalVariables';
+const url = PAYMENT_SERVICE_URL;
 
 export default class PaymentService{
 

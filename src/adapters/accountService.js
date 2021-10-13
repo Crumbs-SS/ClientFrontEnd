@@ -1,7 +1,8 @@
 import axios from 'axios';
 import store from '../store';
+import { ACCOUNT_SERVICE_URL } from '../globalVariables';
 
-const url = 'http://localhost:8080';
+const url = ACCOUNT_SERVICE_URL;
 
 export default class AccountService{
 
@@ -12,9 +13,10 @@ export default class AccountService{
         }
       }
     
-      static get username(){
-        return store.getState().auth.username
-      }
+    static get username(){
+    return store.getState().auth.username
+    }
+    
     static checkInDriver () {
         return axios.put(url + `/drivers/checkIn/${this.username}`, null, this.config);
     }

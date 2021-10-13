@@ -2,6 +2,7 @@ import axios from 'axios';
 import {returnErrors} from './errorActions'
 import { loadCart } from './cartActions';
 import { loadOrders } from './orderActions';
+import { ACCOUNT_SERVICE_URL } from '../globalVariables';
 
 import {
     AUTH_ERROR,
@@ -24,8 +25,7 @@ import {
     CLEAR_ORDERS
 } from './types';
 
-const authURL = 'http://localhost:8080'
-const accountURL = 'http://localhost:8080'
+const accountURL = ACCOUNT_SERVICE_URL;
 
 export const loadUser = () => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
@@ -38,7 +38,7 @@ export const loadUser = () => (dispatch, getState) => {
         }
     };
 
-    axios.get(authURL + '/users/' + username, config)
+    axios.get(accountURL + '/users/' + username, config)
         .then(res => {
           dispatch({type: USER_LOADED, payload: res.data});
           if(getState().auth.role === 'customer'){
@@ -64,7 +64,7 @@ export const registerCustomer = ({username, password, email, firstName, lastName
 
     dispatch({ type: REGISTER_PENDING });
 
-    axios.post(accountURL + '/customers/register', body, config)
+    axios.post(accountURL + '/register/customer', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -88,7 +88,7 @@ export const registerDriver = ({username, password, email, firstName, lastName, 
 
     dispatch({ type: REGISTER_PENDING });
 
-    axios.post(accountURL + '/drivers/register', body, config)
+    axios.post(accountURL + '/register/driver', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -110,7 +110,7 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
     };
     const body = JSON.stringify({username, password, email, firstName, lastName, phone});
 
-    axios.post(accountURL + '/owners/register', body, config)
+    axios.post(accountURL + '/register/owner', body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_SUCCESS,
@@ -125,6 +125,7 @@ export const registerOwner = ({username, password, email, firstName, lastName, p
 };
 
 export const login = ({username, password, role}) => dispatch => {
+
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -135,7 +136,7 @@ export const login = ({username, password, role}) => dispatch => {
 
     dispatch({ type: LOGIN_PENDING});
 
-    axios.post(authURL + '/authenticate', body, config)
+    axios.post(accountURL + '/authenticate', body, config)
         .then(res => {
             dispatch({
                 type: LOGIN_SUCCESS,
