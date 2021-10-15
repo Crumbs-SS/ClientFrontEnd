@@ -33,7 +33,7 @@ const schema = yup.object({
             {
                 name: yup.string().required("Name required").min(1, "Cannot be blank"),
                 price: yup.number("Must be a number").required("Price is required"),
-                description: yup.string().required("Description is required")
+                description: yup.string()
             }
         )
     )

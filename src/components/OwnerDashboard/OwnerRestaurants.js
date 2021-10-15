@@ -17,15 +17,17 @@ import { useEffect, useState } from 'react';
 const OwnerRestaurants = ({ username}) => {
 
     const [restaurants, setRestaurants] = useState([]);
+    const [dummyState, setDummyState] = useState(false);
 
     useEffect(() => {
         RestaurantService.getOwnerRestaurants(username).then(res => {
             setRestaurants(res.data);
         })
-    }, [username])
+    }, [username, dummyState])
 
     const deleteRestaurant = (id) => {
-        RestaurantService.requestDeleteRestaurant(username, id).then(() => { })
+        RestaurantService.requestDeleteRestaurant(username, id).then(
+            () => {setDummyState(true);})
     }
 
     const restaurantList = restaurants.map(restaurant => {
@@ -34,8 +36,8 @@ const OwnerRestaurants = ({ username}) => {
             <TableCell>{restaurant.location.street}, {restaurant.location.city}, {restaurant.location.state}, {restaurant.location.zipCode}</TableCell>
             <TableCell>{restaurant.restaurantStatus.status}</TableCell>
             <TableCell>
-                <ButtonGroup size ="medium">
-                    <Button variant="contained" color="primary" ><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
+                <ButtonGroup size ="small" orientation="vertical">
+                    <Button variant="contained" color="primary"><Link to={`/restaurants/${restaurant.id}`}>View</Link></Button>
                     <Button variant="contained"  color="default" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"}><Link to={`/owner/${username}/updateRestaurant/${restaurant.id}`}>Update</Link></Button>
                     <Button variant="contained"  color="secondary" disabled={restaurant.restaurantStatus.status === "PENDING_DELETE"} onClick={() => { if (window.confirm('Are you sure you wish to delete this restaurant?')) deleteRestaurant(restaurant.id) }}>Delete</Button>
                 </ButtonGroup>

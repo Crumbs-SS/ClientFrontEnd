@@ -62,10 +62,16 @@ export default class OrderService{
   static getDriverRating(orderId){
     return axios.get(url + '/orders/' + orderId + '/driver-rating', this.config);
   }
-
-  static submitRating(orderId, rating, description){
+  static getRestaurantRating(orderId){
+    return axios.get(url + '/orders/' + orderId + '/restaurant-rating', this.config);
+  }
+  static submitDriverRating(orderId, rating, description){
     const body = {rating, description};
     return axios.post(url + '/orders/' + orderId + '/driver-rating', JSON.stringify(body), this.configWithUsername);
+  }
+  static submitRestaurantRating(orderId, rating, description){
+    const body = {rating, description};
+    return axios.post(url + '/orders/' + orderId + '/restaurant-rating', JSON.stringify(body), this.configWithUsername);
   }
   static getPendingOrders(username){
     return axios.get(url + '/owners/' + username + '/restaurants/orders', this.config);
