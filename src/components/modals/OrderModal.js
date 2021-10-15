@@ -1,13 +1,7 @@
 import { Modal } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import OrderService from '../../adapters/orderService';
 import {Button} from "@material-ui/core";
-import DriverRatingForm from '../forms/DriverRatingForm';
 import React from 'react';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Ratings from '../Ratings';
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -21,29 +15,6 @@ const OrderModal = ({ show, order, onHide, onEdit, onSelectCancel, orderType }) 
   const canCancel = order ? (Date.now() - new Date(order.createdAt).getTime()) < 300000 : null
   const cancelAt = order ? 5 - (new Date().getMinutes() - new Date(order.createdAt).getMinutes()) : null;
   const isFulfilled = orderType === 'inactive';
-
-  const [driverRating, setDriverRating] = useState(null);
-  // const [restaurantRating, setRestaurantRating] = useState(null);
-
-  const [expanded, setExpanded] = React.useState(false);
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const submitRating = (rating, description) => {
-    OrderService.submitRating(order.id, rating, description).then((response) => {
-      setDriverRating(response.data);
-    })
-  }
-
-  useEffect(() => {
-    if (order != null) {
-      OrderService.getDriverRating(order.id).then((response) => {
-        setDriverRating(response.data);
-      })
-    }
-  }, [order])
-
 
   return (
     <div className='order-modal'>
@@ -74,32 +45,8 @@ const OrderModal = ({ show, order, onHide, onEdit, onSelectCancel, orderType }) 
             {order ? order.foodOrders.map((item) => <FoodItemComponent foodItem={item} key={item.id} />) : null}
           </div>
 
-          {isFulfilled ?
-            <>
-              {/* <b> Restaurant Rating </b>*/}
+          {order && isFulfilled ? <Ratings orderId={order.id}/>: null}
 
-              <b> Driver Rating </b>
-              <p></p>
-              <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1bh-content"
-                  id="panel1bh-header"
-                >
-                  {driverRating === "" ? <span>Submit a rating</span> : <span>View your rating of the driver:</span>}
-                </AccordionSummary>
-                <AccordionDetails>
-                  {driverRating === "" ? <DriverRatingForm submitRating={submitRating}></DriverRatingForm> :
-                    <>
-                      <div>
-                        <p>Rating: {driverRating ? driverRating.rating : null}</p>
-                        <p>Description: {driverRating ? driverRating.description : null}</p>
-                      </div>
-                    </>}
-                </AccordionDetails>
-              </Accordion>
-            </> : null
-          }
         </Modal.Body>
 
         <Modal.Footer>
