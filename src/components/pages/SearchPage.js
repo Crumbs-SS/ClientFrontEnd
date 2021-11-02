@@ -40,8 +40,7 @@ const SearchPage = () => {
         setTotalPages(data.totalPages - 1);
       }
     })
-    .catch(() => {
-    })
+    .catch(console.error)
 
   }, [query, currentPage, sortOrder, selectedSort, filters, foodSearchOption])
 
@@ -50,8 +49,7 @@ const SearchPage = () => {
     .then(({data}) => {
       setCategories(data);
     })
-    .catch(() => {
-    })
+    .catch(console.error)
 
   }, [])
 

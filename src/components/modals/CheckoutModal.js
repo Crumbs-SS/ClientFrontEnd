@@ -85,87 +85,88 @@ const CheckoutModal = props => {
 
   return (
     <Modal show={props.show} onHide={() => props.onHide()} centered scrollable size="md">
-      
+
       <Modal.Header closeButton>
         <Modal.Title> Your Order </Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body>
-        {success ? 
+        {success ?
           <><h4>Your payment was processed and your order has been placed.</h4> <br />
-          <h4>Go to your profile page to view updates on your order.</h4> <br />
-          <h4>Thank you for ordering with Crumbs Food Service!</h4> </> : 
+            <h4>Go to your profile page to view updates on your order.</h4> <br />
+            <h4>Thank you for ordering with Crumbs Food Service!</h4> </> :
           <>
-          {serverErrors.map((err, index) => <div key={index} className='error'>{err}</div>)}
-          <Formik validationSchema={schema} initialValues={{ phone: '', address: '' }} >
-            {({ errors, handleChange }) => {
-              return (
-                <Form noValidate>
-                  <b> Address </b>
-                  <PlacesAutocompleteForm
-                    onAddressFieldChanged={onAddressFieldChanged}
-                    onAddressSelectionClicked={onAddressSelectionClicked}
-                    address={address}
-                  />
-                  <br />
-                  <b> Phone Number </b>
-                  <Form.Control
-                    type='text'
-                    name='phone'
-                    placeholder='Enter your phone number'
-                    className='input-cm'
-                    value={phone}
-                    onChange={(e) => { handleChange(e); setPhone(e.target.value) }}
-                    isInvalid={errors.phone}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {errors.phone}
-                  </Form.Control.Feedback>
-                </Form>
-              )
-            }
-            }
-          </Formik>
+            {serverErrors.map((err, index) => <div key={index} className='error'>{err}</div>)}
+            <Formik validationSchema={schema} initialValues={{ phone: '', address: '' }} >
+              {({ errors, handleChange }) => {
+                return (
+                  <Form noValidate>
+                    <b> Address </b>
+                    <PlacesAutocompleteForm
+                      placeholder={"Enter delivery address"}
+                      onAddressFieldChanged={onAddressFieldChanged}
+                      onAddressSelectionClicked={onAddressSelectionClicked}
+                      address={address}
+                    />
+                    <br />
+                    <b> Phone Number </b>
+                    <Form.Control
+                      type='text'
+                      name='phone'
+                      placeholder='Enter your phone number'
+                      className='input-cm'
+                      value={phone}
+                      onChange={(e) => { handleChange(e); setPhone(e.target.value) }}
+                      isInvalid={errors.phone}
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.phone}
+                    </Form.Control.Feedback>
+                  </Form>
+                )
+              }
+              }
+            </Formik>
 
-          { /* Payment Options Here */}
-          <br />
-          <div >
-            <b> Payment Inforatiom </b>
-            <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
-            {/* Show any error that happens when processing the payment */}
-            {stripeError && (
-              <div className="card-error error" role="alert" >
-                {stripeError}
-              </div>
-            )}
-          </div>
-          <br />
-
-          <div className='preferences'>
-            <div className='extra-instructions'>
-              <b> Extra instructions </b>
-              <span> List any special requests </span>
+            { /* Payment Options Here */}
+            <br />
+            <div >
+              <b> Payment Inforatiom </b>
+              <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+              {/* Show any error that happens when processing the payment */}
+              {stripeError && (
+                <div className="card-error error" role="alert" >
+                  {stripeError}
+                </div>
+              )}
             </div>
-            <textarea
-              onChange={e => setPreferences(e.target.value)}
-              value={preferences}
-              className='preferences-textbox'
-            />
-          </div>
+            <br />
 
-          <br />
-          <b> Items Ordered </b>
-
-          <div id='restaurant-components-cm'>
-            {Object.keys(props.restaurants).map(restaurant => {
-              const restaurantObj = props.restaurants[restaurant];
-              return <RestaurantComponent
-                key={restaurantObj.id}
-                restaurant={restaurantObj}
+            <div className='preferences'>
+              <div className='extra-instructions'>
+                <b> Extra instructions </b>
+                <span> List any special requests </span>
+              </div>
+              <textarea
+                onChange={e => setPreferences(e.target.value)}
+                value={preferences}
+                className='preferences-textbox'
               />
-            })}
-          </div>
-        </>
+            </div>
+
+            <br />
+            <b> Items Ordered </b>
+
+            <div id='restaurant-components-cm'>
+              {Object.keys(props.restaurants).map(restaurant => {
+                const restaurantObj = props.restaurants[restaurant];
+                return <RestaurantComponent
+                  key={restaurantObj.id}
+                  restaurant={restaurantObj}
+                />
+              })}
+            </div>
+          </>
         }
       </Modal.Body>
 

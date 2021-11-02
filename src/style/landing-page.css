@@ -13,8 +13,8 @@
 
 #title-holder{
   margin-left: 50%;
-  margin-top: 23%;
-  transform: translateX(-50%);
+  margin-top: 30%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -22,7 +22,8 @@
 }
 
 #title-name{
-  font-size: 4em;
+  font-size: 7.5em;
+  font-weight: 500;
   color: rgb(255, 255, 255);
   font-family: 'Architects Daughter', cursive;
 }
@@ -35,19 +36,36 @@
   align-items: center;
 }
 
-.input-text{
-  width:75%;
-  padding-left: 1em;
-  height:2em;
-  border-style: none;
+.input-text-div{
+  display: flex;
+  background: rgb(255, 255 ,255);
+  align-content: center;
+  justify-content:flex-start;
+  width: 100%;
+
   border-radius: 10em;
-  font-size: 1.3em;
-  display: inline-block;
   transition: width .5s;
 }
 
-.input-text:focus{
+.places-autocomplete {
   width: 90%;
+}
+
+.input-type {
+  width: 100%;
+  border:hidden;
+  margin-bottom: 0;
+}
+
+.map-marker {
+  align-self: center;
+  color: rgba(0, 0, 0, .3);
+  font-size: 1.5em;
+  margin-left: .5em;
+}
+
+.map-marker i {
+  display: inline
 }
 
 #search-button{
@@ -60,6 +78,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: .3em;
+
   transition: background .3s;
 }
 

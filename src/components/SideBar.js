@@ -1,16 +1,16 @@
 import '../style/sidebar.css';
-import {Link, NavLink} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../actions/authActions'
-import {useState} from "react";
+import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../actions/authActions'
+import { useState } from "react";
 import CustomerRegistrationForm from "./forms/CustomerRegistrationForm";
 import DriverRegistrationForm from "./forms/DriverRegistrationForm";
 import OwnerRegistrationForm from "./forms/OwnerRegistrationForm";
 import RegistrationModal from "./modals/RegistrationModal";
-import {clearErrors} from "../actions/errorActions";
+import { clearErrors } from "../actions/errorActions";
 
 const SideBar = () => {
-    const selectColor = {color: "red"};
+    const selectColor = { color: "red" };
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const SideBar = () => {
                 <NavLink
                     to='#'
                     activeStyle={selectColor}
-                    onClick={() => openModal("customer", <CustomerRegistrationForm close={closeModal}/>)}>
+                    onClick={() => openModal("customer", <CustomerRegistrationForm close={closeModal} />)}>
                     <i className="fas fa-user"></i> Sign Up
                 </NavLink>
             </>
@@ -64,7 +64,7 @@ const SideBar = () => {
         return (
             <NavLink
                 to="#"
-                onClick={() => openModal("driver", <DriverRegistrationForm close={closeModal}/>)}>
+                onClick={() => openModal("driver", <DriverRegistrationForm close={closeModal} />)}>
                 Register as a driver
             </NavLink>
         );
@@ -72,11 +72,11 @@ const SideBar = () => {
 
     const becomeDriverLink = user ? "" : becomeDriver();
 
-    const becomeOwner= () => {
+    const becomeOwner = () => {
         return (
             <NavLink
                 to="#"
-                onClick={() => openModal("owner", <OwnerRegistrationForm close={closeModal}/>)}>
+                onClick={() => openModal("owner", <OwnerRegistrationForm close={closeModal} />)}>
                 Register as a Restaurant Owner
             </NavLink>
         );
@@ -86,7 +86,7 @@ const SideBar = () => {
 
     return (
         <div id="side-bar">
-            <RegistrationModal show={modalOpen} onHide={closeModal} role={modalRole} comp={modalComp}/>
+            <RegistrationModal show={modalOpen} onHide={closeModal} role={modalRole} comp={modalComp} />
             <div className="head">
                 <NavLink
                     to='/'
@@ -102,20 +102,20 @@ const SideBar = () => {
 
             <div className="body">
                 <Link
-                    to={{pathname: "http://localhost:4200/utopia/restaurants/addRestaurant"}}
-          target="_blank">
-           Add Restaurant
-        </Link>
+                    to={{ pathname: "http://localhost:4200/utopia/restaurants/addRestaurant" }}
+                    target="_blank">
+                    Add Restaurant
+                </Link>
                 {becomeDriverLink}
                 {becomeOwnerLink}
-        <Link
-          to={{pathname: "https://google.com/"}} target="_blank">
-           Company Portal
-        </Link>
-      </div>
+                <Link
+                    to={{ pathname: "https://google.com/" }} target="_blank">
+                    Company Portal
+                </Link>
+            </div>
 
-    </div>
-  )
+        </div>
+    )
 
 }
 
